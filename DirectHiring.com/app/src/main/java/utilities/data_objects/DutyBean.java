@@ -4,6 +4,8 @@ package utilities.data_objects;
  * Created by xyxz on 6/30/2016.
  */
 public class DutyBean {
+    private String duty_key="";
+    private String duty_value="";
     public String getDuty_key() {
         return duty_key;
     }
@@ -20,6 +22,5 @@ public class DutyBean {
         this.duty_value = duty_value;
     }
 
-    private String duty_key="";
-    private String duty_value="";
+
 }
