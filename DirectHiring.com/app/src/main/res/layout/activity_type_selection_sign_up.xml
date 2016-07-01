@@ -29,7 +29,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp_20"
         android:popupBackground="@color/spinner_popup_color"
-        android:entries="@array/size_entries"
         ></Spinner>
     </LinearLayout>
     <LinearLayout
