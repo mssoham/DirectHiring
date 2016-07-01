@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">DirectHiring.com</string>
+    <string name="validation_name">DirectHiring</string>
+    <string name="join_us">Join Us</string>
+    <string name="sign_in">Sign in</string>
+    <string name="welcome1txt">Our matching algorithm helps you find the right people.</string>
+    <string name="welcome2txt">iOS or Android?You can take us to go.</string>
+    <string name="welcome3txt">Signing up takes two minutes and is totally free.</string>
+    <string name="hint_name">Username or email</string>
+    <string name="hint_password">Password</string>
+    <string name="sign_in_facebook">Sign In with Facebook</string>
+    <string name="err_msg_password">Enter your Password</string>
+    <string name="err_msg_name">Enter your Username</string>
+    <string-array name="size_entries">
+        <item>Helper</item>
+        <item>Family</item>
+    </string-array>
+
+</resources>
