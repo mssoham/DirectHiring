@@ -20,14 +20,6 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
 
 
     // Constants
-    public static final String ALL_SERVICE = "allservice";
-    public static final String ZIP_CODE = "zipcode";
-    public static final String SERVICE_DETAILS = "service_details";
-    public static final String PLACE_ORDER = "place_order";
-    public static final String COUPON = "coupon";
-    public static final String LOGIN = "login";
-    public static final String UPDATE_PROFILE = "update_profile";
-    public static final String ORDER_DETAILS = "order_details";
     public static final String CONFIG_SPINNER = "config";
 
     /**
