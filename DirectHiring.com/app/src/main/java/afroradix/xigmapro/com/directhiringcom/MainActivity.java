@@ -3,7 +3,6 @@ package afroradix.xigmapro.com.directhiringcom;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -24,12 +23,12 @@ import utilities.data_objects.EmployeeBean;
 import utilities.data_objects.ExperienceBean;
 import utilities.data_objects.HouseBean;
 import utilities.data_objects.NationalityBean;
-import utilities.data_objects.ZamoshModel;
+import utilities.data_objects.DirectHiringModel;
 import utilities.others.CToast;
 
 public class MainActivity extends Activity implements AsyncResponse {
     ProgressDialog progressDialog;
-    ZamoshModel dataModel = ZamoshModel.getInstance();
+    DirectHiringModel dataModel = DirectHiringModel.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
