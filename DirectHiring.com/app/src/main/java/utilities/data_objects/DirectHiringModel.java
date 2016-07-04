@@ -29,4 +29,6 @@ public class DirectHiringModel {
     public ArrayList<DateBean> yearArrayList = new ArrayList<DateBean>();
     public ArrayList<DateBean> monthArrayList = new ArrayList<DateBean>();
 
+    public UserBean userBean;
+
 }
