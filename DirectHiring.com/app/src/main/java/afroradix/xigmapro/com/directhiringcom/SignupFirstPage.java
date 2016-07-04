@@ -1,6 +1,7 @@
 package afroradix.xigmapro.com.directhiringcom;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -94,12 +95,13 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if(v==sign_up){
-            submitForm();
-            if(country1.equals("Select Country") && email.equals(confirm_email1)){
-                signup();
+            if(country1.equals("Select Country") || !email.equals(confirm_email1)){
+                CToast.show(getApplicationContext(),"Enter valid Country name!");
 
             }else{
-                CToast.show(getApplicationContext(),"Enter valid Country name!");
+                submitForm();
+                signup();
+
             }
         }
         if(v==signup_facebook){
@@ -121,7 +123,6 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
         if (!validateConfirmEmail()) {
             return;
         }
-        CToast.show(getApplicationContext(), "Successfully signup");
     }
 
     @Override
@@ -154,7 +155,8 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
                     SharedStorage.setValue(getApplicationContext(), "UserId", userObj.getString("id"));
 
                     //ShowAlertDialog.showAlertDialog(getApplicationContext(),"Profile updated successfully");
-                    CToast.show(getApplicationContext(),"Profile created successfully");
+                    CToast.show(getApplicationContext(),"Profile created successfully go for the next step");
+                    startActivity(new Intent(SignupFirstPage.this, SignUpSecondPage.class));
                 }else{
                     CToast.show(getApplicationContext(),"Failed to create profile");
                 }
@@ -223,7 +225,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
     private boolean validateEmail() {
         email=input_email.getText().toString().trim();
         if (email.isEmpty()|| !isValidEmail(email)) {
-            input_layout_email.setError(getString(R.string.err_msg_password));
+            input_layout_email.setError(getString(R.string.err_msg_email));
             requestFocus(input_layout_email);
             return false;
         } else {
@@ -235,7 +237,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
     private boolean validateConfirmEmail() {
         confirm_email1=confirm_email.getText().toString().trim();
         if (confirm_email1.isEmpty()|| !isValidEmail(confirm_email1)) {
-            input_confirm_email.setError(getString(R.string.err_msg_password));
+            input_confirm_email.setError(getString(R.string.err_msg_email));
             requestFocus(input_confirm_email);
             return false;
         } else {

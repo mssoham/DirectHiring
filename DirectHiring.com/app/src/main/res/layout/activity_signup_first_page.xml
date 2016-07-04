@@ -132,7 +132,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/Deep_green"
                 android:layout_alignParentBottom="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/dp_15">
                 <Button
                     android:id="@+id/sign_up"
                     android:layout_width="match_parent"
@@ -140,9 +141,8 @@
                     android:layout_gravity="center"
                     android:background="@drawable/edttextbg"
                     android:text="@string/signup"
-                    android:layout_marginLeft="@dimen/dp_40"
-                    android:layout_marginRight="@dimen/dp_40"
-                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginRight="@dimen/dp_25"
                     android:textSize="@dimen/sp_16"
                     android:textColor="@color/White"/>
                 <TextView
