@@ -11,6 +11,12 @@
     <string name="sign_in_facebook">Sign In with Facebook</string>
     <string name="err_msg_password">Enter your Password</string>
     <string name="err_msg_name">Enter your Username</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
+    <string name="hint_email">Email Address</string>
+    <string name="hint_confirm_email">Confirm Email Address</string>
+    <string name="sign_up_facebook">Sign Up With Facebook</string>
+    <string name="signup">Sign Up</string>
     <string-array name="size_entries">
         <item>Helper</item>
         <item>Family</item>

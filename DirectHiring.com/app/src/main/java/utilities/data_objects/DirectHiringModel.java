@@ -24,6 +24,10 @@ public class DirectHiringModel {
     public ArrayList<HouseBean> houseBeanArrayList = new ArrayList<HouseBean>();
     public ArrayList<DutyBean> dutyBeanArrayList = new ArrayList<DutyBean>();
     public ArrayList<AvailabilityBean> availabilityBeanArrayList = new ArrayList<AvailabilityBean>();
+    public ArrayList<TypeSpinnerBean> typeSpinnerBeanArrayList = new ArrayList<TypeSpinnerBean>();
+    public ArrayList<DateBean> dateArrayList = new ArrayList<DateBean>();
+    public ArrayList<DateBean> yearArrayList = new ArrayList<DateBean>();
+    public ArrayList<DateBean> monthArrayList = new ArrayList<DateBean>();
 
     public UserBean userBean;
 

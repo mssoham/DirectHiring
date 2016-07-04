@@ -9,10 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import adapters.TypeSpinnerAdapter;
+import utilities.data_objects.DirectHiringModel;
+
 public class TypeSelectionSignUp extends AppCompatActivity {
     Spinner type;
     public static String register_type;
     Button continue_btn;
+    TypeSpinnerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +24,8 @@ public class TypeSelectionSignUp extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Welcome");
         type=(Spinner)findViewById(R.id.type);
+        adapter = new TypeSpinnerAdapter(this, DirectHiringModel.getInstance().typeSpinnerBeanArrayList);
+        type.setAdapter(adapter);
         register_type=type.getSelectedItem().toString().trim();
         continue_btn=(Button)findViewById(R.id.continue_btn);
         continue_btn.setOnClickListener(new View.OnClickListener() {

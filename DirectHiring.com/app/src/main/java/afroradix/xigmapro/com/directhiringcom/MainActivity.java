@@ -18,12 +18,14 @@ import utilities.constants.Constants;
 import utilities.constants.Urls;
 import utilities.data_objects.AvailabilityBean;
 import utilities.data_objects.CountryLoadBean;
+import utilities.data_objects.DateBean;
 import utilities.data_objects.DutyBean;
 import utilities.data_objects.EmployeeBean;
 import utilities.data_objects.ExperienceBean;
 import utilities.data_objects.HouseBean;
 import utilities.data_objects.NationalityBean;
 import utilities.data_objects.DirectHiringModel;
+import utilities.data_objects.TypeSpinnerBean;
 import utilities.others.CToast;
 
 public class MainActivity extends Activity implements AsyncResponse {
@@ -51,6 +53,20 @@ public class MainActivity extends Activity implements AsyncResponse {
         };
         welcomeThread.start();
         getSpinnerElement();
+        //TypeSpinnerBean type=new TypeSpinnerBean();
+        ArrayList<TypeSpinnerBean> typeSpinnerBeanArrayList=new ArrayList<TypeSpinnerBean>();
+        dataModel.typeSpinnerBeanArrayList.add(new TypeSpinnerBean("Helper","Helper"));
+        dataModel.typeSpinnerBeanArrayList.add(new TypeSpinnerBean("Family","Family"));
+        for(int i=1;i<=31;i++){
+            dataModel.dateArrayList.add(new DateBean((i)));
+        }
+        for(int j=1;j<=12;j++){
+            dataModel.monthArrayList.add(new DateBean(j));
+        }
+        for (int k=1940;k<=2000;k++){
+            dataModel.yearArrayList.add(new DateBean(k));
+        }
+
     }
     private void getSpinnerElement(){
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();

@@ -28,7 +28,7 @@
         android:layout_marginRight="@dimen/dp_20"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp_20"
-        android:popupBackground="@color/spinner_popup_color"
+        android:popupBackground="@drawable/edttextbg"
         ></Spinner>
     </LinearLayout>
     <LinearLayout
