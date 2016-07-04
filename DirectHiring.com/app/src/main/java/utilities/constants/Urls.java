@@ -10,4 +10,6 @@ public class Urls
 
     public static final String config_spinner = url1+"config";
     public static final String login = url+"login";
+    public static final String registration = url+"registration";
+    public static final String registration_helper = url+"registration_helper";
 }

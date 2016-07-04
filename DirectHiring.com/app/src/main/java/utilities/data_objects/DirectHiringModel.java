@@ -16,6 +16,7 @@ public class DirectHiringModel {
     }
 
     public CountryLoadBean countryBean;
+    public UserBean user;
 
     public ArrayList<CountryLoadBean> countryLoadBeanArrayList = new ArrayList<CountryLoadBean>();
     public ArrayList<NationalityBean> nationalityBeanArrayList = new ArrayList<NationalityBean>();

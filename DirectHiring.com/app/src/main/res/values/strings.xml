@@ -17,6 +17,11 @@
     <string name="hint_confirm_email">Confirm Email Address</string>
     <string name="sign_up_facebook">Sign Up With Facebook</string>
     <string name="signup">Sign Up</string>
+    <string name="heading">Ahh,the last step. Don\'t stop now</string>
+    <string name="sign_up_txt">By signing up you agree to our</string>
+    <string name="terms">Terms of Service</string>
+    <string name="and">&amp;</string>
+    <string name="privacy">Privacy Policy</string>
     <string-array name="size_entries">
         <item>Helper</item>
         <item>Family</item>
