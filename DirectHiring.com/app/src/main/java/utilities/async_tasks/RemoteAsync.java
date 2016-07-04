@@ -21,6 +21,7 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
 
     // Constants
     public static final String CONFIG_SPINNER = "config";
+    public static final String LOGIN = "login";
 
     /**
      * Pass the Url of the web service as a String

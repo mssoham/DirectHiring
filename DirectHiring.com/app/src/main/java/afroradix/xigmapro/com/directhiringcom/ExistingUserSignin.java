@@ -1,10 +1,13 @@
 package afroradix.xigmapro.com.directhiringcom;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
@@ -12,16 +15,30 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.view.MenuItem;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.util.TextUtils;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import shared_pref.SharedStorage;
+import utilities.async_tasks.AsyncResponse;
+import utilities.async_tasks.RemoteAsync;
+import utilities.constants.Constants;
+import utilities.constants.Urls;
+import utilities.data_objects.DirectHiringModel;
+import utilities.data_objects.UserBean;
 import utilities.others.CToast;
 
-public class ExistingUserSignin extends AppCompatActivity {
+public class ExistingUserSignin extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
     private EditText user_name, input_password;
     private TextInputLayout input_layout_user_name, input_layout_password;
+
     String username,password;
     Button signin_btn;
     TextView signin_facebook;
+    ProgressDialog progressDialog;
+    DirectHiringModel dataModel = DirectHiringModel.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +53,16 @@ public class ExistingUserSignin extends AppCompatActivity {
         user_name.addTextChangedListener(new MyTextWatcher(user_name));
         input_password.addTextChangedListener(new MyTextWatcher(input_password));
         signin_btn=(Button)findViewById(R.id.signin_btn);
-        signin_btn.setOnClickListener(new View.OnClickListener() {
+       /* signin_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CToast.show(getApplicationContext(),"Clicked on Signin");
                 submitForm();
             }
-        });
+        });*/
+        signin_btn.setOnClickListener(this);
     }
+
     private void submitForm() {
         if (!validateName()) {
             return;
@@ -52,8 +71,77 @@ public class ExistingUserSignin extends AppCompatActivity {
         if (!validatePassword()) {
             return;
         }
-        CToast.show(getApplicationContext(),"Successfully signin");
+        CToast.show(getApplicationContext(), "Successfully signin");
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.signin_btn:
+                login();
+                break;
+
+        }
+    }
+
+    private void login(){
+       // if (user_name.getText().toString().equals("") || input_password.getText().toString().equals("")){
+            start_progress_dialog();
+
+            ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+
+            arrayList.add(new org.apache.http.message.BasicNameValuePair("username", user_name.getText().toString()));
+            arrayList.add(new org.apache.http.message.BasicNameValuePair("password", input_password.getText().toString()));
+
+            RemoteAsync remoteAsync = new RemoteAsync(Urls.login);
+            remoteAsync.type = RemoteAsync.LOGIN;
+            remoteAsync.delegate = this;
+            remoteAsync.execute(arrayList);
+        /*}else{
+            CToast.show(getApplicationContext(),"Mandetory fields should not be blank");
+        }*/
+    }
+
+    @Override
+    public void processFinish(String type, String output) {
+        stop_progress_dialog();
+        if (type.equals(RemoteAsync.LOGIN)) {
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
+
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    JSONObject userObj=obj.getJSONObject("users");
+
+                    UserBean userBean=new UserBean();
+
+                    userBean.setUser_id(userObj.getString("id"));
+                    userBean.setSocial_id(userObj.getString("social_id"));
+                    userBean.setFlag(userObj.getString("flag"));
+                    userBean.setName(userObj.getString("name"));
+                    userBean.setEmail(userObj.getString("email"));
+                    userBean.setUsername(userObj.getString("username"));
+                    userBean.setImage(userObj.getString("image"));
+                    userBean.setDescription(userObj.getString("description"));
+                    userBean.setDate_of_birth(userObj.getString("date_of_birth"));
+                    userBean.setLocation(userObj.getString("location"));
+                    userBean.setLooking_for(userObj.getString("looking_for"));
+                    userBean.setType(userObj.getString("type"));
+                    userBean.setStatus(userObj.getString("status"));
+                    userBean.setRemember_token(userObj.getString("remember_token"));
+                    userBean.setWallet(userObj.getString("wallet"));
+
+                    dataModel.userBean=userBean;
+                    SharedStorage.setValue(getApplicationContext(),"UserId",userObj.getString("id"));
+
+                    startActivity(new Intent(ExistingUserSignin.this, DashBoardActivity.class));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private class MyTextWatcher implements TextWatcher {
 
         private View view;
@@ -127,5 +215,15 @@ public class ExistingUserSignin extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void start_progress_dialog(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+    void stop_progress_dialog(){
+        progressDialog.dismiss();
     }
 }

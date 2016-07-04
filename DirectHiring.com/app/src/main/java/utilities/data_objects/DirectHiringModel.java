@@ -25,4 +25,6 @@ public class DirectHiringModel {
     public ArrayList<DutyBean> dutyBeanArrayList = new ArrayList<DutyBean>();
     public ArrayList<AvailabilityBean> availabilityBeanArrayList = new ArrayList<AvailabilityBean>();
 
+    public UserBean userBean;
+
 }

@@ -53,6 +53,8 @@
         </activity>
         <activity android:name=".SignupFirstPage" >
         </activity>
+        <activity android:name=".DashBoardActivity" >
+        </activity>
     </application>
 
 </manifest>
