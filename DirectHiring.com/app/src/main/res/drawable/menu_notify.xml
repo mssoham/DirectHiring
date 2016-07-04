@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <layer-list>
+            <item>
+                <shape>
+                    <gradient
+                        android:startColor="#464646"
+                        android:endColor="#464646"
+                        />
+
+                    <corners
+                        android:radius="@dimen/dp_100"
+                        android:startColor="#000000"
+                        android:endColor="#000000"/>
+                    <padding
+                        android:left="3dp"
+                        android:top="3dp"
+                        android:right="3dp"
+                        android:bottom="3dp" />
+                </shape>
+            </item>
+            <item
+                >
+                <bitmap android:src="@mipmap/ic_notifications_white_18dp"
+                    android:gravity="center_horizontal"
+                    android:tint="@color/nav_item_color"/>
+            </item>
+        </layer-list>
+    </item>
+</selector>

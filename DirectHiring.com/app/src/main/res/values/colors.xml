@@ -15,6 +15,7 @@
     <color name="dot_light_screen1">#888888</color>
     <color name="dot_light_screen2">#888888</color>
     <color name="dot_light_screen3">#888888</color>
+    <color name="white">#fff</color>
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>
         <item>@color/dot_light_screen2</item>
@@ -26,4 +27,6 @@
         <item>@color/dot_dark_screen2</item>
         <item>@color/dot_dark_screen3</item>
     </array>
+
+    <color name="nav_item_color">#959595</color>
 </resources>
