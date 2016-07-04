@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,28 +17,33 @@ import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.util.TextUtils;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import adapters.CountryLoadSpinnerAdapter;
 import adapters.DateOfBirthadapter;
 import adapters.TypeSpinnerAdapter;
+import shared_pref.SharedStorage;
 import utilities.async_tasks.AsyncResponse;
 import utilities.async_tasks.RemoteAsync;
+import utilities.constants.Constants;
 import utilities.constants.Urls;
 import utilities.data_objects.DirectHiringModel;
+import utilities.data_objects.UserBean;
 import utilities.others.CToast;
 
 public class SignupFirstPage extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
     private EditText user_first_name, input_last_name,input_email,confirm_email;
     private TextInputLayout input_layout_first_name, input_layout_last_name,input_layout_email,input_confirm_email;
-    String firstname,lastname,date_of_birth,email,confirm_email1,country1;
+    String firstname,lastname,date_of_birth,email,confirm_email1,country1,social_id,type,looking_for;
     Button sign_up;
     TextView signup_facebook;
     Spinner date,month,year,country;
     CountryLoadSpinnerAdapter adapter;
     DateOfBirthadapter dateadapter,monthadapter,yearadapter;
     ProgressDialog progressDialog;
+    DirectHiringModel dataModel = DirectHiringModel.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +80,15 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
         year.setAdapter(yearadapter);
         date_of_birth=date.getSelectedItem().toString().trim()+'-'+month.getSelectedItem().toString().trim()+'-'+year.getSelectedItem().toString().trim();
         country1=country.getSelectedItem().toString().trim();
+        social_id="0";
+        if(TypeSelectionSignUp.register_type.equals("Helper")){
+            type="Helper";
+            looking_for="Family";
+        }else{
+            type="Family";
+            looking_for="Helper";
+        }
+
     }
 
     @Override
@@ -111,7 +126,42 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void processFinish(String type, String output) {
+        if (type.equals(RemoteAsync.REGISTRATION)) {
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
 
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    //startActivity(new Intent(ServiceDetailsActivity.this,OrderSuccessfulActivity.class));
+                    JSONObject userObj=obj.getJSONObject("users");
+                    UserBean userBean=new UserBean();
+                    userBean.setUser_id(userObj.getString("id"));
+                    userBean.setSocial_id(userObj.getString("social_id"));
+                    userBean.setFlag(userObj.getString("flag"));
+                    userBean.setName(userObj.getString("name"));
+                    userBean.setEmail(userObj.getString("email"));
+                    userBean.setDate_of_birth(userObj.getString("date_of_birth"));
+                    userBean.setLocation(userObj.getString("location"));
+                    userBean.setLooking_for(userObj.getString("looking_for"));
+                    userBean.setType(userObj.getString("type"));
+                    userBean.setStatus(userObj.getString("status"));
+                    userBean.setWallet(userObj.getString("wallet"));
+                    userBean.setRemember_token(userObj.getString("remember_token"));
+                    userBean.setCreated_at(userObj.getString("created_at"));
+                    userBean.setUpdated_at(userObj.getString("updated_at"));
+
+                    dataModel.user=userBean;
+                    SharedStorage.setValue(getApplicationContext(), "UserId", userObj.getString("id"));
+
+                    //ShowAlertDialog.showAlertDialog(getApplicationContext(),"Profile updated successfully");
+                    CToast.show(getApplicationContext(),"Profile created successfully");
+                }else{
+                    CToast.show(getApplicationContext(),"Failed to create profile");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -220,10 +270,17 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
     }
     private void signup(){
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("social_id", social_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("first_name",user_first_name.getText().toString().trim() ));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_name", input_last_name.getText().toString().trim()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("date_of_birth", date_of_birth));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("location", country1));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("email", input_email.getText().toString().trim()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("type", type));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("looking_for", looking_for));
         //Urls.urlkey=url_key;
-        RemoteAsync remoteAsync = new RemoteAsync(Urls.config_spinner);
-        remoteAsync.type = RemoteAsync.CONFIG_SPINNER;
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.registration);
+        remoteAsync.type = RemoteAsync.REGISTRATION;
         remoteAsync.delegate=this;
         remoteAsync.execute(arrayList);
     }
