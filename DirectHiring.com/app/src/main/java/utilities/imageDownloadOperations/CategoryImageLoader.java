@@ -23,7 +23,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.example.re.R;
+import afroradix.xigmapro.com.directhiringcom.R;
 
 
 public class CategoryImageLoader {
