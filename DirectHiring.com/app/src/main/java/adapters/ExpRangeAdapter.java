@@ -12,28 +12,28 @@ import java.util.ArrayList;
 
 import afroradix.xigmapro.com.directhiringcom.R;
 import utilities.data_objects.CountryLoadBean;
-import utilities.data_objects.DutyBean;
+import utilities.data_objects.ExperienceBean;
 
 /**
- * Created by xyxz on 7/1/2016.
+ * Created by xyxz on 7/5/2016.
  */
-public class CountryLoadSpinnerAdapter extends BaseAdapter {
+public class ExpRangeAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
-    private ArrayList<CountryLoadBean> countryLoadBeanArrayList = new ArrayList<CountryLoadBean>();
-    public CountryLoadSpinnerAdapter(Activity activity, ArrayList<CountryLoadBean> countryLoadBeanArrayList) {
+    private ArrayList<ExperienceBean> experienceBeanArrayList = new ArrayList<ExperienceBean>();
+    public ExpRangeAdapter(Activity activity, ArrayList<ExperienceBean> experienceBeanArrayList) {
         this.activity = activity;
-        this.countryLoadBeanArrayList = countryLoadBeanArrayList;
+        this.experienceBeanArrayList = experienceBeanArrayList;
 
     }
     @Override
     public int getCount() {
-        return countryLoadBeanArrayList.size();
+        return experienceBeanArrayList.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return countryLoadBeanArrayList.get(location);
+        return experienceBeanArrayList.get(location);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class CountryLoadSpinnerAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.inflate_type, null);
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
-        CountryLoadBean countryLoadBean=countryLoadBeanArrayList.get(position);
-        type_txt.setText(countryLoadBean.getCountryvalue());
+        ExperienceBean experienceBean=experienceBeanArrayList.get(position);
+        type_txt.setText(experienceBean.getExp_value());
         return (convertView);
     }
 }

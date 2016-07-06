@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item>
         <layer-list>
             <item>
                 <shape>
                     <gradient
-                        android:startColor="#ffffff"
-                        android:endColor="#ffffff"
-                        android:angle="270" />
-                    <stroke
-                        android:width="0.5dp"
-                        android:color="#000000" />
+                        android:startColor="#464646"
+                        android:endColor="#464646"
+                        />
+
                     <corners
+                        android:radius="@dimen/dp_100"
                         android:startColor="#000000"
                         android:endColor="#000000"/>
                     <padding
@@ -23,10 +21,10 @@
                 </shape>
             </item>
             <item
-                android:top="15dp"
-                android:right="15dp">
-                <bitmap android:src="@drawable/whitedownarrow"
-                    android:gravity="top|right" />
+                >
+                <bitmap android:src="@mipmap/ic_photo_camera_white_18dp"
+                    android:gravity="center_horizontal"
+                    android:tint="@color/nav_item_color"/>
             </item>
         </layer-list>
     </item>

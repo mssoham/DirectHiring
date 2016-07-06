@@ -49,4 +49,6 @@
     <dimen name="dp_16">16dp</dimen>
     <dimen name="dp_250">250dp</dimen>
     <dimen name="dp_220">220dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

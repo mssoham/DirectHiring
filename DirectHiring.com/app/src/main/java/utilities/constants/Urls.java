@@ -12,4 +12,5 @@ public class Urls
     public static final String login = url+"login";
     public static final String registration = url+"registration";
     public static final String registration_helper = url+"registration_helper";
+    public static final String self = url+"self";
 }

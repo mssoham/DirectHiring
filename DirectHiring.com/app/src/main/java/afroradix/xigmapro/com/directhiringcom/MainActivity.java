@@ -126,6 +126,11 @@ public class MainActivity extends Activity implements AsyncResponse {
                     }else{
                         CToast.show(getApplicationContext(),"no Data for country found!");
                     }
+                    NationalityBean nationality1=new NationalityBean();
+                    nationality1.setNationality_value("Select Nationality");
+                    nationality1.setNationality_key("Select Nationality");
+                    nationalityBeanArrayList.add(nationality1);
+                    dataModel.nationalityBeanArrayList=nationalityBeanArrayList;
                     if(nationalityarr.length()>0){
                         for(int i=0;i<nationalityarr.length();i++){
                             NationalityBean nationality=new NationalityBean();
@@ -138,6 +143,11 @@ public class MainActivity extends Activity implements AsyncResponse {
                     }else{
                         CToast.show(getApplicationContext(),"no Data for nationality found!");
                     }
+                    AvailabilityBean availability1=new AvailabilityBean();
+                    availability1.setAvailabilty_value("Select Job Availibility");
+                    availability1.setAvailabilty_key("Select Job Availibility");
+                    availabilityBeanArrayList.add(availability1);
+                    dataModel.availabilityBeanArrayList=availabilityBeanArrayList;
                     if(availabilityarr.length()>0){
                         for(int i=0;i<availabilityarr.length();i++){
                             AvailabilityBean availability=new AvailabilityBean();
@@ -174,6 +184,11 @@ public class MainActivity extends Activity implements AsyncResponse {
                     }else{
                         CToast.show(getApplicationContext(),"no Data for house found!");
                     }
+                    ExperienceBean exp1=new ExperienceBean();
+                    exp1.setExp_value("Select Experience Range");
+                    exp1.setExp_key("Select Experience Range");
+                    experienceBeanArrayList.add(exp1);
+                    dataModel.experienceBeanArrayList=experienceBeanArrayList;
                     if(experience_rangearr.length()>0){
                         for(int i=0;i<experience_rangearr.length();i++){
                             ExperienceBean exp=new ExperienceBean();
@@ -186,6 +201,11 @@ public class MainActivity extends Activity implements AsyncResponse {
                     }else{
                         CToast.show(getApplicationContext(),"no Data for experience found!");
                     }
+                    DutyBean duty1=new DutyBean();
+                    duty1.setDuty_value("Select Main Duty");
+                    duty1.setDuty_key("Select Main Duty");
+                    dutyBeanArrayList.add(duty1);
+                    dataModel.dutyBeanArrayList=dutyBeanArrayList;
                     if(main_dutyarr.length()>0){
                         for(int i=0;i<main_dutyarr.length();i++){
                             DutyBean duty=new DutyBean();
