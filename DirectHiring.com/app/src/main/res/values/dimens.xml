@@ -18,6 +18,7 @@
     <dimen name="dp_80">80dp</dimen>
     <dimen name="dp_90">90dp</dimen>
     <dimen name="dp_100">100dp</dimen>
+    <dimen name="dp_300">300dp</dimen>
 
     <dimen name="sp_10">10sp</dimen>
     <dimen name="sp_12">12sp</dimen>
@@ -46,4 +47,6 @@
     <dimen name="dots_margin_bottom">20dp</dimen>
     <dimen name="dp_160">160dp</dimen>
     <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_250">250dp</dimen>
+    <dimen name="dp_220">220dp</dimen>
 </resources>

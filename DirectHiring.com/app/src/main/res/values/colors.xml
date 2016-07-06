@@ -29,4 +29,6 @@
     </array>
 
     <color name="nav_item_color">#959595</color>
+
+    <color name="dashboard_top">#9aca3c</color>
 </resources>

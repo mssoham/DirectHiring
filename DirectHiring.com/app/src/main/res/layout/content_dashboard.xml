@@ -2,12 +2,95 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_dashboard"
     tools:context="afroradix.xigmapro.com.directhiringcom.DashboardActivity">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_250"
+                android:background="@color/dashboard_top"
+                android:padding="@dimen/dp_15"
+                android:gravity="top">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_100"
+                        android:layout_weight="1">
+
+                        <custom_components.RoundedImageViewWhiteBorder
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_100"
+                            android:src="@drawable/thumb6"
+                            android:id="@+id/img1" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_100"
+
+                            android:background="@drawable/rounded_background_black"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:layout_marginBottom="@dimen/dp_5"
+                            android:layout_marginLeft="@dimen/dp_2"
+                            android:layout_marginRight="@dimen/dp_2"
+                            android:alpha=".5"
+                            >
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"></LinearLayout>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_clear_white_24dp"
+                                android:layout_centerInParent="true"/>
+                        </RelativeLayout>
+
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_100"
+                        android:layout_weight="1">
+                        <custom_components.RoundedImageViewWhiteBorder
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_100"
+                            android:src="@drawable/thumb6"
+                            android:id="@+id/img2" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_100"
+                        android:layout_weight="1">
+                        <custom_components.RoundedImageViewWhiteBorder
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_100"
+                            android:src="@drawable/thumb6"
+                            android:alpha=".5"
+                            android:id="@+id/img3" />
+                    </RelativeLayout>
+              </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_220"
+                android:background="@drawable/img_background"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/dp_300"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:layout_marginRight="@dimen/dp_15"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>
