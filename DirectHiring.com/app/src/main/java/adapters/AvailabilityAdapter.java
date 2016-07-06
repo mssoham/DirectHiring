@@ -11,29 +11,29 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import afroradix.xigmapro.com.directhiringcom.R;
+import utilities.data_objects.AvailabilityBean;
 import utilities.data_objects.CountryLoadBean;
-import utilities.data_objects.DutyBean;
 
 /**
- * Created by xyxz on 7/1/2016.
+ * Created by xyxz on 7/5/2016.
  */
-public class CountryLoadSpinnerAdapter extends BaseAdapter {
+public class AvailabilityAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
-    private ArrayList<CountryLoadBean> countryLoadBeanArrayList = new ArrayList<CountryLoadBean>();
-    public CountryLoadSpinnerAdapter(Activity activity, ArrayList<CountryLoadBean> countryLoadBeanArrayList) {
+    private ArrayList<AvailabilityBean> availabilityBeanArrayList = new ArrayList<AvailabilityBean>();
+    public AvailabilityAdapter(Activity activity, ArrayList<AvailabilityBean> availabilityBeanArrayList) {
         this.activity = activity;
-        this.countryLoadBeanArrayList = countryLoadBeanArrayList;
+        this.availabilityBeanArrayList = availabilityBeanArrayList;
 
     }
     @Override
     public int getCount() {
-        return countryLoadBeanArrayList.size();
+        return availabilityBeanArrayList.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return countryLoadBeanArrayList.get(location);
+        return availabilityBeanArrayList.get(location);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class CountryLoadSpinnerAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.inflate_type, null);
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
-        CountryLoadBean countryLoadBean=countryLoadBeanArrayList.get(position);
-        type_txt.setText(countryLoadBean.getCountryvalue());
+        AvailabilityBean availabilityBean=availabilityBeanArrayList.get(position);
+        type_txt.setText(availabilityBean.getAvailabilty_value());
         return (convertView);
     }
 }

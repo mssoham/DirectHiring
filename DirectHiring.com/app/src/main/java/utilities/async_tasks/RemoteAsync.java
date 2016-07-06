@@ -23,7 +23,8 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
     public static final String CONFIG_SPINNER = "config";
     public static final String LOGIN = "login";
     public static final String REGISTRATION = "registration";
-        public static final String REGISTRATION_HELPER = "registration_helper";
+    public static final String REGISTRATION_HELPER = "registration_helper";
+    public static final String IMAGE_UPLOAD = "self";
 
 
     /**
@@ -39,8 +40,16 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
     @Override
     protected String doInBackground(@SuppressWarnings("unchecked") ArrayList<NameValuePair>... pairs) {
 
-        HttpConnection connection = new HttpConnection();
-        string_JSON = connection.getPostRespoonse(url, pairs[0]);
+       /* HttpConnection connection = new HttpConnection();
+        string_JSON = connection.getPostRespoonse(url, pairs[0]);*/
+
+        if(type == IMAGE_UPLOAD){
+            MultiPartFileUpload multiPart_fileUpload=new MultiPartFileUpload();
+            return multiPart_fileUpload.makeServiceCall(url, pairs[0]);
+        } else{
+            HttpConnection connection = new HttpConnection();
+            string_JSON = connection.getPostRespoonse(url, pairs[0]);
+        }
 
         return string_JSON;
 

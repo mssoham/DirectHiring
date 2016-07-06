@@ -68,14 +68,14 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
         if (!validatePassword()) {
             return;
         }
+        firstlogin();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.signin_btn_reg:
-                    submitForm();
-                    firstlogin();
+                submitForm();
                 break;
         }
     }
@@ -127,7 +127,7 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
 
                     //ShowAlertDialog.showAlertDialog(getApplicationContext(),"Profile updated successfully");
                     CToast.show(getApplicationContext(),"Profile created successfully go for the next step");
-                    startActivity(new Intent(SignUpSecondPage.this, UploadImage.class));
+                    startActivity(new Intent(SignUpSecondPage.this, CriteriaType.class));
                 }else{
                     CToast.show(getApplicationContext(),"Username already used, Please change it");
                 }

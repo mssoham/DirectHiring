@@ -1,6 +1,7 @@
 package afroradix.xigmapro.com.directhiringcom;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -36,18 +38,21 @@ import utilities.ImageFile.CreateImagefile;
 import utilities.async_tasks.AsyncResponse;
 import utilities.async_tasks.RemoteAsync;
 import utilities.constants.Constants;
+import utilities.constants.Urls;
 
-public class UploadImage extends AppCompatActivity /*implements AsyncResponse*/ {
+public class UploadImage extends Activity implements View.OnClickListener, AsyncResponse{
     private EditText description;
     private TextInputLayout input_layout_description;
     private ImageButton upld;
     private RoundedImageViewWhiteBorder dp_pd;
     CreateImagefile createImagefile=new CreateImagefile();
     ImageView imgSpinner;
-    String mCurrentPhotoPath;
-    Button btnUpload;
+    String mCurrentPhotoPath,description1;
+    Button submit;
+    ProgressDialog progressDialog;
     private AnimationDrawable loadingViewAnim;
     private Bitmap bitmap;
+    private TextView skip;
 
     private Uri filePath;
 
@@ -59,12 +64,16 @@ public class UploadImage extends AppCompatActivity /*implements AsyncResponse*/ 
         input_layout_description=(TextInputLayout)findViewById(R.id.input_layout_description);
         upld=(ImageButton)findViewById(R.id.upld);
         dp_pd=(RoundedImageViewWhiteBorder)findViewById(R.id.dp_pd);
+        skip=(TextView)findViewById(R.id.skip);
+        submit=(Button)findViewById(R.id.submit);
         upld.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
+        submit.setOnClickListener(this);
+        skip.setOnClickListener(this);
     }
     private void selectImage() {
 
@@ -225,11 +234,24 @@ public class UploadImage extends AppCompatActivity /*implements AsyncResponse*/ 
             return null;
         }
     }
-    /*private void uploadImage(){
 
+    @Override
+    public void onClick(View v) {
+        if(v==submit){
+            description1=description.getText().toString().trim();
+            uploadImage();
+        }
+        if(v==skip){
+            startActivity(new Intent(UploadImage.this, CriteriaType.class));
+        }
+    }
+    private void uploadImage(){
+        start_progress_dialog();
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        String u_id= SharedStorage.getValue(getApplicationContext(), "UserId");
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("u_id", u_id));
+        String user_id = SharedStorage.getValue(getApplicationContext(), "UserId");
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("id", user_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("description", description1));
+
 
         if (dp_pd.getTag() != null) {
             arrayList.add(new org.apache.http.message.BasicNameValuePair("image", (String) dp_pd.getTag().toString()));
@@ -238,7 +260,7 @@ public class UploadImage extends AppCompatActivity /*implements AsyncResponse*/ 
         }
 
 
-        RemoteAsync remoteAsync = new RemoteAsync(Urls.image_upload);
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.self);
         remoteAsync.type = RemoteAsync.IMAGE_UPLOAD;
         remoteAsync.delegate = this;
         remoteAsync.execute(arrayList);
@@ -246,6 +268,7 @@ public class UploadImage extends AppCompatActivity /*implements AsyncResponse*/ 
 
     @Override
     public void processFinish(String type, String output) {
+        stop_progress_dialog();
         Log.e("Response-->", output.toString());
         if (type.equals(RemoteAsync.IMAGE_UPLOAD)) {
             try {
@@ -254,11 +277,22 @@ public class UploadImage extends AppCompatActivity /*implements AsyncResponse*/ 
 
                 if (obj.getString("status").equals(Constants.SUCCESS)) {
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(UploadImage.this, CriteriaType.class));
+                }else{
+                    startActivity(new Intent(UploadImage.this, CriteriaType.class));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-}*/
+    void start_progress_dialog(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+    void stop_progress_dialog(){
+        progressDialog.dismiss();
+    }
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -37,7 +38,7 @@ import utilities.others.CToast;
 public class SignupFirstPage extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
     private EditText user_first_name, input_last_name,input_email,confirm_email;
     private TextInputLayout input_layout_first_name, input_layout_last_name,input_layout_email,input_confirm_email;
-    String firstname,lastname,date_of_birth,email,confirm_email1,country1,social_id,type,looking_for;
+    String firstname,lastname,date_of_birth,email,confirm_email1,country1,social_id,type,looking_for,date1,year1,month1;
     Button sign_up;
     TextView signup_facebook;
     Spinner date,month,year,country;
@@ -79,15 +80,57 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
         month.setAdapter(monthadapter);
         yearadapter = new DateOfBirthadapter(this, DirectHiringModel.getInstance().yearArrayList);
         year.setAdapter(yearadapter);
-        date_of_birth=date.getSelectedItem().toString().trim()+'-'+month.getSelectedItem().toString().trim()+'-'+year.getSelectedItem().toString().trim();
-        country1=country.getSelectedItem().toString().trim();
+        country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                country1=dataModel.getInstance().countryLoadBeanArrayList.get(position).getCountryvalue();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        date.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                date1 = String.valueOf(dataModel.getInstance().dateArrayList.get(position).getType_value());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                month1 = String.valueOf(dataModel.getInstance().monthArrayList.get(position).getType_value());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        year.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                year1 = String.valueOf(dataModel.getInstance().yearArrayList.get(position).getType_value());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         social_id="0";
         if(TypeSelectionSignUp.register_type.equals("Helper")){
-            type="Helper";
-            looking_for="Family";
+            type="helper";
+            looking_for="family";
         }else{
-            type="Family";
-            looking_for="Helper";
+            type="family";
+            looking_for="helper";
         }
 
     }
@@ -99,8 +142,8 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
                 CToast.show(getApplicationContext(),"Enter valid Country name!");
 
             }else{
+                date_of_birth=date1+'-'+month1+'-'+year1;
                 submitForm();
-                signup();
 
             }
         }
@@ -123,6 +166,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
         if (!validateConfirmEmail()) {
             return;
         }
+        signup();
     }
 
     @Override
