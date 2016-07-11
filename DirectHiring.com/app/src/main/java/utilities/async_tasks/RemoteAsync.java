@@ -31,6 +31,7 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
     public static final String GET_CHAT_USERS = "getChatUsers";
     public static final String GET_CHAT_MESSAGES = "getChatMessages";
     public static final String SEND_MESSAGES = "sendMessages";
+    public static final String FORGOTPASSWORD = "forgetPassword";
     /* Services for chat end */
 
     public static final String CRITERIA = "criteria";

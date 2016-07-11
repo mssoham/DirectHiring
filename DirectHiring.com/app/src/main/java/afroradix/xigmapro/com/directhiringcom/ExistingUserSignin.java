@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
@@ -53,6 +54,24 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
         user_name.addTextChangedListener(new MyTextWatcher(user_name));
         input_password.addTextChangedListener(new MyTextWatcher(input_password));
         signin_btn=(Button)findViewById(R.id.signin_btn);
+        input_password.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (input_password.getRight() - input_password.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        startActivity(new Intent(ExistingUserSignin.this, ForgotPassword.class));
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
        /* signin_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
