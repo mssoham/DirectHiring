@@ -31,19 +31,20 @@
                         <custom_components.RoundedImageViewWhiteBorder
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_100"
-                            android:src="@drawable/thumb6"
+                            android:src="@drawable/placeholder"
                             android:id="@+id/img1" />
 
                         <RelativeLayout
+                            android:id="@+id/rel_cross"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_100"
-
                             android:background="@drawable/rounded_background_black"
                             android:layout_marginTop="@dimen/dp_5"
                             android:layout_marginBottom="@dimen/dp_5"
                             android:layout_marginLeft="@dimen/dp_2"
                             android:layout_marginRight="@dimen/dp_2"
                             android:alpha=".5"
+                            android:visibility="gone"
                             >
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -64,7 +65,7 @@
                         <custom_components.RoundedImageViewWhiteBorder
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_100"
-                            android:src="@drawable/thumb6"
+                            android:src="@drawable/placeholder"
                             android:id="@+id/img2" />
                     </RelativeLayout>
                     <RelativeLayout
@@ -74,7 +75,7 @@
                         <custom_components.RoundedImageViewWhiteBorder
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_100"
-                            android:src="@drawable/thumb6"
+                            android:src="@drawable/placeholder"
                             android:alpha=".5"
                             android:id="@+id/img3" />
                     </RelativeLayout>
@@ -89,8 +90,47 @@
                 android:layout_marginLeft="@dimen/dp_15"
                 android:layout_marginRight="@dimen/dp_15"
                 android:orientation="horizontal">
-
+                <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </android.support.v4.view.ViewPager>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_70"
+        android:layout_alignParentBottom="true"
+        android:background="@color/Base_color_green"
+        android:gravity="center"
+        android:padding="@dimen/dp_10"
+        android:alpha=".5">
+        <LinearLayout
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dashboard_btn1"
+            android:gravity="center"
+            android:padding="@dimen/dp_5"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="@dimen/dp_10">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clear_white_24dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dashboard_btn2"
+            android:gravity="center"
+            android:padding="@dimen/dp_5"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/dp_10">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_rate_white_18dp"/>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

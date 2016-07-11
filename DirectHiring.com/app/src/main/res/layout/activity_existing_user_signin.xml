@@ -35,6 +35,7 @@
             android:textColorHint="@color/White"
             android:singleLine="true"
             android:hint="@string/hint_name"
+            android:text="diptojit.majumder"
             android:theme="@style/MyEditTextTheme"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -50,6 +51,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:hint="@string/hint_password"
+            android:text="123456"
             android:textColor="@color/White"
             android:textColorHint="@color/White"
             android:theme="@style/MyEditTextTheme"/>

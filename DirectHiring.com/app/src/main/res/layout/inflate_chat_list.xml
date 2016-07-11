@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_10">
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="@dimen/dp_250"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_corner_chat_view1"
+        android:padding="@dimen/dp_10"
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:id="@+id/sender1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/msg1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello! How are you?"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:id="@+id/time1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text=""
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="@dimen/dp_250"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_corner_chat_view2"
+        android:padding="@dimen/dp_10"
+        android:layout_alignParentRight="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/sender2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You"
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/msg2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello! How are you?"
+            android:textSize="@dimen/sp_16"
+            android:textColor="@color/black"
+            />
+        <TextView
+            android:id="@+id/time2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text=""
+            android:textSize="@dimen/sp_12"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
+</RelativeLayout>

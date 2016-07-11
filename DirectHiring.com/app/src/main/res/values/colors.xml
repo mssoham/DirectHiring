@@ -31,4 +31,6 @@
     <color name="nav_item_color">#959595</color>
 
     <color name="dashboard_top">#9aca3c</color>
+    <color name="black">#000</color>
+    <color name="like_list_background">#EAECF1</color>
 </resources>
