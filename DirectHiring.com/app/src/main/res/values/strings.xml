@@ -145,4 +145,14 @@
     <string name="house_type">House Type</string>
     <string name="family_member">Family Members</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="premium_member1">Free member can able to swipe only three.</string>
+    <string name="premium_member2">If you want to swipe more then buy our Premium Membership offer.</string>
+    <string name="premium_member3">Spend $48 for Premium Plan for 6 Weeks and get Premium Plan benefits.</string>
+    <string name="premium_member4">Refer using 1-touch button to share to all friends on Facebook.</string>
+    <string name="paypal_rate">Proceed to Payment: $48</string>
+    <string name="facebook_app_id">478945782292175</string>
+    
 </resources>

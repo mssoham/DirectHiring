@@ -18,6 +18,9 @@ public class DashboardUserBean {
     private String status="";
     private ArrayList<DashboardUserImageBean> dashboardUserImageBeanArrayList=new ArrayList<DashboardUserImageBean>();
 
+    public int is_liked=0;
+    public int is_skipped=0;
+
     public ArrayList<DashboardUserImageBean> getDashboardUserImageBeanArrayList() {
         return dashboardUserImageBeanArrayList;
     }

@@ -5,9 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -24,13 +27,17 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
+import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment;
 import custom_components.RoundedImageViewWhiteBorder;
 import shared_pref.SharedStorage;
 import utilities.async_tasks.AsyncResponse;
@@ -43,22 +50,34 @@ import utilities.data_objects.DashboardUserImageBean;
 import utilities.data_objects.DirectHiringModel;
 
 public class DashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AsyncResponse {
+        implements NavigationView.OnNavigationItemSelectedListener, AsyncResponse, View.OnClickListener,
+        PremiumMemberDialogFragment.OnFragmentInteractionListener{
 
     private RoundedImageViewWhiteBorder img1,img2,img3,imageView;
+    private ImageView imgTickCross;
+    private TextView textView1;
+    private RelativeLayout rel_cross;
+    private LinearLayout like, skip;
     private ViewPager pager;
     private String img_url="http://xigmapro.website/dev4/directhiring/public/resource/site/images/users/";
+    private int user_pos=0;
 
     ProgressDialog progressDialog;
     DirectHiringModel dataModel=DirectHiringModel.getInstance();
     CustomPagerAdapter customPagerAdapter;
 
+    private static final String FORMAT = "%02d:%02d:%02d";
+
+    int seconds , minutes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Latest Matches");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -72,15 +91,44 @@ public class DashboardActivity extends AppCompatActivity
         img1 = (RoundedImageViewWhiteBorder)findViewById(R.id.img1);
         img2 = (RoundedImageViewWhiteBorder)findViewById(R.id.img2);
         img3 = (RoundedImageViewWhiteBorder)findViewById(R.id.img3);
+        imgTickCross = (ImageView)findViewById(R.id.imgTickCross);
+
+        rel_cross = (RelativeLayout)findViewById(R.id.rel_cross);
+
+        like = (LinearLayout)findViewById(R.id.like);
+        skip = (LinearLayout)findViewById(R.id.skip);
+
+        textView1 = (TextView)findViewById(R.id.textView1);
+
+        if (user_pos==0){
+            rel_cross.setVisibility(View.GONE);
+            img2.setAlpha(0.3f);
+            img3.setAlpha(0.3f);
+        }else{
+            rel_cross.setVisibility(View.VISIBLE);
+            img2.setAlpha(1.0f);
+            img3.setAlpha(0.3f);
+
+            if (dataModel.dashboardUserBeanArrayList.get(user_pos-1).is_liked==1){
+                imgTickCross.setImageResource(R.drawable.ic_done_white_24dp);
+            }else if (dataModel.dashboardUserBeanArrayList.get(user_pos-1).is_skipped==1){
+                imgTickCross.setImageResource(R.drawable.ic_clear_white_24dp);
+            }
+        }
 
         View header = navigationView.getHeaderView(0);
         imageView = (RoundedImageViewWhiteBorder)header.findViewById(R.id.imageView);
 
-        if (imageView != null) {
-            new ImageDownloaderTask(imageView).execute(img_url+"/"+dataModel.userBean.getImage());
+        if (!dataModel.userBean.getImage().equals("")) {
+            if (imageView != null) {
+                new ImageDownloaderTask(imageView).execute(img_url + "/" + dataModel.userBean.getImage());
+            }
         }
 
         pager = (ViewPager)findViewById(R.id.pager);
+
+        like.setOnClickListener(this);
+        skip.setOnClickListener(this);
 
         fetchDashboardData();
     }
@@ -106,7 +154,10 @@ public class DashboardActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            Intent intent=new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_FROM_BACKGROUND);
+            moveTaskToBack(true);
         }
     }
 
@@ -125,12 +176,10 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -163,6 +212,7 @@ public class DashboardActivity extends AppCompatActivity
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {
                     SharedStorage.setValue(getApplicationContext(),"UserId","");
+                    dataModel.search_user=0;
                     startActivity(new Intent(DashboardActivity.this,ExistingUserSignin.class));
                 }
             });
@@ -246,23 +296,147 @@ public class DashboardActivity extends AppCompatActivity
 
                     dataModel.dashboardUserBeanArrayList=dashboardUserBeanArrayList;
 
-                    if (img1 != null) {
-                        new ImageDownloaderTask(img1).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(0).getImage());
-                    }
-                    if (img2 != null) {
-                        new ImageDownloaderTask(img2).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(1).getImage());
-                    }
-                    if (img3 != null) {
-                        new ImageDownloaderTask(img3).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(2).getImage());
+                    if (user_pos==0){
+                        if (img1 != null) {
+                            new ImageDownloaderTask(img1).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos).getImage());
+                        }
+                        if (img2 != null) {
+                            new ImageDownloaderTask(img2).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+1).getImage());
+                        }
+                        if (img3 != null) {
+                            new ImageDownloaderTask(img3).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+2).getImage());
+                        }
+                    }else{
+                        if (img1 != null) {
+                            new ImageDownloaderTask(img1).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos-1).getImage());
+                        }
+                        if (img2 != null) {
+                            new ImageDownloaderTask(img2).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos).getImage());
+                        }
+                        if (img3 != null) {
+                            new ImageDownloaderTask(img3).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+1).getImage());
+                        }
                     }
 
-                    customPagerAdapter=new CustomPagerAdapter(getApplicationContext(),dataModel.dashboardUserBeanArrayList.get(1).getDashboardUserImageBeanArrayList());
+
+                    customPagerAdapter=new CustomPagerAdapter(getApplicationContext(),dataModel.dashboardUserBeanArrayList.get(user_pos).getDashboardUserImageBeanArrayList());
                     pager.setAdapter(customPagerAdapter);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void manageDashImagePositions(){
+        if (user_pos==0){
+            if (img1 != null) {
+                new ImageDownloaderTask(img1).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos).getImage());
+            }
+            if (img2 != null) {
+                new ImageDownloaderTask(img2).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+1).getImage());
+            }
+            if (img3 != null) {
+                new ImageDownloaderTask(img3).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+2).getImage());
+            }
+        }else{
+            if (img1 != null) {
+                new ImageDownloaderTask(img1).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos-1).getImage());
+            }
+            if (img2 != null) {
+                new ImageDownloaderTask(img2).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos).getImage());
+            }
+            if (img3 != null) {
+                new ImageDownloaderTask(img3).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+1).getImage());
+            }
+        }
+
+        customPagerAdapter=new CustomPagerAdapter(getApplicationContext(),dataModel.dashboardUserBeanArrayList.get(user_pos).getDashboardUserImageBeanArrayList());
+        pager.setAdapter(customPagerAdapter);
+
+        if (user_pos==0){
+            rel_cross.setVisibility(View.GONE);
+            img2.setAlpha(0.3f);
+            img3.setAlpha(0.3f);
+        }else{
+            rel_cross.setVisibility(View.VISIBLE);
+            img2.setAlpha(1.0f);
+            img3.setAlpha(0.3f);
+
+            if (dataModel.dashboardUserBeanArrayList.get(user_pos-1).is_liked==1){
+                imgTickCross.setImageResource(R.drawable.ic_done_white_24dp);
+            }else if (dataModel.dashboardUserBeanArrayList.get(user_pos-1).is_skipped==1){
+                imgTickCross.setImageResource(R.drawable.ic_clear_white_24dp);
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.like:
+                if (dataModel.search_user>=3) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
+                }else{
+                    dataModel.dashboardUserBeanArrayList.get(user_pos).is_liked=1;
+                    user_pos+=1;
+                    manageDashImagePositions();
+                    dataModel.search_user+=1;
+
+                    if (dataModel.search_user>=3) {
+                        setTimer();
+                    }
+                }
+
+                break;
+            case R.id.skip:
+                if (dataModel.search_user>=3) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
+                }else {
+                    dataModel.dashboardUserBeanArrayList.get(user_pos).is_skipped = 1;
+                    user_pos += 1;
+                    manageDashImagePositions();
+                    dataModel.search_user += 1;
+
+                    if (dataModel.search_user >= 3) {
+                        setTimer();
+                    }
+                }
+                break;
+        }
+    }
+
+
+    private void setTimer(){
+        new CountDownTimer(86400000, 1000) { // adjust the milli seconds here
+
+            public void onTick(long millisUntilFinished) {
+
+                textView1.setText("Get next 3 swipes within: "+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+            }
+
+            public void onFinish() {
+                textView1.setText("done!");
+            }
+        }.start();
+
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     class CustomPagerAdapter extends PagerAdapter {

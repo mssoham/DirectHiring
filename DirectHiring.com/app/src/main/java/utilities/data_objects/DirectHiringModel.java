@@ -35,4 +35,6 @@ public class DirectHiringModel {
     public ArrayList<ChatUsersBean> chatUsersBeanArrayList=new ArrayList<ChatUsersBean>();
     public ArrayList<ChatListBean> chatListBeanArrayList = new ArrayList<ChatListBean>();
 
+    public int search_user=0;
+
 }

@@ -33,4 +33,5 @@
     <color name="dashboard_top">#9aca3c</color>
     <color name="black">#000</color>
     <color name="like_list_background">#EAECF1</color>
+    <color name="paypal_btn">#337ab7</color>
 </resources>

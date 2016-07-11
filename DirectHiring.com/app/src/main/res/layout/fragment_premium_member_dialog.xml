@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dp_15"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:text="@string/premium_member1"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:text="@string/premium_member2"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:text="@string/premium_member3"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_14"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:text="@string/premium_member4"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_22"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dp_15"
+        android:text="@string/paypal_rate"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10"
+        android:text="Pay with Paypal"
+        android:textColor="@color/white"
+        android:background="@drawable/paypal_btn"
+        android:textSize="@dimen/sp_16"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>
