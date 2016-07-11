@@ -12,28 +12,28 @@ import java.util.ArrayList;
 
 import afroradix.xigmapro.com.directhiringcom.R;
 import utilities.data_objects.AvailabilityBean;
-import utilities.data_objects.CountryLoadBean;
+import utilities.data_objects.EmployeeBean;
 
 /**
- * Created by xyxz on 7/5/2016.
+ * Created by xyxz on 7/6/2016.
  */
-public class AvailabilityAdapter extends BaseAdapter {
+public class EmployerTypeAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
-    private ArrayList<AvailabilityBean> availabilityBeanArrayList = new ArrayList<AvailabilityBean>();
-    public AvailabilityAdapter(Activity activity, ArrayList<AvailabilityBean> availabilityBeanArrayList) {
+    private ArrayList<EmployeeBean> employeeBeanArrayList = new ArrayList<EmployeeBean>();
+    public EmployerTypeAdapter(Activity activity, ArrayList<EmployeeBean> employeeBeanArrayList) {
         this.activity = activity;
-        this.availabilityBeanArrayList = availabilityBeanArrayList;
+        this.employeeBeanArrayList = employeeBeanArrayList;
 
     }
     @Override
     public int getCount() {
-        return availabilityBeanArrayList.size();
+        return employeeBeanArrayList.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return availabilityBeanArrayList.get(location);
+        return employeeBeanArrayList.get(location);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class AvailabilityAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.inflate_type1, null);
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
-        AvailabilityBean availabilityBean=availabilityBeanArrayList.get(position);
-        type_txt.setText(availabilityBean.getAvailabilty_value());
+        EmployeeBean employeeBean=employeeBeanArrayList.get(position);
+        type_txt.setText(employeeBean.getEmployee_value());
         return (convertView);
     }
 }

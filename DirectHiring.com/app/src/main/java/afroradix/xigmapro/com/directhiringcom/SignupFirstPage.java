@@ -40,6 +40,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
     private TextInputLayout input_layout_first_name, input_layout_last_name,input_layout_email,input_confirm_email;
     String firstname,lastname,date_of_birth,email,confirm_email1,country1,social_id,type,looking_for,date1,year1,month1;
     Button sign_up;
+    public static String register_type="";
     TextView signup_facebook;
     Spinner date,month,year,country;
     CountryLoadSpinnerAdapter adapter;
@@ -125,13 +126,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
             }
         });
         social_id="0";
-        if(TypeSelectionSignUp.register_type.equals("Helper")){
-            type="helper";
-            looking_for="family";
-        }else{
-            type="family";
-            looking_for="helper";
-        }
+
 
     }
 
@@ -147,6 +142,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
 
             }
         }
+
         if(v==signup_facebook){
 
         }
@@ -167,6 +163,31 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
             return;
         }
         signup();
+    }
+    private void signup(){
+        if(register_type.equals("Helper")){
+            type="helper";
+            looking_for="family";
+            Log.e("Looking for----->",looking_for);
+        }else{
+            type="family";
+            looking_for="helper";
+            Log.e("Looking for----->",looking_for);
+        }
+        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("social_id", social_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("first_name",user_first_name.getText().toString().trim() ));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_name", input_last_name.getText().toString().trim()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("date_of_birth", date_of_birth));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("location", country1));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("email", input_email.getText().toString().trim()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("type", type));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("looking_for", looking_for));
+        //Urls.urlkey=url_key;
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.registration);
+        remoteAsync.type = RemoteAsync.REGISTRATION;
+        remoteAsync.delegate=this;
+        remoteAsync.execute(arrayList);
     }
 
     @Override
@@ -313,22 +334,6 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
-    }
-    private void signup(){
-        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("social_id", social_id));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("first_name",user_first_name.getText().toString().trim() ));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_name", input_last_name.getText().toString().trim()));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("date_of_birth", date_of_birth));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("location", country1));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("email", input_email.getText().toString().trim()));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("type", type));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("looking_for", looking_for));
-        //Urls.urlkey=url_key;
-        RemoteAsync remoteAsync = new RemoteAsync(Urls.registration);
-        remoteAsync.type = RemoteAsync.REGISTRATION;
-        remoteAsync.delegate=this;
-        remoteAsync.execute(arrayList);
     }
     void start_progress_dialog(){
         progressDialog = new ProgressDialog(this);

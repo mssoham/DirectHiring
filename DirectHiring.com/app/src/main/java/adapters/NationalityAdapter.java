@@ -47,7 +47,7 @@ public class NationalityAdapter extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.inflate_type, null);
+            convertView = inflater.inflate(R.layout.inflate_type1, null);
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         NationalityBean nationalityBean=nationalityBeanArrayList.get(position);

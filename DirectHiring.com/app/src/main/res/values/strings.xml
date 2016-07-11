@@ -134,5 +134,15 @@
     <string name="day_of_range">Day Off Range</string>
     <string name="age_range">Age Range</string>
     <string name="sal_range">Salary Range</string>
+    <string name="Minsal">500</string>
+    <string name="Maxsal">1000</string>
+    <string name="Minage">23</string>
+    <string name="Maxage">50</string>
+    <string name="Minday">0</string>
+    <string name="Maxday">4</string>
+    <string name="Employer_type">Employer Type</string>
+    <string name="job_availability">Job Availability</string>
+    <string name="house_type">House Type</string>
+    <string name="family_member">Family Members</string>
 
 </resources>

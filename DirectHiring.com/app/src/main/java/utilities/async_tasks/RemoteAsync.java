@@ -25,6 +25,7 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
     public static final String REGISTRATION = "registration";
     public static final String REGISTRATION_HELPER = "registration_helper";
     public static final String IMAGE_UPLOAD = "self";
+    public static final String CRITERIA = "criteria";
 
 
     /**

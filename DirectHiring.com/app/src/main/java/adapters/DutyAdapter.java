@@ -47,11 +47,12 @@ public class DutyAdapter extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.inflate_type, null);
+            convertView = inflater.inflate(R.layout.inflate_type1, null);
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         DutyBean dutyBean=dutyBeanArrayList.get(position);
         type_txt.setText(dutyBean.getDuty_value());
+        type_txt.setSingleLine(false);
         return (convertView);
     }
 }
