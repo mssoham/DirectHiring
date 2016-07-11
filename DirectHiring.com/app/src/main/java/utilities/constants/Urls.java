@@ -23,5 +23,6 @@ public class Urls
     /* Services for chat end */
 
     public static final String criteria = url+"criteria";
+    public static final String forgetPassword = url+"forgetPassword";
 
 }

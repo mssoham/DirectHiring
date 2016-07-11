@@ -144,5 +144,8 @@
     <string name="job_availability">Job Availability</string>
     <string name="house_type">House Type</string>
     <string name="family_member">Family Members</string>
+    <string name="title_activity_forgot_password">ForgotPassword</string>
+    <string name="forgot_password">Enter Your Email Address</string>
+    <string name="rest_pass">Reset Password</string>
 
 </resources>
