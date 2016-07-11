@@ -33,6 +33,9 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
     public static final String SEND_MESSAGES = "sendMessages";
     /* Services for chat end */
 
+    public static final String CRITERIA = "criteria";
+
+
 
     /**
      * Pass the Url of the web service as a String

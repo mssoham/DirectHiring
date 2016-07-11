@@ -80,7 +80,7 @@ public class HttpConnection implements HttpRequestRetryHandler
         {
             JSONObject jsonObject = null;
             try {
-                jsonObject = new JSONObject("{\"status\":\"0\",\"msg\":\"Could not connect to the server.\"}");
+                jsonObject = new JSONObject("{\"status\":\"100\",\"msg\":\"Could not connect to the server.\"}");
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }

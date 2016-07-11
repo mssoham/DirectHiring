@@ -160,6 +160,11 @@ public class MainActivity extends Activity implements AsyncResponse {
                     }else{
                         CToast.show(getApplicationContext(),"no Data for availability found!");
                     }
+                    EmployeeBean employee1=new EmployeeBean();
+                    employee1.setEmployee_value("Select Employer Type");
+                    employee1.setEmployee_key("Select Employer Type");
+                    employeeBeanArrayList.add(employee1);
+                    dataModel.employeeBeanArrayList=employeeBeanArrayList;
                     if(employeearr.length()>0){
                         for(int i=0;i<employeearr.length();i++){
                             EmployeeBean employee=new EmployeeBean();
@@ -172,6 +177,11 @@ public class MainActivity extends Activity implements AsyncResponse {
                     }else{
                         CToast.show(getApplicationContext(),"no Data for employee found!");
                     }
+                    HouseBean house1=new HouseBean();
+                    house1.setHouse_key("Select Job House");
+                    house1.setHouse_value("Select Job House");
+                    houseBeanArrayList.add(house1);
+                    dataModel.houseBeanArrayList=houseBeanArrayList;
                     if(housearr.length()>0){
                         for(int i=0;i<housearr.length();i++){
                             HouseBean house=new HouseBean();

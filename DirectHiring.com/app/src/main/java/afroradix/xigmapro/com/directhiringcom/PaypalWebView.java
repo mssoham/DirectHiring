@@ -57,7 +57,8 @@ public class PaypalWebView extends AppCompatActivity {
                         @Override
                         public void run() {
                             // TODO Auto-generated method stub
-                            userBean.setStatus("premium");
+                            CriteriaFamilyType.user_status1="premium";
+                            CriteriaType.user_status="premium";
                             Intent intMain = new Intent(PaypalWebView.this, CriteriaType.class);
                             startActivity(intMain);
                         }

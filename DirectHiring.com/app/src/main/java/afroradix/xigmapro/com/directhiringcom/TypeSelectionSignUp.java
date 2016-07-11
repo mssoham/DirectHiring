@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 
@@ -14,9 +16,9 @@ import utilities.data_objects.DirectHiringModel;
 
 public class TypeSelectionSignUp extends AppCompatActivity {
     Spinner type;
-    public static String register_type;
     Button continue_btn;
     TypeSpinnerAdapter adapter;
+    DirectHiringModel dataModel = DirectHiringModel.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +28,18 @@ public class TypeSelectionSignUp extends AppCompatActivity {
         type=(Spinner)findViewById(R.id.type);
         adapter = new TypeSpinnerAdapter(this, DirectHiringModel.getInstance().typeSpinnerBeanArrayList);
         type.setAdapter(adapter);
-        register_type=type.getSelectedItem().toString().trim();
+        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SignupFirstPage.register_type=String.valueOf(dataModel.getInstance().typeSpinnerBeanArrayList.get(position).getType_value());
+                Log.e("registration---->",SignupFirstPage.register_type);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         continue_btn=(Button)findViewById(R.id.continue_btn);
         continue_btn.setOnClickListener(new View.OnClickListener() {
             @Override

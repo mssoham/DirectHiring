@@ -279,7 +279,7 @@ public class UploadImage extends Activity implements View.OnClickListener, Async
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(UploadImage.this, CriteriaType.class));
                 }else{
-                    startActivity(new Intent(UploadImage.this, CriteriaType.class));
+                    startActivity(new Intent(UploadImage.this, DashboardActivity.class));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

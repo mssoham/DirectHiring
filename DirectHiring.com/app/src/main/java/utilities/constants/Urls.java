@@ -14,7 +14,6 @@ public class Urls
     public static final String registration = url+"registration";
     public static final String registration_helper = url+"registration_helper";
     public static final String self = url+"self";
-
     public static final String dashBoard_Data = url+"dashBoardData";
 
     /* Services for chat start */
@@ -22,4 +21,7 @@ public class Urls
     public static final String get_Chat_Messages = url2+"getChatMessages";
     public static final String send_Messages = url2+"sendMessages";
     /* Services for chat end */
+
+    public static final String criteria = url+"criteria";
+
 }

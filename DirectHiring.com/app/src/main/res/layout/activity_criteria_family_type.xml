@@ -3,9 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/Base_color_green"
-    tools:context="afroradix.xigmapro.com.directhiringcom.CriteriaType">
+    tools:context="afroradix.xigmapro.com.directhiringcom.CriteriaFamilyType">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,10 +23,10 @@
                 android:layout_marginRight="@dimen/dp_60"
                 android:layout_marginTop="@dimen/dp_30"/>
             <CheckBox
-                android:id="@+id/nationality_check"
+                android:id="@+id/employer_type_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nationality"
+                android:text="@string/Employer_type"
                 android:textSize="@dimen/sp_20"
                 android:textColor="@color/White"
                 android:layout_marginTop="@dimen/dp_30"
@@ -36,31 +35,7 @@
                 android:theme="@style/MyEditTextTheme"
                 />
             <Spinner
-                android:id="@+id/nationality"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/spinner_background_1"
-                android:layout_marginTop="@dimen/dp_15"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:layout_marginRight="@dimen/dp_20"
-                android:popupBackground="@drawable/pop_up_background"
-                android:theme="@style/MyEditTextTheme"
-                style="@style/Widget.AppCompat.Spinner.Underlined"
-                android:visibility="gone"/>
-            <CheckBox
-                android:id="@+id/main_duty_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/main_duty"
-                android:textSize="@dimen/sp_20"
-                android:textColor="@color/White"
-                android:layout_marginTop="@dimen/dp_10"
-                android:padding="@dimen/dp_10"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:theme="@style/MyEditTextTheme"
-                />
-            <Spinner
-                android:id="@+id/main_duty"
+                android:id="@+id/employer_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_background_1"
@@ -72,19 +47,19 @@
                 android:theme="@style/MyEditTextTheme"
                 android:visibility="gone"/>
             <CheckBox
-                android:id="@+id/availibility_check"
+                android:id="@+id/job_availability_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/availibility"
+                android:text="@string/job_availability"
                 android:textSize="@dimen/sp_20"
                 android:textColor="@color/White"
-                android:layout_marginLeft="@dimen/dp_20"
                 android:layout_marginTop="@dimen/dp_10"
                 android:padding="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_20"
                 android:theme="@style/MyEditTextTheme"
                 />
             <Spinner
-                android:id="@+id/availibility"
+                android:id="@+id/job_availability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/spinner_background_1"
@@ -96,10 +71,10 @@
                 android:theme="@style/MyEditTextTheme"
                 android:visibility="gone"/>
             <CheckBox
-                android:id="@+id/exp_range_check"
+                android:id="@+id/house_type_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exp_range"
+                android:text="@string/house_type"
                 android:textSize="@dimen/sp_20"
                 android:textColor="@color/White"
                 android:layout_marginLeft="@dimen/dp_20"
@@ -108,15 +83,15 @@
                 android:theme="@style/MyEditTextTheme"
                 />
             <Spinner
-                android:id="@+id/exp_range"
+                android:id="@+id/house_type"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
+                android:layout_height="wrap_content"
                 android:background="@drawable/spinner_background_1"
                 android:layout_marginTop="@dimen/dp_15"
-                android:layout_marginRight="@dimen/dp_20"
                 android:layout_marginLeft="@dimen/dp_20"
-                android:popupBackground="@drawable/pop_up_background"
+                android:layout_marginRight="@dimen/dp_20"
                 style="@style/Widget.AppCompat.Spinner.Underlined"
+                android:popupBackground="@drawable/pop_up_background"
                 android:theme="@style/MyEditTextTheme"
                 android:visibility="gone"/>
             <CheckBox
@@ -133,26 +108,6 @@
                 />
             <custom_components.RangeSeekBar
                 android:id="@+id/sal_range_seekbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:layout_marginRight="@dimen/dp_20"
-                android:visibility="gone"/>
-
-            <CheckBox
-                android:id="@+id/age_range_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/age_range"
-                android:textSize="@dimen/sp_20"
-                android:layout_marginLeft="@dimen/dp_20"
-                android:textColor="@color/White"
-                android:layout_marginTop="@dimen/dp_10"
-                android:padding="@dimen/dp_10"
-                android:theme="@style/MyEditTextTheme"
-                />
-            <custom_components.RangeSeekBar
-                android:id="@+id/age_range_seekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_20"
@@ -178,6 +133,25 @@
                 android:layout_marginRight="@dimen/dp_20"
                 android:visibility="gone"/>
 
+            <CheckBox
+                android:id="@+id/family_member_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/family_member"
+                android:textSize="@dimen/sp_20"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:textColor="@color/White"
+                android:layout_marginTop="@dimen/dp_10"
+                android:padding="@dimen/dp_10"
+                android:theme="@style/MyEditTextTheme"
+                />
+            <custom_components.RangeSeekBar
+                android:id="@+id/family_member_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:visibility="gone"/>
             <LinearLayout
                 android:id="@+id/loginbtns"
                 android:layout_width="match_parent"
@@ -188,7 +162,7 @@
                 android:padding="@dimen/dp_15"
                 android:layout_marginTop="@dimen/dp_20">
                 <Button
-                    android:id="@+id/continue_btn_last"
+                    android:id="@+id/continue_btn_last_family"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -199,6 +173,6 @@
                     android:textSize="@dimen/sp_16"
                     android:textColor="@color/White"/>
             </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

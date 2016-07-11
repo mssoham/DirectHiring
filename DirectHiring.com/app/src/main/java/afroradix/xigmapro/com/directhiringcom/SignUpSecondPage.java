@@ -124,10 +124,15 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
 
                     dataModel.user=userBean;
                     SharedStorage.setValue(getApplicationContext(), "UserId", userObj.getString("id"));
-
                     //ShowAlertDialog.showAlertDialog(getApplicationContext(),"Profile updated successfully");
-                    CToast.show(getApplicationContext(),"Profile created successfully go for the next step");
-                    startActivity(new Intent(SignUpSecondPage.this, CriteriaType.class));
+                    CToast.show(getApplicationContext(), "Profile created successfully go for the next step");
+                    if(userBean.getType().equals("helper")) {
+                        CriteriaType.user_status=userBean.getStatus();
+                        startActivity(new Intent(SignUpSecondPage.this, CriteriaType.class));
+                    }else {
+                        CriteriaFamilyType.user_status1=userBean.getStatus();
+                        startActivity(new Intent(SignUpSecondPage.this, CriteriaFamilyType.class));
+                    }
                 }else{
                     CToast.show(getApplicationContext(),"Username already used, Please change it");
                 }

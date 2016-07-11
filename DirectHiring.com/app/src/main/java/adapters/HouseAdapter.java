@@ -12,28 +12,28 @@ import java.util.ArrayList;
 
 import afroradix.xigmapro.com.directhiringcom.R;
 import utilities.data_objects.AvailabilityBean;
-import utilities.data_objects.CountryLoadBean;
+import utilities.data_objects.HouseBean;
 
 /**
- * Created by xyxz on 7/5/2016.
+ * Created by xyxz on 7/6/2016.
  */
-public class AvailabilityAdapter extends BaseAdapter {
+public class HouseAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
-    private ArrayList<AvailabilityBean> availabilityBeanArrayList = new ArrayList<AvailabilityBean>();
-    public AvailabilityAdapter(Activity activity, ArrayList<AvailabilityBean> availabilityBeanArrayList) {
+    private ArrayList<HouseBean> houseBeanArrayList = new ArrayList<HouseBean>();
+    public HouseAdapter(Activity activity, ArrayList<HouseBean> houseBeanArrayList) {
         this.activity = activity;
-        this.availabilityBeanArrayList = availabilityBeanArrayList;
+        this.houseBeanArrayList = houseBeanArrayList;
 
     }
     @Override
     public int getCount() {
-        return availabilityBeanArrayList.size();
+        return houseBeanArrayList.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return availabilityBeanArrayList.get(location);
+        return houseBeanArrayList.get(location);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class AvailabilityAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.inflate_type1, null);
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
-        AvailabilityBean availabilityBean=availabilityBeanArrayList.get(position);
-        type_txt.setText(availabilityBean.getAvailabilty_value());
+        HouseBean houseBean=houseBeanArrayList.get(position);
+        type_txt.setText(houseBean.getHouse_value());
         return (convertView);
     }
 }
