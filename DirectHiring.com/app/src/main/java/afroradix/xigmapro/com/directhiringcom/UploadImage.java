@@ -40,8 +40,9 @@ import utilities.async_tasks.AsyncResponse;
 import utilities.async_tasks.RemoteAsync;
 import utilities.constants.Constants;
 import utilities.constants.Urls;
+import utilities.data_objects.UserBean;
 
-public class UploadImage extends Activity implements View.OnClickListener, AsyncResponse{
+public class UploadImage extends AppCompatActivity implements View.OnClickListener, AsyncResponse{
     private EditText description;
     private TextInputLayout input_layout_description;
     private ImageButton upld;
@@ -236,10 +237,11 @@ public class UploadImage extends Activity implements View.OnClickListener, Async
     public void onClick(View v) {
         if(v==submit){
             description1=description.getText().toString().trim();
+            requestFocus(input_layout_description);
             uploadImage();
         }
         if(v==skip){
-            startActivity(new Intent(UploadImage.this, CriteriaType.class));
+            startActivity(new Intent(UploadImage.this, DashboardActivity.class));
         }
     }
     private void uploadImage(){
@@ -274,7 +276,7 @@ public class UploadImage extends Activity implements View.OnClickListener, Async
 
                 if (obj.getString("status").equals(Constants.SUCCESS)) {
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(UploadImage.this, CriteriaType.class));
+                    startActivity(new Intent(UploadImage.this, DashboardActivity.class));
                 }else{
                     startActivity(new Intent(UploadImage.this, DashboardActivity.class));
                 }
