@@ -21,7 +21,7 @@
                 android:background="@drawable/helperlogo"
                 android:layout_marginLeft="@dimen/dp_60"
                 android:layout_marginRight="@dimen/dp_60"
-                android:layout_marginTop="@dimen/dp_30"/>
+                android:layout_marginTop="@dimen/dp_40"/>
             <CheckBox
                 android:id="@+id/employer_type_check"
                 android:layout_width="wrap_content"
