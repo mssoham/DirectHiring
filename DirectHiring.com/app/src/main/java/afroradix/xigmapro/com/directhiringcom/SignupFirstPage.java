@@ -216,7 +216,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
                     userBean.setCreated_at(userObj.getString("created_at"));
                     userBean.setUpdated_at(userObj.getString("updated_at"));
 
-                    dataModel.user=userBean;
+                    dataModel.userBean=userBean;
                     SharedStorage.setValue(getApplicationContext(), "UserId", userObj.getString("id"));
 
                     //ShowAlertDialog.showAlertDialog(getApplicationContext(),"Profile updated successfully");

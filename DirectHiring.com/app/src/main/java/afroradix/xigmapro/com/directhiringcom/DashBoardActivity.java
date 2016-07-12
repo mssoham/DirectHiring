@@ -119,12 +119,12 @@ public class DashboardActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         imageView = (RoundedImageViewWhiteBorder)header.findViewById(R.id.imageView);
 
-        if (!dataModel.userBean.getImage().equals("")) {
+        /*if (!dataModel.userBean.getImage().equals("")) {
             if (imageView != null) {
                 new ImageDownloaderTask(imageView).execute(img_url + "/" + dataModel.userBean.getImage());
             }
         }
-
+*/
         pager = (ViewPager)findViewById(R.id.pager);
 
         like.setOnClickListener(this);
