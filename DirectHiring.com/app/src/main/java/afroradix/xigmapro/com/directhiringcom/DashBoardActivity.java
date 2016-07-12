@@ -215,6 +215,9 @@ public class DashboardActivity extends AppCompatActivity
         if (id==R.id.visitors){
             startActivity(new Intent(DashboardActivity.this,VisitorsActivity.class));
         }
+        if(id==R.id.my_profile){
+            startActivity(new Intent(DashboardActivity.this,MYProfile.class));
+        }
 
         if (id==R.id.sign_out){
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

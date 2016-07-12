@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:layout_gravity="center_horizontal"
     tools:context="afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment">
-    
+
 
         <TextView
             android:layout_width="match_parent"

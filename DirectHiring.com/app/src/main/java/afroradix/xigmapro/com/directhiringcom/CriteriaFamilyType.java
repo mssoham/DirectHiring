@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import adapters.EmployerTypeAdapter;
 import adapters.ExpRangeAdapter;
 import adapters.HouseAdapter;
 import adapters.NationalityAdapter;
+import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment;
 import custom_components.RangeSeekBar;
 import shared_pref.SharedStorage;
 import utilities.async_tasks.AsyncResponse;
@@ -37,7 +40,7 @@ import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.UserBean;
 import utilities.others.CToast;
 
-public class CriteriaFamilyType extends Activity implements View.OnClickListener, AsyncResponse {
+public class CriteriaFamilyType extends AppCompatActivity implements View.OnClickListener, AsyncResponse,PremiumMemberDialogFragment.OnFragmentInteractionListener {
     private CheckBox employer_type_check,job_availability_check,house_type_check,sal_range_check,
             family_member_check,day_of_range_check;
     private Spinner employer_type,job_availability,house_type;
@@ -98,17 +101,10 @@ public class CriteriaFamilyType extends Activity implements View.OnClickListener
                         criteriaObj.remove("employee");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaFamilyType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaFamilyType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                        FragmentManager fm = getSupportFragmentManager();
+                        PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                        // Show DialogFragment
+                        dFragment.show(fm, "Dialog Fragment");
                     }
                 }
             }
@@ -134,17 +130,10 @@ public class CriteriaFamilyType extends Activity implements View.OnClickListener
                         criteriaObj.remove("avaliability");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaFamilyType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaFamilyType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                        FragmentManager fm = getSupportFragmentManager();
+                        PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                        // Show DialogFragment
+                        dFragment.show(fm, "Dialog Fragment");
                     }
                 }
             }
@@ -169,17 +158,10 @@ public class CriteriaFamilyType extends Activity implements View.OnClickListener
                         criteriaObj.remove("house");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaFamilyType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaFamilyType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                        FragmentManager fm = getSupportFragmentManager();
+                        PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                        // Show DialogFragment
+                        dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -207,17 +189,10 @@ public class CriteriaFamilyType extends Activity implements View.OnClickListener
                     criteriaObj.remove("salary_range");
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
-                    AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaFamilyType.this);
-                    alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                    alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intMain = new Intent(CriteriaFamilyType.this, PaypalWebView.class);
-                            startActivity(intMain);
-                        }
-                    });
-
-                    AlertDialog alertDialog = alerBuilder.create();
-                    alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                 }
             }
         });
@@ -245,17 +220,10 @@ public class CriteriaFamilyType extends Activity implements View.OnClickListener
                     criteriaObj.remove("day_range");
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
-                    AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaFamilyType.this);
-                    alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                    alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intMain = new Intent(CriteriaFamilyType.this, PaypalWebView.class);
-                            startActivity(intMain);
-                        }
-                    });
-
-                    AlertDialog alertDialog = alerBuilder.create();
-                    alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                 }
             }
         });
@@ -283,17 +251,10 @@ public class CriteriaFamilyType extends Activity implements View.OnClickListener
                     criteriaObj.remove("family_member");
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
-                    AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaFamilyType.this);
-                    alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                    alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent intMain = new Intent(CriteriaFamilyType.this, PaypalWebView.class);
-                            startActivity(intMain);
-                        }
-                    });
-
-                    AlertDialog alertDialog = alerBuilder.create();
-                    alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                 }
             }
         });
@@ -458,5 +419,10 @@ public class CriteriaFamilyType extends Activity implements View.OnClickListener
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

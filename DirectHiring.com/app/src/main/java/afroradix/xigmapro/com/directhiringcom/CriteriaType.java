@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import adapters.CountryLoadSpinnerAdapter;
 import adapters.DutyAdapter;
 import adapters.ExpRangeAdapter;
 import adapters.NationalityAdapter;
+import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment;
 import custom_components.RangeSeekBar;
 import shared_pref.SharedStorage;
 import utilities.async_tasks.AsyncResponse;
@@ -40,7 +43,7 @@ import utilities.data_objects.NationalityBean;
 import utilities.data_objects.UserBean;
 import utilities.others.CToast;
 
-public class CriteriaType extends Activity implements View.OnClickListener, AsyncResponse {
+public class CriteriaType extends AppCompatActivity implements View.OnClickListener, AsyncResponse,PremiumMemberDialogFragment.OnFragmentInteractionListener {
    private CheckBox nationality_check,main_duty_check,availibility_check,exp_range_check,sal_range_check,
             age_range_check,day_of_range_check;
     private Spinner nationality,main_duty,availibility,exp_range,criteria;
@@ -107,17 +110,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                         criteriaObj.remove("nationality");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -143,17 +139,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                         criteriaObj.remove("duty");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -179,17 +168,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                         criteriaObj.remove("avaliability");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -216,17 +198,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                         criteriaObj.remove("experience_range");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -255,17 +230,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                         criteriaObj.remove("salary_range");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -293,17 +261,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                         criteriaObj.remove("age_range");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -331,17 +292,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                         criteriaObj.remove("day_range");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(CriteriaType.this);
-                        alerBuilder.setMessage("You need to pay to add more criteria. Click Continue to proceed");
-                        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Intent intMain = new Intent(CriteriaType.this, PaypalWebView.class);
-                                startActivity(intMain);
-                            }
-                        });
-
-                        AlertDialog alertDialog = alerBuilder.create();
-                        alertDialog.show();
+                    FragmentManager fm = getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                     }
                 }
         });
@@ -528,5 +482,10 @@ public class CriteriaType extends Activity implements View.OnClickListener, Asyn
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

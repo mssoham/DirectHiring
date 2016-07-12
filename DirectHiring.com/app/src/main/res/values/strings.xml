@@ -157,5 +157,8 @@
     <string name="premium_member4">Refer using 1-touch button to share to all friends on Facebook.</string>
     <string name="paypal_rate">Proceed to Payment: $48</string>
     <string name="facebook_app_id">478945782292175</string>
-    
+    <string name="title_activity_myprofile">MYProfile</string>
+    <string name="profile_and_requirement"><![CDATA[Profile &amp; Requirements]]></string>
+    <string name="lookinf_for">You are currently looking for...</string>
+
 </resources>
