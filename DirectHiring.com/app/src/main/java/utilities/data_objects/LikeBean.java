@@ -1,5 +1,7 @@
 package utilities.data_objects;
 
+import custom_components.LikeHolder;
+
 /**
  * Created by Self-3 on 7/11/2016.
  */
@@ -8,6 +10,7 @@ public class LikeBean {
     private String image="";
     private String age="";
     private String location="";
+    public LikeHolder holder = new LikeHolder();
 
     public LikeBean(){
 

@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import adapters.UserCriteriaAdapter;
 import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment;
 import custom_components.RoundedImageViewWhiteBorder;
 import shared_pref.SharedStorage;
@@ -55,7 +57,8 @@ public class DashboardActivity extends AppCompatActivity
 
     private RoundedImageViewWhiteBorder img1,img2,img3,imageView;
     private ImageView imgTickCross;
-    private TextView textView1;
+    private TextView textView1,description;
+    private ListView looking_for_list;
     private RelativeLayout rel_cross;
     private LinearLayout like, skip;
     private ViewPager pager;
@@ -99,6 +102,15 @@ public class DashboardActivity extends AppCompatActivity
         skip = (LinearLayout)findViewById(R.id.skip);
 
         textView1 = (TextView)findViewById(R.id.textView1);
+        description = (TextView)findViewById(R.id.description);
+
+        looking_for_list = (ListView)findViewById(R.id.looking_for_list);
+        looking_for_list.setFocusable(false);
+
+        Log.e("Criteria>>", dataModel.userBean.getUserCriteriaBeanArrayList().toString());
+
+        looking_for_list.setAdapter(new UserCriteriaAdapter(dataModel.userBean.getUserCriteriaBeanArrayList(), getApplicationContext()));
+
 
         if (user_pos==0){
             rel_cross.setVisibility(View.GONE);
@@ -119,12 +131,13 @@ public class DashboardActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         imageView = (RoundedImageViewWhiteBorder)header.findViewById(R.id.imageView);
 
-        /*if (!dataModel.userBean.getImage().equals("")) {
+        Log.e("Img>>",img_url + "/" + dataModel.userBean.getImage());
+        if (!dataModel.userBean.getImage().equals("")) {
             if (imageView != null) {
                 new ImageDownloaderTask(imageView).execute(img_url + "/" + dataModel.userBean.getImage());
             }
         }
-*/
+
         pager = (ViewPager)findViewById(R.id.pager);
 
         like.setOnClickListener(this);
@@ -296,6 +309,7 @@ public class DashboardActivity extends AppCompatActivity
 
                     dataModel.dashboardUserBeanArrayList=dashboardUserBeanArrayList;
 
+                    description.setText(dataModel.dashboardUserBeanArrayList.get(user_pos).getDescription());
                     if (user_pos==0){
                         if (img1 != null) {
                             new ImageDownloaderTask(img1).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos).getImage());
@@ -325,6 +339,43 @@ public class DashboardActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else if (type.equals(RemoteAsync.LIKE_MEMBER)) {
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
+
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    dataModel.dashboardUserBeanArrayList.get(user_pos).is_liked=1;
+                    user_pos+=1;
+                    manageDashImagePositions();
+                    dataModel.search_user+=1;
+
+                    if (dataModel.search_user>=3) {
+                        setTimer();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }else if (type.equals(RemoteAsync.DISLIKE_MEMBER)){
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
+
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    dataModel.dashboardUserBeanArrayList.get(user_pos).is_skipped = 1;
+                    user_pos += 1;
+                    manageDashImagePositions();
+                    dataModel.search_user += 1;
+
+                    if (dataModel.search_user >= 3) {
+                        setTimer();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -339,6 +390,8 @@ public class DashboardActivity extends AppCompatActivity
             if (img3 != null) {
                 new ImageDownloaderTask(img3).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+2).getImage());
             }
+
+            description.setText(dataModel.dashboardUserBeanArrayList.get(user_pos).getDescription());
         }else{
             if (img1 != null) {
                 new ImageDownloaderTask(img1).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos-1).getImage());
@@ -349,6 +402,8 @@ public class DashboardActivity extends AppCompatActivity
             if (img3 != null) {
                 new ImageDownloaderTask(img3).execute(img_url+"/"+dataModel.dashboardUserBeanArrayList.get(user_pos+1).getImage());
             }
+
+            description.setText(dataModel.dashboardUserBeanArrayList.get(user_pos).getDescription());
         }
 
         customPagerAdapter=new CustomPagerAdapter(getApplicationContext(),dataModel.dashboardUserBeanArrayList.get(user_pos).getDashboardUserImageBeanArrayList());
@@ -381,14 +436,7 @@ public class DashboardActivity extends AppCompatActivity
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
                 }else{
-                    dataModel.dashboardUserBeanArrayList.get(user_pos).is_liked=1;
-                    user_pos+=1;
-                    manageDashImagePositions();
-                    dataModel.search_user+=1;
-
-                    if (dataModel.search_user>=3) {
-                        setTimer();
-                    }
+                    likeMember();
                 }
 
                 break;
@@ -399,17 +447,38 @@ public class DashboardActivity extends AppCompatActivity
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
                 }else {
-                    dataModel.dashboardUserBeanArrayList.get(user_pos).is_skipped = 1;
-                    user_pos += 1;
-                    manageDashImagePositions();
-                    dataModel.search_user += 1;
-
-                    if (dataModel.search_user >= 3) {
-                        setTimer();
-                    }
+                   skipMember();
                 }
                 break;
         }
+    }
+
+    private void likeMember(){
+        start_progress_dialog();
+        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+
+        String user_id= SharedStorage.getValue(getApplicationContext(),"UserId");
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", user_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("member_id", dataModel.dashboardUserBeanArrayList.get(user_pos).getId()));
+
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.like_Member);
+        remoteAsync.type = RemoteAsync.LIKE_MEMBER;
+        remoteAsync.delegate = this;
+        remoteAsync.execute(arrayList);
+    }
+
+    private void skipMember(){
+        start_progress_dialog();
+        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+
+        String user_id= SharedStorage.getValue(getApplicationContext(),"UserId");
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", user_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("member_id", dataModel.dashboardUserBeanArrayList.get(user_pos).getId()));
+
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.dislike_Member);
+        remoteAsync.type = RemoteAsync.DISLIKE_MEMBER;
+        remoteAsync.delegate = this;
+        remoteAsync.execute(arrayList);
     }
 
 

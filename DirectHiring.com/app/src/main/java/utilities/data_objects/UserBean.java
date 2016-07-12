@@ -1,5 +1,7 @@
 package utilities.data_objects;
 
+import java.util.ArrayList;
+
 /**
  * Created by Self-3 on 7/1/2016.
  */
@@ -21,6 +23,15 @@ public class UserBean {
     private String remember_token="";
     private String created_at="";
     private String updated_at="";
+    private ArrayList<UserCriteriaBean> userCriteriaBeanArrayList=new ArrayList<UserCriteriaBean>();
+
+    public ArrayList<UserCriteriaBean> getUserCriteriaBeanArrayList() {
+        return userCriteriaBeanArrayList;
+    }
+
+    public void setUserCriteriaBeanArrayList(ArrayList<UserCriteriaBean> userCriteriaBeanArrayList) {
+        this.userCriteriaBeanArrayList = userCriteriaBeanArrayList;
+    }
 
     public String getCreated_at() {
         return created_at;

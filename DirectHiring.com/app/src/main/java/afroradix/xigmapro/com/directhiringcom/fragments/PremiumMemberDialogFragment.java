@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import afroradix.xigmapro.com.directhiringcom.R;
 
@@ -68,6 +69,7 @@ public class PremiumMemberDialogFragment extends android.support.v4.app.DialogFr
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_premium_member_dialog, container, false);
         getDialog().setTitle("Buy Premium Membership");
+        //getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         return view;
     }

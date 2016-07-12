@@ -36,7 +36,10 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
 
     public static final String CRITERIA = "criteria";
 
-
+    public static final String LIKE_MEMBER = "likeMember";
+    public static final String DISLIKE_MEMBER = "dislikeMember";
+    public static final String LIKES_MEMBER_LIST = "likesMemberList";
+    public static final String VISITORS = "visitors";
 
     /**
      * Pass the Url of the web service as a String

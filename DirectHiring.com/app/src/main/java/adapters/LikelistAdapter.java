@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import afroradix.xigmapro.com.directhiringcom.R;
+import custom_components.LikeHolder;
 import utilities.async_tasks.ImageDownloaderTask;
 import utilities.data_objects.ChatUsersBean;
 import utilities.data_objects.LikeBean;
@@ -49,26 +50,26 @@ public class LikelistAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder = null;
+        //Holder holder = null;
         LikeBean likeBean = likeBeanArrayList.get(position);
 
         if (convertView == null) {
             inflater = getLayoutInflater();
-            holder = new Holder();
+            //holder = new Holder();
             convertView = inflater.inflate(R.layout.inflate_like, parent, false);
-            holder.user_name = (TextView) convertView.findViewById(R.id.user_name);
-            holder.user_img = (ImageView) convertView.findViewById(R.id.user_img);
-            holder.user_info = (TextView) convertView.findViewById(R.id.user_info);
+            likeBean.holder.user_name = (TextView) convertView.findViewById(R.id.user_name);
+            likeBean.holder.user_img = (ImageView) convertView.findViewById(R.id.user_img);
+            likeBean.holder.user_info = (TextView) convertView.findViewById(R.id.user_info);
 
-            convertView.setTag(holder);
+            convertView.setTag(likeBean.holder);
         } else {
-            holder = (Holder) convertView.getTag();
+            likeBean.holder = (LikeHolder) convertView.getTag();
         }
 
-        holder.user_name.setText(likeBean.getName());
-        holder.user_info.setText(likeBean.getAge()+" - "+likeBean.getLocation());
-        if (holder.user_img != null) {
-            new ImageDownloaderTask(holder.user_img).execute(img_url+"/"+likeBean.getImage());
+        likeBean.holder.user_name.setText(likeBean.getName());
+        likeBean.holder.user_info.setText(likeBean.getAge()+" - "+likeBean.getLocation());
+        if (likeBean.holder.user_img != null) {
+            new ImageDownloaderTask(likeBean.holder.user_img).execute(img_url+"/"+likeBean.getImage());
         }
 
         return convertView;
@@ -78,10 +79,10 @@ public class LikelistAdapter extends BaseAdapter {
         return inflater;
     }
 
-    class Holder {
+    /*class Holder {
 
         ImageView user_img;
         TextView user_name, user_info;
-    }
+    }*/
 
 }

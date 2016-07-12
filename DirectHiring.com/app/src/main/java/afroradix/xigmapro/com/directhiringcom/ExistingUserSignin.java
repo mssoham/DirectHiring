@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.util.TextUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import utilities.constants.Constants;
 import utilities.constants.Urls;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.UserBean;
+import utilities.data_objects.UserCriteriaBean;
 import utilities.others.CToast;
 
 public class ExistingUserSignin extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
@@ -130,7 +132,9 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
                 Log.e("Response-->", obj.toString());
 
                 if (obj.getString("status").equals(Constants.SUCCESS)) {
-                    JSONObject userObj=obj.getJSONObject("users");
+                    JSONObject detailsObj=obj.getJSONObject("details");
+                    JSONObject userObj=detailsObj.getJSONObject("users");
+                    JSONArray criteriaArr = detailsObj.getJSONArray("criteria");
 
                     UserBean userBean=new UserBean();
 
@@ -149,6 +153,21 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
                     userBean.setStatus(userObj.getString("status"));
                     userBean.setRemember_token(userObj.getString("remember_token"));
                     userBean.setWallet(userObj.getString("wallet"));
+
+                    ArrayList<UserCriteriaBean> userCriteriaBeans=new ArrayList<UserCriteriaBean>();
+                    if (criteriaArr.length()>0){
+                        for (int i = 0; i<criteriaArr.length();i++){
+                            UserCriteriaBean userCriteriaBean=new UserCriteriaBean();
+                            JSONObject userC = criteriaArr.getJSONObject(i);
+
+                            userCriteriaBean.setKey(userC.getString("key"));
+                            userCriteriaBean.setValue(userC.getString("value"));
+
+                            userCriteriaBeans.add(userCriteriaBean);
+                        }
+                    }
+
+                    userBean.setUserCriteriaBeanArrayList(userCriteriaBeans);
 
                     dataModel.userBean=userBean;
                     SharedStorage.setValue(getApplicationContext(),"UserId",userObj.getString("id"));

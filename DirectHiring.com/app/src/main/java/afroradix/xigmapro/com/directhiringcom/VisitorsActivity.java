@@ -3,15 +3,25 @@ package afroradix.xigmapro.com.directhiringcom;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import org.apache.http.NameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import adapters.LikelistAdapter;
+import shared_pref.SharedStorage;
+import utilities.async_tasks.AsyncResponse;
+import utilities.async_tasks.RemoteAsync;
+import utilities.constants.Constants;
+import utilities.constants.Urls;
 import utilities.data_objects.LikeBean;
 
-public class VisitorsActivity extends AppCompatActivity {
+public class VisitorsActivity extends AppCompatActivity implements AsyncResponse {
 
     private ListView visitor_list;
 
@@ -27,12 +37,20 @@ public class VisitorsActivity extends AppCompatActivity {
 
         visitor_list = (ListView)findViewById(R.id.visitor_list);
 
-        ArrayList<LikeBean> likeBeanArrayList = new ArrayList<LikeBean>();
+        visitors();
+    }
 
-        likeBeanArrayList.add(new LikeBean("Avik Halder","thumb12.jpg","38","INDIA"));
-        likeBeanArrayList.add(new LikeBean("Ana Lee", "thumb3.jpg", "20", "COLOMBIA"));
+    private void visitors(){
+        start_progress_dialog();
+        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
 
-        visitor_list.setAdapter(new LikelistAdapter(likeBeanArrayList, getApplicationContext()));
+        String user_id= SharedStorage.getValue(getApplicationContext(), "UserId");
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", user_id));
+
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.visitors);
+        remoteAsync.type = RemoteAsync.VISITORS;
+        remoteAsync.delegate = this;
+        remoteAsync.execute(arrayList);
     }
 
     @Override
@@ -59,5 +77,39 @@ public class VisitorsActivity extends AppCompatActivity {
     }
     void stop_progress_dialog(){
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void processFinish(String type, String output) {
+        stop_progress_dialog();
+        if (type.equals(RemoteAsync.VISITORS)) {
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
+
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    JSONArray likeMembersArr = obj.getJSONArray("visitor_details");
+
+                    ArrayList<LikeBean> likeBeanArrayList = new ArrayList<LikeBean>();
+
+                    if (likeMembersArr.length()>0){
+                        for (int i=0;i<likeMembersArr.length();i++){
+                            LikeBean likeBean = new LikeBean();
+                            JSONObject like = likeMembersArr.getJSONObject(i);
+
+                            likeBean.setName(like.getString("name"));
+                            likeBean.setAge(like.getString("age"));
+                            likeBean.setImage(like.getString("image"));
+                            likeBean.setLocation(like.getString("location"));
+                            likeBeanArrayList.add(likeBean);
+                        }
+                    }
+
+                    visitor_list.setAdapter(new LikelistAdapter(likeBeanArrayList,getApplicationContext()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
