@@ -121,8 +121,8 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
                     userBean.setCreated_at(userObj.getString("created_at"));
                     userBean.setUpdated_at(userObj.getString("updated_at"));
                     userBean.setUsername(userObj.getString("username"));
-
-                    dataModel.user=userBean;
+                    /*dataModel.userBean.getType();*/
+                    dataModel.userBean=userBean;
                     SharedStorage.setValue(getApplicationContext(), "UserId", userObj.getString("id"));
                     //ShowAlertDialog.showAlertDialog(getApplicationContext(),"Profile updated successfully");
                     CToast.show(getApplicationContext(), "Profile created successfully go for the next step");
