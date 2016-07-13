@@ -418,6 +418,7 @@ public class DashboardActivity extends AppCompatActivity
             img3.setAlpha(0.3f);
         }else{
             rel_cross.setVisibility(View.VISIBLE);
+            img1.setAlpha(0.3f);
             img2.setAlpha(1.0f);
             img3.setAlpha(0.3f);
 

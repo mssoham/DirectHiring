@@ -42,6 +42,7 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
     TextView signin_facebook;
     ProgressDialog progressDialog;
     DirectHiringModel dataModel = DirectHiringModel.getInstance();
+    String first_name,last_name,email,facebook_id,module="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,8 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
         user_name.addTextChangedListener(new MyTextWatcher(user_name));
         input_password.addTextChangedListener(new MyTextWatcher(input_password));
         signin_btn=(Button)findViewById(R.id.signin_btn);
+        signin_facebook = (TextView)findViewById(R.id.signin_facebook);
+
         input_password.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -82,6 +85,7 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
             }
         });*/
         signin_btn.setOnClickListener(this);
+        signin_facebook.setOnClickListener(this);
     }
 
     private void submitForm() {
@@ -101,8 +105,35 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
             case R.id.signin_btn:
                 login();
                 break;
+            case R.id.signin_facebook:
+                module="facebook";
+                Intent fbIntent=new Intent(ExistingUserSignin.this,SocialLoginActivity.class);
+                fbIntent.putExtra("LOGIN_TYPE",module);
+
+                startActivityForResult(fbIntent,440);
+                break;
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 440) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<String> result = data.getStringArrayListExtra("result");
+                SetUserDetails(result);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void SetUserDetails(ArrayList<String> msg){
+        first_name=msg.get(0).toString();
+        last_name=msg.get(1).toString();
+        email=(msg.get(2).toString());
+        facebook_id=(msg.get(3).toString());
+
+        //joinSocial();
     }
 
     private void login(){

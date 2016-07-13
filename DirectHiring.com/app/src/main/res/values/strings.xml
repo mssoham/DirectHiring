@@ -161,4 +161,5 @@
     <string name="profile_and_requirement"><![CDATA[Profile &amp; Requirements]]></string>
     <string name="lookinf_for">You are currently looking for...</string>
 
+    <string name="error_msg">Error!</string>
 </resources>
