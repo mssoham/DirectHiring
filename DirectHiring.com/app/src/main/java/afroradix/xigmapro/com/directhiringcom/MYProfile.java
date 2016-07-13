@@ -1,8 +1,10 @@
 package afroradix.xigmapro.com.directhiringcom;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,11 +14,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import adapters.AvailabilityAdapter;
+import adapters.UserCriteriaAdapter;
+import afroradix.xigmapro.com.directhiringcom.fragments.ImageChangeFragment;
+import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment;
 import custom_components.RoundedImageViewWhiteBorder;
 import utilities.async_tasks.ImageDownloaderTask;
 import utilities.data_objects.DirectHiringModel;
 
-public class MYProfile extends AppCompatActivity {
+public class MYProfile extends AppCompatActivity implements View.OnClickListener,ImageChangeFragment.OnFragmentInteractionListener {
     private RoundedImageViewWhiteBorder img_my_prfl;
     private ImageView imgchange;
     private TextView name_user,location,prfldetails_fields;
@@ -24,6 +30,7 @@ public class MYProfile extends AppCompatActivity {
     private Button details_edit,edit_location,edit_about;
     private String img_url="http://xigmapro.website/dev4/directhiring/public/resource/site/images/users/";
     DirectHiringModel dataModel=DirectHiringModel.getInstance();
+    UserCriteriaAdapter userCriteriaAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,24 @@ public class MYProfile extends AppCompatActivity {
         }
         name_user.setText(dataModel.userBean.getName());
         location.setText(dataModel.userBean.getLocation());
+        prfldetails_fields.setText(dataModel.userBean.getDescription());
+        userCriteriaAdapter = new UserCriteriaAdapter(DirectHiringModel.getInstance().userBean.getUserCriteriaBeanArrayList(),getApplicationContext());
+        list_criteria.setAdapter(userCriteriaAdapter);
+        imgchange.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v==imgchange){
+            FragmentManager fm = getSupportFragmentManager();
+            ImageChangeFragment dFragment = new ImageChangeFragment();
+            // Show DialogFragment
+            dFragment.show(fm, "Dialog Fragment");
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

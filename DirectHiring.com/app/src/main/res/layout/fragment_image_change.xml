@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="afroradix.xigmapro.com.directhiringcom.UploadImage">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/ll_prfl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/signinlogo"
+                android:layout_gravity="center"
+                android:weightSum="1"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/dp_40">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <custom_components.RoundedImageViewWhiteBorder
+                        android:id="@+id/dp_pd_edit"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/placeholder"/>
+
+                    <ImageButton
+                        android:id="@+id/upld_edit"
+                        android:layout_width="@dimen/dp_35"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_alignBottom="@+id/dp_pd_edit"
+                        android:layout_alignRight="@+id/dp_pd_edit"
+                        android:layout_marginRight="@dimen/dp_15"
+                        android:layout_marginBottom="@dimen/dp_15"
+                        android:background="@drawable/camera_background"
+                        android:clickable="true"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_photo_camera_white_18dp" />
+
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_220"
+                    android:background="@drawable/img_background"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:layout_marginBottom="@dimen/dp_50"
+                    android:orientation="horizontal">
+                    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/pager_edit"
+                        android:padding="@dimen/dp_10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    </android.support.v4.view.ViewPager>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/loginbtns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/Deep_green"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_10">
+                <Button
+                    android:id="@+id/submit_edit_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/edttextbg"
+                    android:text="@string/submit"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginRight="@dimen/dp_25"
+                    android:textSize="@dimen/sp_16"
+                    android:textColor="@color/White"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

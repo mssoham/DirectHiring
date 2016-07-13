@@ -130,7 +130,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="no quotes added yet!add your quote here only!"
-                        android:lines="10"
+                        android:lines="3"
                         android:scrollbars="vertical"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold"
@@ -178,8 +178,6 @@
                     android:dividerHeight="2dp"
                     android:listSelector="@drawable/spinner_bottom_line"
                     android:layout_marginTop="0dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
                     >
                 </ListView>
                 </RelativeLayout>
