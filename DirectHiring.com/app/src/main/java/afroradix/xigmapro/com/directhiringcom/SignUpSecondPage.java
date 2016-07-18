@@ -1,8 +1,10 @@
 package afroradix.xigmapro.com.directhiringcom;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -42,6 +44,7 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_second_page);
+        getSupportActionBar().setTitle("Welcome");
         input_layout_user_name_reg = (TextInputLayout) findViewById(R.id.input_layout_user_name_reg);
         input_layout_password_reg = (TextInputLayout) findViewById(R.id.input_layout_password_reg);
         user_name_reg = (EditText) findViewById(R.id.user_name_reg);
@@ -169,7 +172,7 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
     }
     private boolean validateName() {
         username=user_name_reg.getText().toString().trim();
-        if (username.isEmpty()|| !isValidEmail(username)) {
+        if (username.isEmpty()) {
             input_layout_user_name_reg.setError(getString(R.string.err_msg_name));
             requestFocus(user_name_reg);
             return false;
@@ -210,5 +213,27 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
     }
     void stop_progress_dialog(){
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(this);
+        alerBuilder.setMessage("You Really want to leave before completing your details!!!!");
+        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intMain = new Intent(SignUpSecondPage.this,ImageSliderScreen.class);
+
+                startActivity(intMain);
+
+            }
+        });
+        alerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alerBuilder.create();
+        alertDialog.show();
     }
 }

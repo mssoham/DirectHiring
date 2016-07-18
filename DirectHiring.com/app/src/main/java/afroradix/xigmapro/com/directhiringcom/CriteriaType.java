@@ -66,6 +66,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criteria_type);
+        getSupportActionBar().setTitle("Criteria");
         nationality_check=(CheckBox)findViewById(R.id.nationality_check);
         main_duty_check=(CheckBox)findViewById(R.id.main_duty_check);
         availibility_check=(CheckBox)findViewById(R.id.availibility_check);
@@ -308,7 +309,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
                 sal_range_seekValuemax.setText("Max"+maxValue);*/
                 sal_range_seekValuemin=minValue.toString().trim();
                 sal_range_seekValuemax=maxValue.toString().trim();
-                String salary=sal_range_seekValuemin+":"+sal_range_seekValuemax;
+                String salary=sal_range_seekValuemin+","+sal_range_seekValuemax;
                 try {
                     criteriaObj.put("salary_range",salary);
                     Log.e("add--->", String.valueOf(criteriaObj));
@@ -327,7 +328,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
                 age_seekValuemax.setText("Max"+maxValue);*/
                 age_seekValuemin=minValue.toString().trim();
                 age_seekValuemax=maxValue.toString().trim();
-                String age=age_seekValuemin+":"+age_seekValuemax;
+                String age=age_seekValuemin+","+age_seekValuemax;
                 try {
                     criteriaObj.put("age_range",age);
                     Log.e("add--->", String.valueOf(criteriaObj));
@@ -347,7 +348,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
                 day_of_range_seekValuemax.setText("Max"+maxValue);*/
                 day_of_range_seekValuemin=minValue.toString().trim();
                 day_of_range_seekValuemax=maxValue.toString().trim();
-                String day_of=day_of_range_seekValuemin+":"+day_of_range_seekValuemax;
+                String day_of=day_of_range_seekValuemin+","+day_of_range_seekValuemax;
                 try {
                     criteriaObj.put("day_range",day_of);
                     Log.e("add--->", String.valueOf(criteriaObj));
@@ -487,5 +488,27 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(this);
+        alerBuilder.setMessage("You Really want to leave before completing your details!!!!");
+        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intMain = new Intent(CriteriaType.this,ImageSliderScreen.class);
+
+                startActivity(intMain);
+
+            }
+        });
+        alerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alerBuilder.create();
+        alertDialog.show();
     }
 }

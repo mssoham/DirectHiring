@@ -14,14 +14,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="1dp">
-            <ImageView
-                android:id="@+id/signinlogo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/helperlogo"
-                android:layout_marginLeft="@dimen/dp_60"
-                android:layout_marginRight="@dimen/dp_60"
-                android:layout_marginTop="@dimen/dp_40"/>
             <CheckBox
                 android:id="@+id/employer_type_check"
                 android:layout_width="wrap_content"
@@ -29,7 +21,7 @@
                 android:text="@string/Employer_type"
                 android:textSize="@dimen/sp_20"
                 android:textColor="@color/White"
-                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_60"
                 android:padding="@dimen/dp_10"
                 android:layout_marginLeft="@dimen/dp_20"
                 android:theme="@style/MyEditTextTheme"
@@ -160,7 +152,7 @@
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical"
                 android:padding="@dimen/dp_15"
-                android:layout_marginTop="@dimen/dp_90">
+                android:layout_marginTop="@dimen/dp_160">
                 <Button
                     android:id="@+id/continue_btn_last_family"
                     android:layout_width="match_parent"

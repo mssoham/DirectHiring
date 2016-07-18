@@ -183,7 +183,7 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
                     userBean.setType(userObj.getString("type"));
                     userBean.setStatus(userObj.getString("status"));
                     userBean.setRemember_token(userObj.getString("remember_token"));
-                    userBean.setWallet(userObj.getString("wallet"));
+                    /*userBean.setWallet(userObj.getString("wallet"));*/
 
                     ArrayList<UserCriteriaBean> userCriteriaBeans=new ArrayList<UserCriteriaBean>();
                     if (criteriaArr.length()>0){

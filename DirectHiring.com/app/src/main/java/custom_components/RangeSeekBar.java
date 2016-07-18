@@ -35,6 +35,7 @@ import android.os.Parcelable;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
@@ -335,9 +336,13 @@ public class RangeSeekBar<T extends Number> extends ImageView {
      */
     public void setSelectedMinValue(T value) {
         // in case absoluteMinValue == absoluteMaxValue, avoid division by zero when normalizing.
+        Log.e("My min value",value.toString());
         if (0 == (absoluteMaxValuePrim - absoluteMinValuePrim)) {
+            Log.e("test","mintest");
             setNormalizedMinValue(0d);
         } else {
+            Log.e("test","minelsetest");
+            Log.e("My min else value",value.toString());
             setNormalizedMinValue(valueToNormalized(value));
         }
     }
@@ -358,9 +363,13 @@ public class RangeSeekBar<T extends Number> extends ImageView {
      */
     public void setSelectedMaxValue(T value) {
         // in case absoluteMinValue == absoluteMaxValue, avoid division by zero when normalizing.
+        Log.e("My max value",value.toString());
         if (0 == (absoluteMaxValuePrim - absoluteMinValuePrim)) {
+            Log.e("test","maxtest");
             setNormalizedMaxValue(1d);
         } else {
+            Log.e("test","maxelsetest");
+            Log.e("My max else value",value.toString());
             setNormalizedMaxValue(valueToNormalized(value));
         }
     }
@@ -736,6 +745,7 @@ public class RangeSeekBar<T extends Number> extends ImageView {
      * @param value The new normalized min value to set.
      */
     private void setNormalizedMinValue(double value) {
+        Log.e("Value getting>>",String.valueOf(value));
         normalizedMinValue = Math.max(0d, Math.min(1d, Math.min(value, normalizedMaxValue)));
         invalidate();
     }

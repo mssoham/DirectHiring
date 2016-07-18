@@ -11,23 +11,30 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import adapters.AvailabilityAdapter;
 import adapters.UserCriteriaAdapter;
+import afroradix.xigmapro.com.directhiringcom.fragments.AboutFragment;
+import afroradix.xigmapro.com.directhiringcom.fragments.CriteriaFamilyFragment;
+import afroradix.xigmapro.com.directhiringcom.fragments.CriteriaFragment;
 import afroradix.xigmapro.com.directhiringcom.fragments.ImageChangeFragment;
 import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment;
 import custom_components.RoundedImageViewWhiteBorder;
 import utilities.async_tasks.ImageDownloaderTask;
 import utilities.data_objects.DirectHiringModel;
+import utilities.others.CToast;
 
-public class MYProfile extends AppCompatActivity implements View.OnClickListener,ImageChangeFragment.OnFragmentInteractionListener {
+public class MYProfile extends AppCompatActivity implements View.OnClickListener,ImageChangeFragment.OnFragmentInteractionListener,
+        AboutFragment.OnFragmentInteractionListener,CriteriaFragment.OnFragmentInteractionListener, CriteriaFamilyFragment.OnFragmentInteractionListener,
+        PremiumMemberDialogFragment.OnFragmentInteractionListener{
     private RoundedImageViewWhiteBorder img_my_prfl;
     private ImageView imgchange;
-    private TextView name_user,location,prfldetails_fields;
+    private TextView name_user,location,prfldetails_fields,type_txt;
     private ListView list_criteria;
-    private Button details_edit,edit_location,edit_about;
+    private LinearLayout details_edit,edit_about;
     private String img_url="http://xigmapro.website/dev4/directhiring/public/resource/site/images/users/";
     DirectHiringModel dataModel=DirectHiringModel.getInstance();
     UserCriteriaAdapter userCriteriaAdapter;
@@ -54,9 +61,10 @@ public class MYProfile extends AppCompatActivity implements View.OnClickListener
         location=(TextView)findViewById(R.id.location);
         prfldetails_fields=(TextView)findViewById(R.id.prfldetails_fields);
         list_criteria=(ListView)findViewById(R.id.list_criteria);
-        details_edit=(Button)findViewById(R.id.details_edit);
-        edit_location=(Button)findViewById(R.id.edit_location);
-        edit_about=(Button)findViewById(R.id.edit_about);
+        details_edit=(LinearLayout)findViewById(R.id.details_edit);
+        type_txt=(TextView)findViewById(R.id.type_txt);
+        type_txt.setText(dataModel.userBean.getType()+" "+getString(R.string.profile_and_requirement));
+        edit_about=(LinearLayout)findViewById(R.id.edit_about);
         Log.e("Img>>", img_url + "/" + dataModel.userBean.getImage());
         if (!dataModel.userBean.getImage().equals("")) {
             if (img_my_prfl != null) {
@@ -68,7 +76,10 @@ public class MYProfile extends AppCompatActivity implements View.OnClickListener
         prfldetails_fields.setText(dataModel.userBean.getDescription());
         userCriteriaAdapter = new UserCriteriaAdapter(DirectHiringModel.getInstance().userBean.getUserCriteriaBeanArrayList(),getApplicationContext());
         list_criteria.setAdapter(userCriteriaAdapter);
+        list_criteria.setFocusable(false);
         imgchange.setOnClickListener(this);
+        details_edit.setOnClickListener(this);
+        edit_about.setOnClickListener(this);
     }
 
     @Override
@@ -78,6 +89,27 @@ public class MYProfile extends AppCompatActivity implements View.OnClickListener
             ImageChangeFragment dFragment = new ImageChangeFragment();
             // Show DialogFragment
             dFragment.show(fm, "Dialog Fragment");
+        }
+        if(v==edit_about){
+            CToast.show(getApplicationContext(), "about clicked");
+            FragmentManager fm = getSupportFragmentManager();
+            AboutFragment dFragment = new AboutFragment();
+            // Show DialogFragment
+            dFragment.show(fm, "Dialog Fragment");
+        }
+        if(v==details_edit){
+            CToast.show(getApplicationContext(),"details clicked");
+            if(dataModel.userBean.getType().equals("helper")) {
+                FragmentManager fm = getSupportFragmentManager();
+                CriteriaFamilyFragment dFragment = new CriteriaFamilyFragment();
+                // Show DialogFragment
+                dFragment.show(fm, "Dialog Fragment");
+            }else{
+                FragmentManager fm = getSupportFragmentManager();
+                CriteriaFragment dFragment = new CriteriaFragment();
+                // Show DialogFragment
+                dFragment.show(fm, "Dialog Fragment");
+            }
         }
     }
 

@@ -20,6 +20,7 @@ public class Urls
     public static final String get_Chat_Users = url2+"getChatUsers";
     public static final String get_Chat_Messages = url2+"getChatMessages";
     public static final String send_Messages = url2+"sendMessages";
+    public static final String notification = url+"notification";
     /* Services for chat end */
 
     public static final String criteria = url+"criteria";

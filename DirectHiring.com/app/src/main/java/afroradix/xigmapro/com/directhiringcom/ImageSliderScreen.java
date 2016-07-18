@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import shared_pref.SharedStorage;
 
 public class ImageSliderScreen extends Activity  {
     private ViewPager viewPager;
@@ -26,6 +30,7 @@ public class ImageSliderScreen extends Activity  {
     TextView signin;
     private int[] layouts;
     private Button join_us;
+    boolean presstwice= false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +155,31 @@ public class ImageSliderScreen extends Activity  {
             View view = (View) object;
             container.removeView(view);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (presstwice==true){
+            Intent i = new Intent(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+            SharedStorage.setValue(this, "UserId", "");
+            System.exit(0);
+        }
+        this.presstwice = true;
+        Toast.makeText(getApplicationContext(),
+                "Please click BACK again to exit!", Toast.LENGTH_LONG)
+                .show();
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                presstwice = false;
+            }
+        }, 2000);
     }
 }
 

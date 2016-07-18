@@ -1,50 +1,59 @@
-package afroradix.xigmapro.com.directhiringcom;
+package afroradix.xigmapro.com.directhiringcom.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import adapters.AvailabilityAdapter;
-import adapters.DutyAdapter;
 import adapters.EmployerTypeAdapter;
-import adapters.ExpRangeAdapter;
 import adapters.HouseAdapter;
-import adapters.NationalityAdapter;
-import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragment;
+import afroradix.xigmapro.com.directhiringcom.R;
 import custom_components.RangeSeekBar;
 import shared_pref.SharedStorage;
-import utilities.async_tasks.AsyncResponse;
-import utilities.async_tasks.RemoteAsync;
-import utilities.constants.Constants;
-import utilities.constants.Urls;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.UserBean;
 import utilities.others.CToast;
 
-public class CriteriaFamilyType extends AppCompatActivity implements View.OnClickListener, AsyncResponse,PremiumMemberDialogFragment.OnFragmentInteractionListener {
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link CriteriaFamilyFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link CriteriaFamilyFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragment implements PremiumMemberDialogFragment.OnFragmentInteractionListener, View.OnClickListener {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
     private CheckBox employer_type_check,job_availability_check,house_type_check,sal_range_check,
             family_member_check,day_of_range_check;
     private Spinner employer_type,job_availability,house_type;
-    RangeSeekBar day_of_range_seekbar,family_member_seekbar,sal_range_seekbar;
+    private RangeSeekBar day_of_range_seekbar,family_member_seekbar,sal_range_seekbar;
     HouseAdapter house_Adapter;
     EmployerTypeAdapter employerTyp_eAdapter;
     DirectHiringModel dataModel = DirectHiringModel.getInstance();
@@ -54,30 +63,75 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
     UserBean user=new UserBean();
     public static String user_status1="";
     String sal_range_seekValuemin,sal_range_seekValuemax,family_seekValuemin,family_seekValuemax,day_of_range_seekValuemin,
-            day_of_range_seekValuemax,employer_type1,job_availability1,house_type1,isPaid,user_id;
+            day_of_range_seekValuemax,employer_type1,job_availability1,house_type1,isPaid,user_id,criteriaRange;
+    int first,second;
     JSONObject criteriaObj=new JSONObject();
     ProgressDialog progressDialog;
+
+    private OnFragmentInteractionListener mListener;
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment CriteriaFamilyFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static CriteriaFamilyFragment newInstance(String param1, String param2) {
+        CriteriaFamilyFragment fragment = new CriteriaFamilyFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public CriteriaFamilyFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_criteria_family_type);
-        getSupportActionBar().setTitle("Criteria");
-        employer_type_check=(CheckBox)findViewById(R.id.employer_type_check);
-        job_availability_check=(CheckBox)findViewById(R.id.job_availability_check);
-        house_type_check=(CheckBox)findViewById(R.id.house_type_check);
-        sal_range_check=(CheckBox)findViewById(R.id.sal_range_check);
-        family_member_check=(CheckBox)findViewById(R.id.family_member_check);
-        day_of_range_check=(CheckBox)findViewById(R.id.day_of_range_check);
-        employer_type=(Spinner)findViewById(R.id.employer_type);
-        job_availability=(Spinner)findViewById(R.id.job_availability);
-        house_type=(Spinner)findViewById(R.id.house_type);
-        user_id = SharedStorage.getValue(getApplicationContext(), "UserId");
-        day_of_range_seekbar=(RangeSeekBar)findViewById(R.id.day_of_range_seekbar);
-        family_member_seekbar=(RangeSeekBar)findViewById(R.id.family_member_seekbar);
-        sal_range_seekbar=(RangeSeekBar)findViewById(R.id.sal_range_seekbar);
-        house_Adapter = new HouseAdapter(this, DirectHiringModel.getInstance().houseBeanArrayList);
-        availability_adapter = new AvailabilityAdapter(this, DirectHiringModel.getInstance().availabilityBeanArrayList);
-        employerTyp_eAdapter= new EmployerTypeAdapter(this, DirectHiringModel.getInstance().employeeBeanArrayList);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view= inflater.inflate(R.layout.fragment_criteria_family, container, false);
+        getDialog().setTitle("Edit Criteria");
+        employer_type_check=(CheckBox)view.findViewById(R.id.employer_type_check);
+        job_availability_check=(CheckBox)view.findViewById(R.id.job_availability_check);
+        house_type_check=(CheckBox)view.findViewById(R.id.house_type_check);
+        sal_range_check=(CheckBox)view.findViewById(R.id.sal_range_check);
+        family_member_check=(CheckBox)view.findViewById(R.id.family_member_check);
+        day_of_range_check=(CheckBox)view.findViewById(R.id.day_of_range_check);
+        employer_type=(Spinner)view.findViewById(R.id.employer_type);
+        job_availability=(Spinner)view.findViewById(R.id.job_availability);
+        house_type=(Spinner)view.findViewById(R.id.house_type);
+        user_id = SharedStorage.getValue(getActivity(), "UserId");
+        user_status1=dataModel.userBean.getStatus();
+        Log.e("Status", user_status1);
+        day_of_range_seekbar=(RangeSeekBar)view.findViewById(R.id.day_of_range_seekbar);
+        family_member_seekbar=(RangeSeekBar)view.findViewById(R.id.family_member_seekbar);
+        sal_range_seekbar=(RangeSeekBar)view.findViewById(R.id.sal_range_seekbar);
+        /*criteriaselection("Nationality", nationality_check_edit);
+        criteriaselection("Day off Range", day_of_range_check_edit);*/
+        criteriaselection("Salary Range", sal_range_check,sal_range_seekbar,null);
+        criteriaselection("Employer Type", employer_type_check,null,employer_type);
+        /*criteriaselection("Nationality", nationality_check_edit);
+        criteriaselection("Nationality",nationality_check_edit);
+        criteriaselection("Nationality",nationality_check_edit);*/
+        house_Adapter = new HouseAdapter(getActivity(), DirectHiringModel.getInstance().houseBeanArrayList);
+        availability_adapter = new AvailabilityAdapter(getActivity(), DirectHiringModel.getInstance().availabilityBeanArrayList);
+        employerTyp_eAdapter= new EmployerTypeAdapter(getActivity(), DirectHiringModel.getInstance().employeeBeanArrayList);
         house_type.setAdapter(house_Adapter);
         employer_type.setAdapter(employerTyp_eAdapter);
         job_availability.setAdapter(availability_adapter);
@@ -87,6 +141,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                 if (isChecked) {
                     employer_type.setVisibility(View.VISIBLE);
                     check++;
+                    Log.e("check count---->", String.valueOf(check));
                 } else {
                     employer_type.setVisibility(View.GONE);
                     criteriaObj.remove("employee");
@@ -95,14 +150,14 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                 }
                 if (user.getStatus().equals("normal")) {
                     if (user_status1.equals("normal")&&check > 2) {
-                        CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                        CToast.show(getActivity(), "you need to pay to check more criteria!");
                         Log.e("check count---->", String.valueOf(check));
                         employer_type_check.setChecked(false);
                         employer_type.setVisibility(View.GONE);
                         criteriaObj.remove("employee");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
                         PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                         // Show DialogFragment
                         dFragment.show(fm, "Dialog Fragment");
@@ -116,6 +171,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                 if (isChecked) {
                     job_availability.setVisibility(View.VISIBLE);
                     check++;
+                    Log.e("check count---->", String.valueOf(check));
                 } else {
                     job_availability.setVisibility(View.GONE);
                     criteriaObj.remove("avaliability");
@@ -124,14 +180,14 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                 }
                 if (user.getStatus().equals("normal")) {
                     if (user_status1.equals("normal")&&check > 2) {
-                        CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                        CToast.show(getActivity(), "you need to pay to check more criteria!");
                         Log.e("check count---->", String.valueOf(check));
                         job_availability_check.setChecked(false);
                         job_availability.setVisibility(View.GONE);
                         criteriaObj.remove("avaliability");
                         Log.e("remove--->", String.valueOf(criteriaObj));
                         check--;
-                        FragmentManager fm = getSupportFragmentManager();
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
                         PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                         // Show DialogFragment
                         dFragment.show(fm, "Dialog Fragment");
@@ -145,26 +201,27 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                 if (isChecked) {
                     house_type.setVisibility(View.VISIBLE);
                     check++;
+                    Log.e("check count---->", String.valueOf(check));
                 } else {
                     house_type.setVisibility(View.GONE);
                     criteriaObj.remove("house");
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
                 }
-                    if (user_status1.equals("normal")&&check > 2) {
-                        CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
-                        Log.e("check count---->", String.valueOf(check));
-                        house_type_check.setChecked(false);
-                        house_type.setVisibility(View.GONE);
-                        criteriaObj.remove("house");
-                        Log.e("remove--->", String.valueOf(criteriaObj));
-                        check--;
-                        FragmentManager fm = getSupportFragmentManager();
-                        PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
-                        // Show DialogFragment
-                        dFragment.show(fm, "Dialog Fragment");
-                    }
+                if (user_status1.equals("normal")&&check > 2) {
+                    CToast.show(getActivity(), "you need to pay to check more criteria!");
+                    Log.e("check count---->", String.valueOf(check));
+                    house_type_check.setChecked(false);
+                    house_type.setVisibility(View.GONE);
+                    criteriaObj.remove("house");
+                    Log.e("remove--->", String.valueOf(criteriaObj));
+                    check--;
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
+                    // Show DialogFragment
+                    dFragment.show(fm, "Dialog Fragment");
                 }
+            }
         });
         sal_range_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -182,7 +239,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     Log.e("check count---->", String.valueOf(check));
                 }
                 if (user_status1.equals("normal")&&check > 2) {
-                    CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                    CToast.show(getActivity(), "you need to pay to check more criteria!");
                     Log.e("check count---->", String.valueOf(check));
                     sal_range_check.setChecked(false);
                     /*rel_sal_range.setVisibility(View.GONE);*/
@@ -190,7 +247,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     criteriaObj.remove("salary_range");
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
-                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
                     PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
@@ -213,7 +270,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     Log.e("check count---->", String.valueOf(check));
                 }
                 if (user_status1.equals("normal")&&check > 2) {
-                    CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                    CToast.show(getActivity(), "you need to pay to check more criteria!");
                     Log.e("check count---->", String.valueOf(check));
                     day_of_range_check.setChecked(false);
                     /*rel_day_of_range.setVisibility(View.GONE);*/
@@ -221,7 +278,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     criteriaObj.remove("day_range");
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
-                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
                     PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
@@ -244,7 +301,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     Log.e("check count---->", String.valueOf(check));
                 }
                 if (user_status1.equals("normal")&&check > 2) {
-                    CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                    CToast.show(getActivity(), "you need to pay to check more criteria!");
                     Log.e("check count---->", String.valueOf(check));
                     family_member_check.setChecked(false);
                     /*rel_age.setVisibility(View.GONE);*/
@@ -252,7 +309,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     criteriaObj.remove("family_member");
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
-                    FragmentManager fm = getSupportFragmentManager();
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
                     PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
@@ -363,63 +420,33 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
 
             }
         });
-        continue_btn_last_family=(Button)findViewById(R.id.continue_btn_last_family);
+        continue_btn_last_family=(Button)view.findViewById(R.id.continue_btn_last_family);
         continue_btn_last_family.setOnClickListener(this);
+        return view;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override
-    public void onClick(View v) {
-        if(v==continue_btn_last_family){
-            criteriaFamily();
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
         }
-    }
-    private void criteriaFamily(){
-        if (user_status1.equals("normal")){
-            isPaid="yes";
-        }else{
-            isPaid="no";
-        }
-        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("criteria", criteriaObj.toString()));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("type", "helper"));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_insert_id", user_id));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("is_paid", isPaid));
-
-        //Urls.urlkey=url_key;
-        RemoteAsync remoteAsync = new RemoteAsync(Urls.criteria);
-        remoteAsync.type = RemoteAsync.CRITERIA;
-        remoteAsync.delegate=this;
-        remoteAsync.execute(arrayList);
-    }
-
-    void start_progress_dialog(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
-    void stop_progress_dialog(){
-        progressDialog.dismiss();
     }
 
     @Override
-    public void processFinish(String type, String output) {
-        Log.e("output-->",output);
-        if (type.equals(RemoteAsync.CRITERIA)) {
-            try {
-                JSONObject obj = new JSONObject(output);
-                Log.e("Response-->", obj.toString());
-
-                if (obj.getString("status").equals(Constants.SUCCESS)) {
-                    //startActivity(new Intent(ServiceDetailsActivity.this,OrderSuccessfulActivity.class));
-                    startActivity(new Intent(CriteriaFamilyType.this, UploadImage.class));
-                }else{
-                    CToast.show(getApplicationContext(),"Failed to select criteria!");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -428,24 +455,59 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onBackPressed() {
-        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(this);
-        alerBuilder.setMessage("You Really want to leave before completing your details!!!!");
-        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent intMain = new Intent(CriteriaFamilyType.this,ImageSliderScreen.class);
+    public void onClick(View v) {
 
-                startActivity(intMain);
-
-            }
-        });
-        alerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-
-        AlertDialog alertDialog = alerBuilder.create();
-        alertDialog.show();
     }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
+    private void criteriaselection(String key,CheckBox checkBox,RangeSeekBar rangeSeekBar,Spinner spinner){
+        Log.e("CheckBox---->", String.valueOf(checkBox));
+        Log.e("rangeSeekBar---->", String.valueOf(rangeSeekBar));
+        Log.e("spinner---->", String.valueOf(spinner));
+        for(int i=0;i<dataModel.userBean.getUserCriteriaBeanArrayList().size();i++){
+            if(dataModel.userBean.getUserCriteriaBeanArrayList().get(i).getKey().equals(key)){
+                Log.e("key--->", key);
+                checkBox.setChecked(true);
+                check++;
+                if(!(rangeSeekBar ==null)){
+                    Log.e("rangeSeekBar---->", String.valueOf(rangeSeekBar));
+                    rangeSeekBar.setVisibility(View.VISIBLE);
+                    criteriaRange=dataModel.userBean.getUserCriteriaBeanArrayList().get(i).getValue();
+                    Log.e("range value--->",criteriaRange);
+                    StringTokenizer tokens = new StringTokenizer(criteriaRange, ",");
+                    first = Integer.parseInt(tokens.nextToken());// this will contain "Fruit"
+                    second = Integer.parseInt(tokens.nextToken());
+                    Log.e("min--->", String.valueOf(first));
+                    Log.e("max--->", String.valueOf(second));
+                    selectValue(rangeSeekBar, first, second);
+                }
+                if(!(spinner ==null)){
+                    Log.e("spinner---->", String.valueOf(spinner));
+                    spinner.setVisibility(View.VISIBLE);
+                }
+                Log.e("Check count", String.valueOf(check));
+                Log.e("CheckBox Checked---->", String.valueOf(checkBox));
+            }
+        }
+
+    }
+    private void selectValue(RangeSeekBar rangeSeekBar, Integer minvalue,Integer maxvalue) {
+        Log.e("range values-->", String.valueOf(minvalue + "," + maxvalue));
+        rangeSeekBar.setSelectedMinValue((double) minvalue);
+        rangeSeekBar.setSelectedMaxValue((double)maxvalue);
+    }
+
 }

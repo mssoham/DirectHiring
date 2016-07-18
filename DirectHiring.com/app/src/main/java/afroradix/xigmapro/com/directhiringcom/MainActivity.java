@@ -2,9 +2,13 @@ package afroradix.xigmapro.com.directhiringcom;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
@@ -27,6 +31,9 @@ import utilities.data_objects.NationalityBean;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.TypeSpinnerBean;
 import utilities.others.CToast;
+import utilities.others.ConnectionStatus;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class MainActivity extends Activity implements AsyncResponse {
     ProgressDialog progressDialog;
@@ -35,24 +42,16 @@ public class MainActivity extends Activity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Thread welcomeThread = new Thread(){
-            @Override
-            public void run() {
-                try {
-                    super.run();
-                    sleep(10000);  //Delay of 10 seconds
-                } catch (Exception e) {
+        if(!ConnectionStatus.checkConnectionStatus(getApplicationContext())){
+            LinearLayout no_Connection=(LinearLayout)findViewById(R.id.no_Connection);
+            no_Connection.setVisibility(View.VISIBLE);
+            Animation bottomUp = AnimationUtils.loadAnimation(this, R.anim.bottom_up);
+            no_Connection.startAnimation(bottomUp);
+            no_Connection.setVisibility(View.VISIBLE);
+        }else {
+            getSpinnerElement();
+        }
 
-                } finally {
-                    Intent i = new Intent(MainActivity.this,
-                            ImageSliderScreen.class);
-                    startActivity(i);
-                    finish();
-                }
-            }
-        };
-        welcomeThread.start();
-        getSpinnerElement();
         //TypeSpinnerBean type=new TypeSpinnerBean();
         ArrayList<TypeSpinnerBean> typeSpinnerBeanArrayList=new ArrayList<TypeSpinnerBean>();
         dataModel.typeSpinnerBeanArrayList.add(new TypeSpinnerBean("Helper","Helper"));
@@ -228,7 +227,23 @@ public class MainActivity extends Activity implements AsyncResponse {
                     }else{
                         CToast.show(getApplicationContext(),"no Data for duty found!");
                     }
+                    Intent i = new Intent(MainActivity.this,
+                            ImageSliderScreen.class);
+                    startActivity(i);
+                    finish();
 
+                }else if(obj.getString("status").equals("100")){
+                    AlertDialog.Builder alerBuilder = new AlertDialog.Builder(this);
+                    alerBuilder.setMessage("Error in connecting Server please press try again to load the application again!!!!");
+                    alerBuilder.setPositiveButton("Try Again", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            getSpinnerElement();
+
+                        }
+                    });
+
+                    AlertDialog alertDialog = alerBuilder.create();
+                    alertDialog.show();
                 }
 
             }catch (Exception e){

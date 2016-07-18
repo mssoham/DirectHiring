@@ -62,6 +62,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
+        getSupportActionBar().setTitle("Image & Description");
         description=(EditText)findViewById(R.id.description);
         input_layout_description=(TextInputLayout)findViewById(R.id.input_layout_description);
         upld=(ImageButton)findViewById(R.id.upld);
@@ -298,5 +299,27 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(this);
+        alerBuilder.setMessage("You Really want to leave before completing your details!!!!");
+        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intMain = new Intent(UploadImage.this,ImageSliderScreen.class);
+
+                startActivity(intMain);
+
+            }
+        });
+        alerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alerBuilder.create();
+        alertDialog.show();
     }
 }

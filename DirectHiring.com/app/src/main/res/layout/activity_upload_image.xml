@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/Base_color_green"
     tools:context="afroradix.xigmapro.com.directhiringcom.UploadImage">
@@ -95,7 +95,8 @@
                 android:background="@color/Deep_green"
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical"
-                android:padding="@dimen/dp_10">
+                android:padding="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_90">
                 <Button
                     android:id="@+id/submit"
                     android:layout_width="match_parent"

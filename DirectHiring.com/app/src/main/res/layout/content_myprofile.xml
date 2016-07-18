@@ -79,47 +79,34 @@
                 android:layout_marginTop="@dimen/dp_100"
                 android:textSize="@dimen/sp_22"
                 android:textStyle="bold"
-                android:gravity="center_horizontal"
+                android:gravity="center"
                 />
-            <LinearLayout
-                android:id="@+id/linear_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/name_user"
-                android:gravity="center">
             <TextView
                 android:id="@+id/location"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="kolkata"
                 android:textColor="@color/black"
                 android:layout_marginTop="@dimen/dp_5"
                 android:textSize="@dimen/sp_18"
-                android:paddingRight="@dimen/dp_20"
-                />
-                <Button
-                    android:id="@+id/edit_location"
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_marginTop="@dimen/dp_5"
-                    android:background="@mipmap/edit"
-                    />
-            </LinearLayout>
+                android:layout_below="@+id/name_user"
+                android:gravity="center"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linear_txt"
+                android:layout_below="@+id/location"
                 android:background="#e8e8e8"
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/dp_15"
                 android:paddingBottom="@dimen/dp_80">
                 <TextView
+                    android:id="@+id/type_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:text="@string/profile_and_requirement"
+                    android:singleLine="true"
                     android:textSize="@dimen/sp_22"
                     android:padding="@dimen/dp_10"/>
                 <ScrollView
@@ -138,13 +125,14 @@
                         android:layout_marginLeft="@dimen/dp_10"/>
                 </ScrollView>
             <LinearLayout
+                android:id="@+id/edit_about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_5">
                 <Button
-                    android:id="@+id/edit_about"
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_20"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:background="@mipmap/edit"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_20"/>
@@ -153,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:text="Edit"
                     android:textColor="@color/Base_color_green"
-                    android:textSize="@dimen/sp_16"
+                    android:textSize="@dimen/sp_18"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_20"/>
                 </LinearLayout>
@@ -168,7 +156,7 @@
                 <RelativeLayout
                     android:id="@+id/rlayout_job"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="120dp"
                     android:padding="@dimen/dp_10">
                 <ListView
                     android:id="@+id/list_criteria"
@@ -176,19 +164,19 @@
                     android:layout_height="wrap_content"
                     android:divider="@drawable/spinner_bottom_line"
                     android:dividerHeight="2dp"
-                    android:listSelector="@drawable/spinner_bottom_line"
                     android:layout_marginTop="0dp"
                     >
                 </ListView>
                 </RelativeLayout>
                 <LinearLayout
+                    android:id="@+id/details_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_5">
                 <Button
-                    android:id="@+id/details_edit"
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_20"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:background="@mipmap/edit"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_20"/>
@@ -197,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:text="Edit"
                         android:textColor="@color/Base_color_green"
-                        android:textSize="@dimen/sp_16"
+                        android:textSize="@dimen/sp_18"
                         android:layout_marginLeft="@dimen/dp_10"
                         android:layout_marginTop="@dimen/dp_20"/>
                 </LinearLayout>
