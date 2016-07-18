@@ -11,6 +11,8 @@ public class NotificationBean {
     private String image="";
     private String age="";
     private String location="";
+    private String fromid="";
+    private String tag="0";
     public NotificationHolder holder = new NotificationHolder();
 
     public NotificationBean(){
@@ -54,5 +56,19 @@ public class NotificationBean {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+    public String getFromid() {
+        return fromid;
+    }
+
+    public void setFromid(String fromid) {
+        this.fromid = fromid;
+    }
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

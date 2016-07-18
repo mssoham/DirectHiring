@@ -30,4 +30,5 @@ public class Urls
     public static final String dislike_Member = url+"dislikeMember";
     public static final String likes_Member_List = url+"likesMemberList";
     public static final String visitors = url+"visitors";
+    public static final String friendRequest = url+"friendRequest";
 }
