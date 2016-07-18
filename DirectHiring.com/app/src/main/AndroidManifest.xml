@@ -114,6 +114,11 @@
             android:name=".SocialLoginActivity"
             android:screenOrientation="portrait" >
         </activity>
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notification"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

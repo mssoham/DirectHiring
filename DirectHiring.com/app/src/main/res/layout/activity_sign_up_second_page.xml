@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/helperlogo"
         android:layout_marginLeft="@dimen/dp_60"
-        android:layout_marginRight="@dimen/dp_60"/>
+        android:layout_marginRight="@dimen/dp_60"
+        android:layout_marginTop="@dimen/dp_20"/>
     <TextView
         android:id="@+id/heading"
         android:layout_width="match_parent"
@@ -98,8 +99,8 @@
                 android:text="@string/and"
                 android:textStyle="bold"
                 android:textSize="@dimen/sp_18"
-                android:layout_marginRight="@dimen/dp_1"
-                android:layout_marginLeft="@dimen/dp_1"
+                android:layout_marginRight="@dimen/dp_5"
+                android:layout_marginLeft="@dimen/dp_5"
                 />
             <TextView
                 android:id="@+id/privacy"

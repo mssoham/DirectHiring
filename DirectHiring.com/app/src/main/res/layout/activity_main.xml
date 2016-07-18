@@ -11,5 +11,20 @@
         android:layout_centerInParent="true"
         android:background="@drawable/helperlogo"
         android:layout_margin="@dimen/dp_40"/>
+    <LinearLayout
+        android:id="@+id/no_Connection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/Button_blue"
+        android:visibility="gone"
+        android:padding="@dimen/dp_10">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/no_internet"
+            android:textColor="@color/White"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White">
+
+    <!-- Thumbnail Image -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10"
+        android:orientation="horizontal">
+
+        <custom_components.RoundedImageViewWhiteBorder
+            android:id="@+id/user_img_noti"
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="@dimen/dp_70"
+            android:src="@drawable/ic_no_img"
+
+            android:layout_marginLeft="@dimen/dp_10"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_gravity="center_vertical">
+            <TextView
+                android:id="@+id/user_name_noti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test User"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/sp_20"
+                />
+            <TextView
+                android:id="@+id/user_info_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test User"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/sp_14"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_20">
+
+                <!-- Release Year -->
+                <Button
+                    android:id="@+id/accept"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:textSize="10sp"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Accept"
+                    android:background="@drawable/button_border"/>
+
+                <Button
+                    android:id="@+id/decline"
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp"
+                    android:background="@drawable/button_border"
+                    android:text="Decline" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Movie Title -->
+    <!-- Genre -->
+
+</LinearLayout>
