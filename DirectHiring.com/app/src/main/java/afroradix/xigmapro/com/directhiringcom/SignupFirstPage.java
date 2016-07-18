@@ -38,7 +38,8 @@ import utilities.others.CToast;
 public class SignupFirstPage extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
     private EditText user_first_name, input_last_name,input_email,confirm_email;
     private TextInputLayout input_layout_first_name, input_layout_last_name,input_layout_email,input_confirm_email;
-    String firstname,lastname,date_of_birth,email,confirm_email1,country1,social_id,type,looking_for,date1,year1,month1;
+    String firstname,lastname,date_of_birth,email,confirm_email1,country1,social_id="0",type,looking_for,date1,year1,month1;
+    String first_name,last_name,email_id="",facebook_id="",module="";
     Button sign_up;
     public static String register_type="";
     TextView signup_facebook;
@@ -50,9 +51,11 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_signup_first_page);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Back");
+
         input_layout_first_name = (TextInputLayout) findViewById(R.id.input_layout_first_name);
         input_layout_last_name = (TextInputLayout) findViewById(R.id.input_layout_last_name);
         input_layout_email = (TextInputLayout) findViewById(R.id.input_layout_email);
@@ -132,22 +135,60 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if(v==sign_up){
-            if(country1.equals("Select Country") || !email.equals(confirm_email1)){
-                CToast.show(getApplicationContext(),"Enter valid Country name!");
+        switch (v.getId()){
+            case R.id.sign_up:
+                if(country1.equals("Select Country") || !email.equals(confirm_email1)){
+                    CToast.show(getApplicationContext(),"Enter valid Country name!");
 
-            }else{
-                date_of_birth=date1+'-'+month1+'-'+year1;
-                submitForm();
+                }else{
+                    date_of_birth=date1+'-'+month1+'-'+year1;
+                    email_id = input_email.getText().toString().trim();
+                    first_name = user_first_name.getText().toString().trim();
+                    last_name = input_last_name.getText().toString().trim();
+                    submitForm();
 
-            }
+                }
+                break;
+            case R.id.signup_facebook:
+                module="facebook";
+                Intent fbIntent=new Intent(SignupFirstPage.this,SocialLoginActivity.class);
+                fbIntent.putExtra("LOGIN_TYPE",module);
+
+                startActivityForResult(fbIntent,440);
+                break;
+
+        }
+       /* if(v==sign_up){
+
         }
 
         if(v==signup_facebook){
 
-        }
+        }*/
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 440) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<String> result = data.getStringArrayListExtra("result");
+                SetUserDetails(result);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void SetUserDetails(ArrayList<String> msg){
+        first_name=msg.get(0).toString();
+        last_name=msg.get(1).toString();
+        email_id=(msg.get(2).toString());
+        facebook_id=(msg.get(3).toString());
+
+        //joinSocial();
+        signup();
+    }
+
     private void submitForm() {
         if (!validateFirstName()) {
             return;
@@ -175,12 +216,12 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
             Log.e("Looking for----->",looking_for);
         }
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("social_id", social_id));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("first_name",user_first_name.getText().toString().trim() ));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_name", input_last_name.getText().toString().trim()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("social_id", facebook_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("first_name", first_name));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_name", last_name));
         arrayList.add(new org.apache.http.message.BasicNameValuePair("date_of_birth", date_of_birth));
         arrayList.add(new org.apache.http.message.BasicNameValuePair("location", country1));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("email", input_email.getText().toString().trim()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("email", email_id));
         arrayList.add(new org.apache.http.message.BasicNameValuePair("type", type));
         arrayList.add(new org.apache.http.message.BasicNameValuePair("looking_for", looking_for));
         //Urls.urlkey=url_key;
@@ -211,7 +252,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
                     userBean.setLooking_for(userObj.getString("looking_for"));
                     userBean.setType(userObj.getString("type"));
                     userBean.setStatus(userObj.getString("status"));
-                    userBean.setWallet(userObj.getString("wallet"));
+                    //userBean.setWallet(userObj.getString("wallet"));
                     userBean.setRemember_token(userObj.getString("remember_token"));
                     userBean.setCreated_at(userObj.getString("created_at"));
                     userBean.setUpdated_at(userObj.getString("updated_at"));

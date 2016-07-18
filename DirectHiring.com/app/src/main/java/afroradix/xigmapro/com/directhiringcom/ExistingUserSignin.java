@@ -1,10 +1,12 @@
 package afroradix.xigmapro.com.directhiringcom;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,12 +39,13 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
     private EditText user_name, input_password;
     private TextInputLayout input_layout_user_name, input_layout_password;
 
-    String username,password;
+    String username,password,email_id="",social_id="";
     Button signin_btn;
     TextView signin_facebook;
     ProgressDialog progressDialog;
     DirectHiringModel dataModel = DirectHiringModel.getInstance();
-    String first_name,last_name,email,facebook_id,module="";
+    String first_name,last_name,email="",facebook_id="",module="";
+    String uuid="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,11 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
         });*/
         signin_btn.setOnClickListener(this);
         signin_facebook.setOnClickListener(this);
+
+
+        TelephonyManager tManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+        uuid = tManager.getDeviceId();
+        Log.e("uuid>>", uuid);
     }
 
     private void submitForm() {
@@ -134,6 +142,7 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
         facebook_id=(msg.get(3).toString());
 
         //joinSocial();
+        login();
     }
 
     private void login(){
@@ -144,6 +153,9 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
 
             arrayList.add(new org.apache.http.message.BasicNameValuePair("username", user_name.getText().toString()));
             arrayList.add(new org.apache.http.message.BasicNameValuePair("password", input_password.getText().toString()));
+            arrayList.add(new org.apache.http.message.BasicNameValuePair("ip", uuid));
+            arrayList.add(new org.apache.http.message.BasicNameValuePair("social_id", facebook_id));
+            arrayList.add(new org.apache.http.message.BasicNameValuePair("email", email));
 
             RemoteAsync remoteAsync = new RemoteAsync(Urls.login);
             remoteAsync.type = RemoteAsync.LOGIN;
@@ -157,6 +169,8 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
     @Override
     public void processFinish(String type, String output) {
         stop_progress_dialog();
+        email="";
+        facebook_id="";
         if (type.equals(RemoteAsync.LOGIN)) {
             try {
                 JSONObject obj = new JSONObject(output);
