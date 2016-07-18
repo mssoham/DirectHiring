@@ -59,7 +59,7 @@ public class NotificationActivity extends AppCompatActivity implements AsyncResp
 
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
 
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", user_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", "1"));
 
         RemoteAsync remoteAsync = new RemoteAsync(Urls.notification);
         remoteAsync.type = RemoteAsync.NOTIFICATION;
@@ -98,9 +98,10 @@ public class NotificationActivity extends AppCompatActivity implements AsyncResp
                             JSONObject like = likeMembersArr.getJSONObject(i);
 
                             notificationBean.setName(like.getString("name"));
-                            notificationBean.setAge(like.getString("date_of_birth"));
+                            notificationBean.setAge(like.getString("age"));
                             notificationBean.setImage(like.getString("image"));
                             notificationBean.setLocation(like.getString("location"));
+                            notificationBean.setFromid(like.getString("id"));
                             notificationBeanArrayList.add(notificationBean);
                         }
                     }
