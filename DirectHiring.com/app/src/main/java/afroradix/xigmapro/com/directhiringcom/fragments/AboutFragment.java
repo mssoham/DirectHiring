@@ -1,17 +1,34 @@
 package afroradix.xigmapro.com.directhiringcom.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import afroradix.xigmapro.com.directhiringcom.MYProfile;
 import afroradix.xigmapro.com.directhiringcom.R;
+import shared_pref.SharedStorage;
+import utilities.async_tasks.AsyncResponse;
+import utilities.async_tasks.RemoteAsync;
+import utilities.constants.Constants;
+import utilities.constants.Urls;
+import utilities.data_objects.DirectHiringModel;
+import utilities.others.CToast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,7 +38,7 @@ import afroradix.xigmapro.com.directhiringcom.R;
  * Use the {@link AboutFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener {
+public class AboutFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener, AsyncResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -31,6 +48,8 @@ public class AboutFragment extends android.support.v4.app.DialogFragment impleme
     private String mParam1;
     private String mParam2;
     private EditText description_edit;
+    ProgressDialog progressDialog;
+    DirectHiringModel dataModel=DirectHiringModel.getInstance();
     private TextInputLayout input_layout_description_edit;
     Button submit_edit;
     String description;
@@ -76,6 +95,7 @@ public class AboutFragment extends android.support.v4.app.DialogFragment impleme
         getDialog().setTitle("Edit Description");
         description_edit=(EditText)view.findViewById(R.id.description_edit);
         input_layout_description_edit=(TextInputLayout)view.findViewById(R.id.input_layout_description_edit);
+        description_edit.setText(dataModel.userBean.getDescription());
         submit_edit=(Button)view.findViewById(R.id.submit_edit);
         submit_edit.setOnClickListener(this);
         return view;
@@ -109,6 +129,30 @@ public class AboutFragment extends android.support.v4.app.DialogFragment impleme
     public void onClick(View v) {
         if(v==submit_edit){
             description=description_edit.getText().toString().trim();
+            changedescription();
+        }
+    }
+
+    @Override
+    public void processFinish(String type, String output) {
+        Log.e("Output----->",output);
+        stop_progress_dialog();
+        if (type.equals(RemoteAsync.CHANGEDESCRIPTION)) {
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
+
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    CToast.show(getActivity(), "success");
+                    dataModel.userBean.setDescription(description);
+                    Intent intent=new Intent(getActivity(),MYProfile.class);
+                    startActivity(intent);
+                }else{
+                    CToast.show(getActivity(),"failed");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -126,5 +170,28 @@ public class AboutFragment extends android.support.v4.app.DialogFragment impleme
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+    private void changedescription(){
+        start_progress_dialog();
+
+        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+        String user_id = SharedStorage.getValue(getActivity(), "UserId");
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", user_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("description", description_edit.getText().toString().trim()));
+
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.changeDescription);
+        remoteAsync.type = RemoteAsync.CHANGEDESCRIPTION;
+        remoteAsync.delegate = this;
+        remoteAsync.execute(arrayList);
+    }
+    void start_progress_dialog(){
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please Wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+    void stop_progress_dialog(){
+        progressDialog.dismiss();
+    }
+
 
 }

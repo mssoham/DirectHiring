@@ -51,7 +51,7 @@ public class AvailabilityAdapter extends BaseAdapter {
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         AvailabilityBean availabilityBean=availabilityBeanArrayList.get(position);
-        type_txt.setText(availabilityBean.getAvailabilty_value());
+        type_txt.setText(availabilityBean.getValue());
         return (convertView);
     }
 }

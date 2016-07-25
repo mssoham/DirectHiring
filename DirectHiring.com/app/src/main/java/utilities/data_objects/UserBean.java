@@ -24,6 +24,17 @@ public class UserBean {
     private String created_at="";
     private String updated_at="";
     private ArrayList<UserCriteriaBean> userCriteriaBeanArrayList=new ArrayList<UserCriteriaBean>();
+    ArrayList<UserPhotosLoadBean> userPhotosLoadBeanArrayList=new ArrayList<UserPhotosLoadBean>();
+
+    public ArrayList<UserPhotosLoadBean> getUserPhotosLoadBeanArrayList() {
+        return userPhotosLoadBeanArrayList;
+    }
+
+    public void setUserPhotosLoadBeanArrayList(ArrayList<UserPhotosLoadBean> userPhotosLoadBeanArrayList) {
+        this.userPhotosLoadBeanArrayList = userPhotosLoadBeanArrayList;
+    }
+
+
 
     public ArrayList<UserCriteriaBean> getUserCriteriaBeanArrayList() {
         return userCriteriaBeanArrayList;

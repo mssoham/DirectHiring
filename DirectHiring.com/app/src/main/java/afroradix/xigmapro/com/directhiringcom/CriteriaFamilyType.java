@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +39,7 @@ import utilities.constants.Constants;
 import utilities.constants.Urls;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.UserBean;
+import utilities.data_objects.UserCriteriaBean;
 import utilities.others.CToast;
 
 public class CriteriaFamilyType extends AppCompatActivity implements View.OnClickListener, AsyncResponse,PremiumMemberDialogFragment.OnFragmentInteractionListener {
@@ -71,6 +73,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
         employer_type=(Spinner)findViewById(R.id.employer_type);
         job_availability=(Spinner)findViewById(R.id.job_availability);
         house_type=(Spinner)findViewById(R.id.house_type);
+        Log.e("status",user_status1);
         user_id = SharedStorage.getValue(getApplicationContext(), "UserId");
         day_of_range_seekbar=(RangeSeekBar)findViewById(R.id.day_of_range_seekbar);
         family_member_seekbar=(RangeSeekBar)findViewById(R.id.family_member_seekbar);
@@ -93,8 +96,8 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
                 }
-                if (user.getStatus().equals("normal")) {
-                    if (user_status1.equals("normal")&&check > 2) {
+                Log.e("Status",user_status1);
+                    if (user_status1.equals("normal") && check > 2) {
                         CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
                         Log.e("check count---->", String.valueOf(check));
                         employer_type_check.setChecked(false);
@@ -108,7 +111,6 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                         dFragment.show(fm, "Dialog Fragment");
                     }
                 }
-            }
         });
         job_availability_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -122,8 +124,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
                 }
-                if (user.getStatus().equals("normal")) {
-                    if (user_status1.equals("normal")&&check > 2) {
+                    if (user_status1.equals("normal") && check > 2) {
                         CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
                         Log.e("check count---->", String.valueOf(check));
                         job_availability_check.setChecked(false);
@@ -135,7 +136,6 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                         PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                         // Show DialogFragment
                         dFragment.show(fm, "Dialog Fragment");
-                    }
                 }
             }
         });
@@ -151,7 +151,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
                 }
-                    if (user_status1.equals("normal")&&check > 2) {
+                    if (user_status1.equals("normal") && check > 2) {
                         CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
                         Log.e("check count---->", String.valueOf(check));
                         house_type_check.setChecked(false);
@@ -181,7 +181,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     check--;
                     Log.e("check count---->", String.valueOf(check));
                 }
-                if (user_status1.equals("normal")&&check > 2) {
+                if (user_status1.equals("normal") && check > 2) {
                     CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
                     Log.e("check count---->", String.valueOf(check));
                     sal_range_check.setChecked(false);
@@ -212,7 +212,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     check--;
                     Log.e("check count---->", String.valueOf(check));
                 }
-                if (user_status1.equals("normal")&&check > 2) {
+                if (user_status1.equals("normal") && check > 2) {
                     CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
                     Log.e("check count---->", String.valueOf(check));
                     day_of_range_check.setChecked(false);
@@ -243,7 +243,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
                     check--;
                     Log.e("check count---->", String.valueOf(check));
                 }
-                if (user_status1.equals("normal")&&check > 2) {
+                if (user_status1.equals("normal") && check > 2) {
                     CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
                     Log.e("check count---->", String.valueOf(check));
                     family_member_check.setChecked(false);
@@ -260,17 +260,19 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
             }
         });
         sal_range_seekbar.setRangeValues(500, 1000);
+        /*sal_range_seekbar.setSelectedMinValue(500);
+        sal_range_seekbar.setSelectedMaxValue(1000);*/
         sal_range_seekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
                 Log.e("value", minValue + "  " + maxValue);
                 /*sal_range_seekValuemin.setText("Min "+minValue);
                 sal_range_seekValuemax.setText("Max"+maxValue);*/
-                sal_range_seekValuemin=minValue.toString().trim();
-                sal_range_seekValuemax=maxValue.toString().trim();
-                String salary=sal_range_seekValuemin+","+sal_range_seekValuemax;
+                sal_range_seekValuemin = minValue.toString().trim();
+                sal_range_seekValuemax = maxValue.toString().trim();
+                String salary = sal_range_seekValuemin + "," + sal_range_seekValuemax;
                 try {
-                    criteriaObj.put("salary_range",salary);
+                    criteriaObj.put("salary_range", salary);
                     Log.e("add--->", String.valueOf(criteriaObj));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -278,6 +280,8 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
             }
         });
         family_member_seekbar.setRangeValues(2, 10);
+        /*family_member_seekbar.setSelectedMinValue(2);
+        family_member_seekbar.setSelectedMaxValue(10);*/
         family_member_seekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
@@ -298,6 +302,8 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
         /*day_of_range_seekbar.setNotifyWhileDragging(true);*/
         /*day_of_range_seekbar.setAdapter(new DemoRangeAdapter());*/
         day_of_range_seekbar.setRangeValues(0, 4);
+        /*day_of_range_seekbar.setSelectedMinValue(0);
+        day_of_range_seekbar.setSelectedMaxValue(4);*/
         day_of_range_seekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
@@ -318,7 +324,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
         employer_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                employer_type1 = dataModel.getInstance().employeeBeanArrayList.get(position).getEmployee_value();
+                employer_type1 = dataModel.getInstance().employeeBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("employee", employer_type1);
                 } catch (JSONException e) {
@@ -334,7 +340,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
         job_availability.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                job_availability1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getAvailabilty_value();
+                job_availability1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("avaliability", job_availability1);
                 } catch (JSONException e) {
@@ -350,7 +356,7 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
         house_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                house_type1=dataModel.getInstance().houseBeanArrayList.get(position).getHouse_value();
+                house_type1=dataModel.getInstance().houseBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("house", house_type1);
                 } catch (JSONException e) {
@@ -412,6 +418,22 @@ public class CriteriaFamilyType extends AppCompatActivity implements View.OnClic
 
                 if (obj.getString("status").equals(Constants.SUCCESS)) {
                     //startActivity(new Intent(ServiceDetailsActivity.this,OrderSuccessfulActivity.class));
+                    JSONArray criteriaArr = obj.getJSONArray("criterias");
+                    UserBean userBean=new UserBean();
+                    ArrayList<UserCriteriaBean> userCriteriaBeans=new ArrayList<UserCriteriaBean>();
+                    if (criteriaArr.length()>0){
+                        for (int i = 0; i<criteriaArr.length();i++){
+                            UserCriteriaBean userCriteriaBean=new UserCriteriaBean();
+                            JSONObject userC = criteriaArr.getJSONObject(i);
+
+                            userCriteriaBean.setKey(userC.getString("criteria"));
+                            userCriteriaBean.setValue(userC.getString("criteria_details"));
+
+                            userCriteriaBeans.add(userCriteriaBean);
+                        }
+                    }
+
+                    dataModel.userBean.setUserCriteriaBeanArrayList(userCriteriaBeans);
                     startActivity(new Intent(CriteriaFamilyType.this, UploadImage.class));
                 }else{
                     CToast.show(getApplicationContext(),"Failed to select criteria!");

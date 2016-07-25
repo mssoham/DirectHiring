@@ -51,7 +51,7 @@ public class DutyAdapter extends BaseAdapter {
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         DutyBean dutyBean=dutyBeanArrayList.get(position);
-        type_txt.setText(dutyBean.getDuty_value());
+        type_txt.setText(dutyBean.getValue());
         type_txt.setSingleLine(false);
         return (convertView);
     }

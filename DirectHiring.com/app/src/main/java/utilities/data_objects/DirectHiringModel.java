@@ -31,6 +31,7 @@ public class DirectHiringModel {
 
     public UserBean userBean;
     public ArrayList<DashboardUserBean> dashboardUserBeanArrayList=new ArrayList<DashboardUserBean>();
+    public ArrayList<UserPhotosLoadBean> userPhotosLoadBeanArrayList=new ArrayList<UserPhotosLoadBean>();
     public ArrayList<ChatUsersBean> chatUsersBeanArrayList=new ArrayList<ChatUsersBean>();
     public ArrayList<ChatListBean> chatListBeanArrayList = new ArrayList<ChatListBean>();
 

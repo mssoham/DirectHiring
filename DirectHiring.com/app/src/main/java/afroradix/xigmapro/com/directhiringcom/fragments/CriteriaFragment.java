@@ -2,9 +2,11 @@ package afroradix.xigmapro.com.directhiringcom.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,19 +17,32 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import adapters.AvailabilityAdapter;
 import adapters.DutyAdapter;
 import adapters.ExpRangeAdapter;
 import adapters.NationalityAdapter;
+import afroradix.xigmapro.com.directhiringcom.MYProfile;
 import afroradix.xigmapro.com.directhiringcom.R;
+import afroradix.xigmapro.com.directhiringcom.UploadImage;
 import custom_components.RangeSeekBar;
 import shared_pref.SharedStorage;
+import utilities.async_tasks.AsyncResponse;
+import utilities.async_tasks.RemoteAsync;
+import utilities.constants.Constants;
+import utilities.constants.Urls;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.UserBean;
+import utilities.data_objects.UserCriteriaBean;
 import utilities.others.CToast;
 
 /**
@@ -38,7 +53,7 @@ import utilities.others.CToast;
  * Use the {@link CriteriaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CriteriaFragment extends android.support.v4.app.DialogFragment implements PremiumMemberDialogFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class CriteriaFragment extends android.support.v4.app.DialogFragment implements PremiumMemberDialogFragment.OnFragmentInteractionListener, View.OnClickListener, AsyncResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -57,10 +72,11 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
     ExpRangeAdapter exprange_adapter;
     ProgressDialog progressDialog;
     String sal_range_seekValuemin,sal_range_seekValuemax,age_seekValuemin,age_seekValuemax,day_of_range_seekValuemin,
-            day_of_range_seekValuemax,nationality1,main_duty1,availibility1,exp_range1,isPaid,user_id;
+            day_of_range_seekValuemax,nationality1,main_duty1,availibility1,exp_range1,isPaid,user_id,criteriaRange;
     RangeSeekBar sal_range_seekbar_edit,age_range_seekbar_edit,day_of_range_seekbar_edit;
     int check = 0;
     UserBean user=new UserBean();
+    int first,second;
     Button continue_btn_last_edit;
     public static String user_status="";
     JSONObject criteriaObj=new JSONObject();
@@ -129,13 +145,13 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
         main_duty_edit.setAdapter(duty_adapter);
         availibility_edit.setAdapter(availability_adapter);
         exp_range_edit.setAdapter(exprange_adapter);
-        criteriaselection("Nationality", nationality_check_edit);
-        criteriaselection("Day off Range", day_of_range_check_edit);
-        criteriaselection("Salary Range", sal_range_check_edit);
-        /*criteriaselection("Employer Type", );*/
-        /*criteriaselection("Nationality", nationality_check_edit);
-        criteriaselection("Nationality",nationality_check_edit);
-        criteriaselection("Nationality",nationality_check_edit);*/
+        criteriaselection("Nationality", nationality_check_edit, null, nationality_edit);
+        criteriaselection("Day off Range", day_of_range_check_edit,day_of_range_seekbar_edit,null);
+        criteriaselection("Salary Range", sal_range_check_edit,sal_range_seekbar_edit,null);
+        criteriaselection("Age Range", age_range_check_edit,age_range_seekbar_edit,null);
+        criteriaselection("Main Duty", main_duty_check_edit,null,main_duty_edit);
+        criteriaselection("Job Avaliability",availibility_check_edit,null,availibility_edit);
+        criteriaselection("Experience Range",exp_range_check_edit,null,exp_range_edit);
         nationality_check_edit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -405,7 +421,7 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
         nationality_edit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                nationality1 = dataModel.getInstance().nationalityBeanArrayList.get(position).getNationality_key();
+                nationality1 = dataModel.getInstance().nationalityBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("nationality",nationality1);
                     Log.e("add--->", String.valueOf(criteriaObj));
@@ -422,7 +438,7 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
         main_duty_edit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                main_duty1 = dataModel.getInstance().dutyBeanArrayList.get(position).getDuty_key();
+                main_duty1 = dataModel.getInstance().dutyBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("duty",main_duty1);
                 } catch (JSONException e) {
@@ -439,7 +455,7 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
         availibility_edit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                availibility1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getAvailabilty_key();
+                availibility1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("avaliability",availibility1);
                 } catch (JSONException e) {
@@ -455,7 +471,7 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
         exp_range_edit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                exp_range1 = dataModel.getInstance().experienceBeanArrayList.get(position).getExp_key();
+                exp_range1 = dataModel.getInstance().experienceBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("experience_range",exp_range1);
                 } catch (JSONException e) {
@@ -505,7 +521,65 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
 
     @Override
     public void onClick(View v) {
+        if(v==continue_btn_last_edit){
+            criteria();
+        }
 
+    }
+    private void criteria(){
+        if (user_status.equals("normal")){
+            isPaid="yes";
+        }else{
+            isPaid="no";
+        }
+        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("criteria", criteriaObj.toString()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("type", "family"));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_insert_id", user_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("is_paid", isPaid));
+
+        //Urls.urlkey=url_key;
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.criteria);
+        remoteAsync.type = RemoteAsync.CRITERIA;
+        remoteAsync.delegate=this;
+        remoteAsync.execute(arrayList);
+    }
+
+    @Override
+    public void processFinish(String type, String output) {
+        Log.e("output-->",output);
+        if (type.equals(RemoteAsync.CRITERIA)) {
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
+
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    //startActivity(new Intent(ServiceDetailsActivity.this,OrderSuccessfulActivity.class));
+                    JSONArray criteriaArr = obj.getJSONArray("criterias");
+                    UserBean userBean=new UserBean();
+                    ArrayList<UserCriteriaBean> userCriteriaBeans=new ArrayList<UserCriteriaBean>();
+                    if (criteriaArr.length()>0){
+                        for (int i = 0; i<criteriaArr.length();i++){
+                            UserCriteriaBean userCriteriaBean=new UserCriteriaBean();
+                            JSONObject userC = criteriaArr.getJSONObject(i);
+
+                            userCriteriaBean.setKey(userC.getString("criteria"));
+                            userCriteriaBean.setValue(userC.getString("criteria_details"));
+
+                            userCriteriaBeans.add(userCriteriaBean);
+                        }
+                    }
+
+                    dataModel.userBean.setUserCriteriaBeanArrayList(userCriteriaBeans);
+                    Intent intent=new Intent(getActivity(),MYProfile.class);
+                    startActivity(intent);
+                }else{
+                    CToast.show(getActivity(),"Failed to select criteria!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -522,16 +596,108 @@ public class CriteriaFragment extends android.support.v4.app.DialogFragment impl
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-    private void criteriaselection(String key,CheckBox checkBox){
+    private void criteriaselection(String key,CheckBox checkBox,RangeSeekBar rangeSeekBar,Spinner spinner){
         Log.e("CheckBox---->", String.valueOf(checkBox));
+        Log.e("rangeSeekBar---->", String.valueOf(rangeSeekBar));
+        Log.e("spinner---->", String.valueOf(spinner));
         for(int i=0;i<dataModel.userBean.getUserCriteriaBeanArrayList().size();i++){
             if(dataModel.userBean.getUserCriteriaBeanArrayList().get(i).getKey().equals(key)){
-                Log.e("key--->",key);
-                checkBox.isChecked();
+                Log.e("key--->", key);
+                checkBox.setChecked(true);
+                check++;
+                if(!(rangeSeekBar ==null)){
+                    Log.e("rangeSeekBar---->", String.valueOf(rangeSeekBar));
+                    rangeSeekBar.setVisibility(View.VISIBLE);
+                    criteriaRange=dataModel.userBean.getUserCriteriaBeanArrayList().get(i).getValue();
+                    Log.e("range value--->",criteriaRange);
+                    StringTokenizer tokens = new StringTokenizer(criteriaRange, ",");
+                    first = Integer.parseInt(tokens.nextToken());
+                    second = Integer.parseInt(tokens.nextToken());
+                    Log.e("min--->", String.valueOf(first));
+                    Log.e("max--->", String.valueOf(second));
+                    selectRangeValue(rangeSeekBar, first, second);
+                }
+                if(!(spinner ==null)){
+                    Log.e("spinner---->", String.valueOf(spinner));
+                    spinner.setVisibility(View.VISIBLE);
+                    criteriaRange=dataModel.userBean.getUserCriteriaBeanArrayList().get(i).getValue();
+                    Log.e("spinner value--->",criteriaRange);
+                    selectValue(spinner,key,criteriaRange);
+                }
+                Log.e("Check count", String.valueOf(check));
                 Log.e("CheckBox Checked---->", String.valueOf(checkBox));
             }
         }
 
     }
+    private void selectValue(final Spinner spinner,String key, String value) {
+        Log.e("spinner selection value", value);
+        Log.e("key value",key);
+        Log.e("spinner object", String.valueOf(spinner));
+        if(key.equals("Main Duty")){
+            for (int i = 0; i < dataModel.dutyBeanArrayList.size(); i++) {
+                if (dataModel.dutyBeanArrayList.get(i).getKey().equals(value)) {
+                    Toast.makeText(getActivity(), "selected position" + i, Toast.LENGTH_LONG).show();
+                    final int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            spinner.setSelection(finalI);
+                        }
+                    }, 100);
 
+                    break;
+                }
+            }
+        }else if(key.equals("Nationality")) {
+            for (int i = 0; i < dataModel.nationalityBeanArrayList.size(); i++) {
+                if (dataModel.nationalityBeanArrayList.get(i).getKey().equals(value)) {
+                    Toast.makeText(getActivity(), "selected position" + i, Toast.LENGTH_LONG).show();
+                    final int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            spinner.setSelection(finalI);
+                        }
+                    }, 100);
+                    break;
+                }
+            }
+        }else if(key.equals("Job Avaliability")){
+            for (int i = 0; i < dataModel.availabilityBeanArrayList.size(); i++) {
+                if (dataModel.availabilityBeanArrayList.get(i).getKey().equals(value)) {
+                    Toast.makeText(getActivity(), "selected position" + i, Toast.LENGTH_LONG).show();
+                    final int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            spinner.setSelection(finalI);
+                        }
+                    }, 100);
+                    break;
+                }
+            }
+        } else if(key.equals("Experience Range")){
+            for (int i = 0; i < dataModel.experienceBeanArrayList.size(); i++) {
+                if (dataModel.experienceBeanArrayList.get(i).getKey().equals(value)) {
+                    Toast.makeText(getActivity(), "selected position" + i, Toast.LENGTH_LONG).show();
+                    final int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            spinner.setSelection(finalI);
+                        }
+                    }, 100);
+                    break;
+                }
+            }
+        }
+    }
+    private void selectRangeValue(final RangeSeekBar rangeSeekBar, final Integer min, final Integer max){
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                rangeSeekBar.setSelectedMinValue(min);
+                rangeSeekBar.setSelectedMaxValue(max);
+            }
+        }, 100);
+
+
+    }
 }

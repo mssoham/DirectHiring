@@ -42,6 +42,9 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
     public static final String VISITORS = "visitors";
     public static final String NOTIFICATION = "notification";
     public static final String FRIENDREQUEST = "friendRequest";
+    public static final String CHANGEPROFILEIMAGE ="changeProfileImage";
+    public static final String CHANGEDESCRIPTION ="changeDescription";
+    public static final String ADDUSERPHOTOS ="addUserPhotos";
 
     /**
      * Pass the Url of the web service as a String
@@ -59,7 +62,7 @@ public class RemoteAsync extends AsyncTask<ArrayList<NameValuePair>, Void, Strin
        /* HttpConnection connection = new HttpConnection();
         string_JSON = connection.getPostRespoonse(url, pairs[0]);*/
 
-        if(type == IMAGE_UPLOAD){
+        if(type == IMAGE_UPLOAD || type == CHANGEPROFILEIMAGE||type == ADDUSERPHOTOS){
             MultiPartFileUpload multiPart_fileUpload=new MultiPartFileUpload();
             return multiPart_fileUpload.makeServiceCall(url, pairs[0]);
         } else{

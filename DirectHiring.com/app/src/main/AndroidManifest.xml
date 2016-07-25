@@ -118,7 +118,11 @@
             android:name=".NotificationActivity"
             android:label="@string/title_activity_notification"
             android:theme="@style/AppTheme.NoActionBar" >
-
+        </activity>
+        <activity
+            android:name=".ImagechangeaddActivity"
+            android:label="@string/title_activity_imagechangeadd"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

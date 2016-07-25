@@ -23,6 +23,7 @@ import afroradix.xigmapro.com.directhiringcom.R;
 import afroradix.xigmapro.com.directhiringcom.SignUpSecondPage;
 import custom_components.LikeHolder;
 import custom_components.NotificationHolder;
+import shared_pref.SharedStorage;
 import utilities.async_tasks.AsyncResponse;
 import utilities.async_tasks.ImageDownloaderTask;
 import utilities.async_tasks.RemoteAsync;
@@ -115,7 +116,7 @@ public class NotificationlistAdapter extends BaseAdapter implements AsyncRespons
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
 
         arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id",fromid));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("from_id", "1"));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("from_id", user_id));
         arrayList.add(new org.apache.http.message.BasicNameValuePair("status", "1"));
 
         RemoteAsync remoteAsync = new RemoteAsync(Urls.friendRequest);
@@ -151,7 +152,7 @@ public class NotificationlistAdapter extends BaseAdapter implements AsyncRespons
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
 
         arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", fromid));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("from_id", "1"));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("from_id", user_id));
         arrayList.add(new org.apache.http.message.BasicNameValuePair("status", "0"));
 
         RemoteAsync remoteAsync = new RemoteAsync(Urls.friendRequest);
@@ -179,10 +180,12 @@ public class NotificationlistAdapter extends BaseAdapter implements AsyncRespons
         switch (v.getId()) {
 
             case R.id.accept:
+                user_id = SharedStorage.getValue(context, "UserId");
                 fromid=notificationBean.getFromid();
                 accept();
                 break;
             case R.id.decline:
+                user_id = SharedStorage.getValue(context, "UserId");
                 fromid=notificationBean.getFromid();
                 decline();
                 break;

@@ -30,9 +30,12 @@ import utilities.async_tasks.AsyncResponse;
 import utilities.async_tasks.RemoteAsync;
 import utilities.constants.Constants;
 import utilities.constants.Urls;
+import utilities.data_objects.DashboardUserBean;
+import utilities.data_objects.DashboardUserImageBean;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.UserBean;
 import utilities.data_objects.UserCriteriaBean;
+import utilities.data_objects.UserPhotosLoadBean;
 import utilities.others.CToast;
 
 public class ExistingUserSignin extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
@@ -198,7 +201,23 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
                     userBean.setStatus(userObj.getString("status"));
                     userBean.setRemember_token(userObj.getString("remember_token"));
                     /*userBean.setWallet(userObj.getString("wallet"));*/
+                    JSONArray user_photos=detailsObj.getJSONArray("photos");
+                    UserPhotosLoadBean userPhotosLoadBean=new UserPhotosLoadBean();
+                    ArrayList<UserPhotosLoadBean> userPhotosLoadBeanArrayList=new ArrayList<UserPhotosLoadBean>();
+                    if (user_photos.length()>0){
+                        for (int j=0;j<user_photos.length();j++){
+                            Log.e("loop count","count");
+                            JSONObject imgObj= user_photos.getJSONObject(j);
+                            UserPhotosLoadBean usersPhotosLoadBean=new UserPhotosLoadBean();
 
+                            usersPhotosLoadBean.setId(imgObj.getString("id"));
+                            usersPhotosLoadBean.setImage(imgObj.getString("img"));
+
+                            userPhotosLoadBeanArrayList.add(usersPhotosLoadBean);
+                        }
+                    }
+                    userPhotosLoadBean.setUserPhotosLoadBeanArrayList(userPhotosLoadBeanArrayList);
+                    userBean.setUserPhotosLoadBeanArrayList(userPhotosLoadBeanArrayList);
                     ArrayList<UserCriteriaBean> userCriteriaBeans=new ArrayList<UserCriteriaBean>();
                     if (criteriaArr.length()>0){
                         for (int i = 0; i<criteriaArr.length();i++){
@@ -308,5 +327,11 @@ public class ExistingUserSignin extends AppCompatActivity implements View.OnClic
     }
     void stop_progress_dialog(){
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(ExistingUserSignin.this,ImageSliderScreen.class);
+        startActivity(intent);
     }
 }

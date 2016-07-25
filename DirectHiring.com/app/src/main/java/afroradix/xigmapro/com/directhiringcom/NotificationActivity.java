@@ -1,6 +1,7 @@
 package afroradix.xigmapro.com.directhiringcom;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -113,5 +114,10 @@ public class NotificationActivity extends AppCompatActivity implements AsyncResp
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(NotificationActivity.this, DashboardActivity.class));
     }
 }

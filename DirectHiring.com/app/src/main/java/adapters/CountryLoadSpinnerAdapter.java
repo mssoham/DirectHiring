@@ -51,7 +51,7 @@ public class CountryLoadSpinnerAdapter extends BaseAdapter {
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         CountryLoadBean countryLoadBean=countryLoadBeanArrayList.get(position);
-        type_txt.setText(countryLoadBean.getCountryvalue());
+        type_txt.setText(countryLoadBean.getValue());
         return (convertView);
     }
 }

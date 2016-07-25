@@ -51,7 +51,7 @@ public class NationalityAdapter extends BaseAdapter {
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         NationalityBean nationalityBean=nationalityBeanArrayList.get(position);
-        type_txt.setText(nationalityBean.getNationality_value());
+        type_txt.setText(nationalityBean.getValue());
         return (convertView);
     }
 }

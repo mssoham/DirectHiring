@@ -1,4 +1,4 @@
-package afroradix.xigmapro.com.directhiringcom.fragments;
+package afroradix.xigmapro.com.directhiringcom;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -13,20 +13,21 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +40,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import adapters.NotificationlistAdapter;
-import afroradix.xigmapro.com.directhiringcom.DashboardActivity;
-import afroradix.xigmapro.com.directhiringcom.MYProfile;
-import afroradix.xigmapro.com.directhiringcom.R;
 import custom_components.RoundedImageViewWhiteBorder;
 import shared_pref.SharedStorage;
 import utilities.ImageFile.CreateImagefile;
@@ -51,34 +48,17 @@ import utilities.async_tasks.ImageDownloaderTask;
 import utilities.async_tasks.RemoteAsync;
 import utilities.constants.Constants;
 import utilities.constants.Urls;
-import utilities.data_objects.DashboardUserImageBean;
 import utilities.data_objects.DirectHiringModel;
-import utilities.data_objects.UserBean;
 import utilities.data_objects.UserPhotosLoadBean;
 import utilities.others.CToast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ImageChangeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ImageChangeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ImageChangeFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener, AsyncResponse {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class ImagechangeaddActivity extends AppCompatActivity implements View.OnClickListener, AsyncResponse {
     private String img_url="http://xigmapro.website/dev4/directhiring/public/resource/site/images/users/";
     private RoundedImageViewWhiteBorder dp_pd_edit;
     private ImageView viewimage;
     private ViewPager pager_edit;
-    private ImageButton upld_edit,add_image;
+    private ImageButton upld_edit;
+    private Button add_image;
     CustomPagerAdapter customPagerAdapter;
     CreateImagefile createImagefile=new CreateImagefile();
     String mCurrentPhotoPath,description1;
@@ -92,56 +72,32 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
 
     private Uri filePath;
     DirectHiringModel dataModel=DirectHiringModel.getInstance();
-
-    private OnFragmentInteractionListener mListener;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ImageChangeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ImageChangeFragment newInstance(String param1, String param2) {
-        ImageChangeFragment fragment = new ImageChangeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public ImageChangeFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+        setContentView(R.layout.activity_imagechangeadd);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("ImageEdit");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_image_change, container, false);
-        getDialog().setTitle("Change Image");
-        getDialog().setTitle("Change Image");
-        dp_pd_edit=(RoundedImageViewWhiteBorder)view.findViewById(R.id.dp_pd_edit);
-        pager_edit=(ViewPager)view.findViewById(R.id.pager_edit);
-        upld_edit=(ImageButton)view.findViewById(R.id.upld_edit);
-        add_image=(ImageButton)view.findViewById(R.id.add_image);
-        viewimage=(ImageView)view.findViewById(R.id.viewimage);
-        submit_edit_photo=(Button)view.findViewById(R.id.submit_edit_photo);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });*/
+        dp_pd_edit=(RoundedImageViewWhiteBorder)findViewById(R.id.dp_pd_edit);
+        pager_edit=(ViewPager)findViewById(R.id.pager_edit);
+        upld_edit=(ImageButton)findViewById(R.id.upld_edit);
+        add_image=(Button)findViewById(R.id.add_image);
+        viewimage=(ImageView)findViewById(R.id.viewimage);
+        submit_edit_photo=(Button)findViewById(R.id.submit_edit_photo);
         /*customPagerAdapter=new CustomPagerAdapter(getActivity(),dataModel.dashboardUserBeanArrayList.getDashboardUserImageBeanArrayList());*/
         Log.e("Img>>", img_url + "/" + dataModel.userBean.getImage());
-        pager_edit.setAdapter(new CustomPagerAdapter(getActivity(),dataModel.userBean.getUserPhotosLoadBeanArrayList()));
+        pager_edit.setAdapter(new CustomPagerAdapter(getApplicationContext(),dataModel.userBean.getUserPhotosLoadBeanArrayList()));
         if (!dataModel.userBean.getImage().equals("")) {
             if (dp_pd_edit != null) {
                 new ImageDownloaderTask(dp_pd_edit).execute(img_url + "/" + dataModel.userBean.getImage());
@@ -154,31 +110,6 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
         upld_edit.setOnClickListener(this);
         submit_edit_photo.setOnClickListener(this);
         add_image.setOnClickListener(this);
-        return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -199,7 +130,7 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -207,7 +138,7 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
                 if (options[item].equals("Take Photo")) {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     takePictureIntent.setFlags(Intent.FLAG_FROM_BACKGROUND);
-                    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                         // Create the File where the photo should go
                         File f = null;
                         try {
@@ -268,7 +199,7 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
 
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null, null, null);
+                Cursor c = this.getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
@@ -372,11 +303,14 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
 
                 if (obj.getString("status").equals(Constants.SUCCESS)) {
                     dataModel.userBean.setImage(obj.getString("image"));
-                    Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(getActivity(),MYProfile.class);
-                    startActivity(intent);
+                    if (!dataModel.userBean.getImage().equals("")) {
+                        if (dp_pd_edit != null) {
+                            new ImageDownloaderTask(dp_pd_edit).execute(img_url + "/" + dataModel.userBean.getImage());
+                        }
+                    }
+                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getActivity(), "failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -407,29 +341,16 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
                     }
                     userPhotosLoadBean.setUserPhotosLoadBeanArrayList(userPhotosLoadBeanArrayList);
                     dataModel.userBean.setUserPhotosLoadBeanArrayList(userPhotosLoadBeanArrayList);
+                    Intent intent=new Intent(ImagechangeaddActivity.this,ImagechangeaddActivity.class);
+                    startActivity(intent);
                     /*customPagerAdapter.notifyDataSetChanged();*/
                 }else{
-                    CToast.show(getActivity(),"failed to add image");
+                    CToast.show(getApplicationContext(), "failed to add image");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
     }
     class CustomPagerAdapter extends PagerAdapter implements View.OnClickListener {
         Context mContext;
@@ -492,7 +413,7 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
     private void uploadImage(){
         start_progress_dialog();
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        String user_id = SharedStorage.getValue(getActivity(), "UserId");
+        String user_id = SharedStorage.getValue(this, "UserId");
         arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", user_id));
 
 
@@ -511,7 +432,7 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
     private void uploadviewImage(){
         start_progress_dialog();
         ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        String user_id = SharedStorage.getValue(getActivity(), "UserId");
+        String user_id = SharedStorage.getValue(this, "UserId");
         arrayList.add(new org.apache.http.message.BasicNameValuePair("user_id", user_id));
 
 
@@ -530,12 +451,18 @@ public class ImageChangeFragment extends android.support.v4.app.DialogFragment i
     }
 
     void start_progress_dialog(){
-        progressDialog = new ProgressDialog(getActivity());
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
     void stop_progress_dialog(){
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(ImagechangeaddActivity.this,MYProfile.class);
+        startActivity(intent);
     }
 }

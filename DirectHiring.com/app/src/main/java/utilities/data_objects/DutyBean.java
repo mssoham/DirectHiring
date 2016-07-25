@@ -4,23 +4,25 @@ package utilities.data_objects;
  * Created by xyxz on 6/30/2016.
  */
 public class DutyBean {
-    private String duty_key="";
-    private String duty_value="";
-    public String getDuty_key() {
-        return duty_key;
+    private String key="";
+
+    public String getValue() {
+        return value;
     }
 
-    public void setDuty_key(String duty_key) {
-        this.duty_key = duty_key;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public String getDuty_value() {
-        return duty_value;
+    public String getKey() {
+        return key;
     }
 
-    public void setDuty_value(String duty_value) {
-        this.duty_value = duty_value;
+    public void setKey(String key) {
+        this.key = key;
     }
+
+    private String value="";
 
 
 }

@@ -87,7 +87,7 @@ public class SignupFirstPage extends AppCompatActivity implements View.OnClickLi
         country.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                country1=dataModel.getInstance().countryLoadBeanArrayList.get(position).getCountryvalue();
+                country1=dataModel.getInstance().countryLoadBeanArrayList.get(position).getValue();
             }
 
             @Override

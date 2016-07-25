@@ -119,7 +119,7 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
                     userBean.setLooking_for(userObj.getString("looking_for"));
                     userBean.setType(userObj.getString("type"));
                     userBean.setStatus(userObj.getString("status"));
-                    userBean.setWallet(userObj.getString("wallet"));
+                    /*userBean.setWallet(userObj.getString("wallet"));*/
                     userBean.setRemember_token(userObj.getString("remember_token"));
                     userBean.setCreated_at(userObj.getString("created_at"));
                     userBean.setUpdated_at(userObj.getString("updated_at"));
@@ -130,11 +130,11 @@ public class SignUpSecondPage extends AppCompatActivity implements View.OnClickL
                     //ShowAlertDialog.showAlertDialog(getApplicationContext(),"Profile updated successfully");
                     CToast.show(getApplicationContext(), "Profile created successfully go for the next step");
                     if(userBean.getType().equals("helper")) {
-                        CriteriaType.user_status=userBean.getStatus();
-                        startActivity(new Intent(SignUpSecondPage.this, CriteriaType.class));
-                    }else {
                         CriteriaFamilyType.user_status1=userBean.getStatus();
                         startActivity(new Intent(SignUpSecondPage.this, CriteriaFamilyType.class));
+                    }else {
+                        CriteriaType.user_status=userBean.getStatus();
+                        startActivity(new Intent(SignUpSecondPage.this, CriteriaType.class));
                     }
                 }else{
                     CToast.show(getApplicationContext(),"Username already used, Please change it");

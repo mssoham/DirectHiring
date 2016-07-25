@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,6 +42,7 @@ import utilities.constants.Urls;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.NationalityBean;
 import utilities.data_objects.UserBean;
+import utilities.data_objects.UserCriteriaBean;
 import utilities.others.CToast;
 
 public class CriteriaType extends AppCompatActivity implements View.OnClickListener, AsyncResponse,PremiumMemberDialogFragment.OnFragmentInteractionListener {
@@ -103,20 +105,20 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
                 }
-                if (user_status.equals("normal")&&check > 2) {
-                        CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
-                        Log.e("check count---->", String.valueOf(check));
-                        nationality_check.setChecked(false);
-                        nationality.setVisibility(View.GONE);
-                        criteriaObj.remove("nationality");
-                        Log.e("remove--->", String.valueOf(criteriaObj));
-                        check--;
+                if (user_status.equals("normal") && check > 2) {
+                    CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                    Log.e("check count---->", String.valueOf(check));
+                    nationality_check.setChecked(false);
+                    nationality.setVisibility(View.GONE);
+                    criteriaObj.remove("nationality");
+                    Log.e("remove--->", String.valueOf(criteriaObj));
+                    check--;
                     FragmentManager fm = getSupportFragmentManager();
                     PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
-                    }
                 }
+            }
         });
         main_duty_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -132,20 +134,20 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
                     check--;
                     Log.e("check count---->", String.valueOf(check));
                 }
-                if (user_status.equals("normal")&&check > 2) {
-                        CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
-                        Log.e("check count---->", String.valueOf(check));
-                        main_duty_check.setChecked(false);
-                        main_duty.setVisibility(View.GONE);
-                        criteriaObj.remove("duty");
-                        Log.e("remove--->", String.valueOf(criteriaObj));
-                        check--;
+                if (user_status.equals("normal") && check > 2) {
+                    CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                    Log.e("check count---->", String.valueOf(check));
+                    main_duty_check.setChecked(false);
+                    main_duty.setVisibility(View.GONE);
+                    criteriaObj.remove("duty");
+                    Log.e("remove--->", String.valueOf(criteriaObj));
+                    check--;
                     FragmentManager fm = getSupportFragmentManager();
                     PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
-                    }
                 }
+            }
         });
         availibility_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -284,34 +286,36 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
                     check--;
                     Log.e("check count---->", String.valueOf(check));
                 }
-                if (user_status.equals("normal")&& check > 2) {
-                        CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
-                        Log.e("check count---->", String.valueOf(check));
-                        day_of_range_check.setChecked(false);
+                if (user_status.equals("normal") && check > 2) {
+                    CToast.show(getApplicationContext(), "you need to pay to check more criteria!");
+                    Log.e("check count---->", String.valueOf(check));
+                    day_of_range_check.setChecked(false);
                     /*rel_day_of_range.setVisibility(View.GONE);*/
-                        day_of_range_seekbar.setVisibility(View.GONE);
-                        criteriaObj.remove("day_range");
-                        Log.e("remove--->", String.valueOf(criteriaObj));
-                        check--;
+                    day_of_range_seekbar.setVisibility(View.GONE);
+                    criteriaObj.remove("day_range");
+                    Log.e("remove--->", String.valueOf(criteriaObj));
+                    check--;
                     FragmentManager fm = getSupportFragmentManager();
                     PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                     // Show DialogFragment
                     dFragment.show(fm, "Dialog Fragment");
-                    }
                 }
+            }
         });
         sal_range_seekbar.setRangeValues(500, 1000);
+        /*sal_range_seekbar.setSelectedMinValue(500);
+        sal_range_seekbar.setSelectedMaxValue(1000);*/
         sal_range_seekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
                 Log.e("value", minValue + "  " + maxValue);
                 /*sal_range_seekValuemin.setText("Min "+minValue);
                 sal_range_seekValuemax.setText("Max"+maxValue);*/
-                sal_range_seekValuemin=minValue.toString().trim();
-                sal_range_seekValuemax=maxValue.toString().trim();
-                String salary=sal_range_seekValuemin+","+sal_range_seekValuemax;
+                sal_range_seekValuemin = minValue.toString().trim();
+                sal_range_seekValuemax = maxValue.toString().trim();
+                String salary = sal_range_seekValuemin + "," + sal_range_seekValuemax;
                 try {
-                    criteriaObj.put("salary_range",salary);
+                    criteriaObj.put("salary_range", salary);
                     Log.e("add--->", String.valueOf(criteriaObj));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -320,6 +324,8 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
             }
         });
         age_range_seekbar.setRangeValues(23, 50);
+        /*age_range_seekbar.setSelectedMinValue(23);
+        age_range_seekbar.setSelectedMaxValue(50);*/
         age_range_seekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
@@ -340,6 +346,8 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
         /*day_of_range_seekbar.setNotifyWhileDragging(true);*/
         /*day_of_range_seekbar.setAdapter(new DemoRangeAdapter());*/
         day_of_range_seekbar.setRangeValues(0, 4);
+        /*day_of_range_seekbar.setSelectedMinValue(0);
+        day_of_range_seekbar.setSelectedMaxValue(4);*/
         day_of_range_seekbar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
@@ -360,7 +368,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
         nationality.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                nationality1 = dataModel.getInstance().nationalityBeanArrayList.get(position).getNationality_key();
+                nationality1 = dataModel.getInstance().nationalityBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("nationality",nationality1);
                     Log.e("add--->", String.valueOf(criteriaObj));
@@ -377,7 +385,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
         main_duty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                main_duty1 = dataModel.getInstance().dutyBeanArrayList.get(position).getDuty_key();
+                main_duty1 = dataModel.getInstance().dutyBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("duty",main_duty1);
                 } catch (JSONException e) {
@@ -394,7 +402,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
         availibility.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                availibility1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getAvailabilty_key();
+                availibility1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("avaliability",availibility1);
                 } catch (JSONException e) {
@@ -410,7 +418,7 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
         exp_range.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                exp_range1 = dataModel.getInstance().experienceBeanArrayList.get(position).getExp_key();
+                exp_range1 = dataModel.getInstance().experienceBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("experience_range",exp_range);
                 } catch (JSONException e) {
@@ -475,6 +483,22 @@ public class CriteriaType extends AppCompatActivity implements View.OnClickListe
 
                 if (obj.getString("status").equals(Constants.SUCCESS)) {
                     //startActivity(new Intent(ServiceDetailsActivity.this,OrderSuccessfulActivity.class));
+                    JSONArray criteriaArr = obj.getJSONArray("criterias");
+                    UserBean userBean=new UserBean();
+                    ArrayList<UserCriteriaBean> userCriteriaBeans=new ArrayList<UserCriteriaBean>();
+                    if (criteriaArr.length()>0){
+                        for (int i = 0; i<criteriaArr.length();i++){
+                            UserCriteriaBean userCriteriaBean=new UserCriteriaBean();
+                            JSONObject userC = criteriaArr.getJSONObject(i);
+
+                            userCriteriaBean.setKey(userC.getString("criteria"));
+                            userCriteriaBean.setValue(userC.getString("criteria_details"));
+
+                            userCriteriaBeans.add(userCriteriaBean);
+                        }
+                    }
+
+                    dataModel.userBean.setUserCriteriaBeanArrayList(userCriteriaBeans);
                     startActivity(new Intent(CriteriaType.this, UploadImage.class));
                 }else{
                     CToast.show(getApplicationContext(),"Failed to select criteria!");
