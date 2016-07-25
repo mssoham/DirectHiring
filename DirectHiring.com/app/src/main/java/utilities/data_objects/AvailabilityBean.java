@@ -4,22 +4,23 @@ package utilities.data_objects;
  * Created by xyxz on 6/30/2016.
  */
 public class AvailabilityBean {
-    public String getAvailabilty_value() {
-        return availabilty_value;
+
+    public String getKey() {
+        return key;
     }
 
-    public void setAvailabilty_value(String availabilty_value) {
-        this.availabilty_value = availabilty_value;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getAvailabilty_key() {
-        return availabilty_key;
+    public String getValue() {
+        return value;
     }
 
-    public void setAvailabilty_key(String availabilty_key) {
-        this.availabilty_key = availabilty_key;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    private String availabilty_key="";
-    private String availabilty_value="";
+    private String key="";
+    private String value="";
 }

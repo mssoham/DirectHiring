@@ -1,5 +1,6 @@
 package afroradix.xigmapro.com.directhiringcom;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import afroradix.xigmapro.com.directhiringcom.fragments.PremiumMemberDialogFragm
 import custom_components.RoundedImageViewWhiteBorder;
 import utilities.async_tasks.ImageDownloaderTask;
 import utilities.data_objects.DirectHiringModel;
+import utilities.data_objects.UserBean;
 import utilities.others.CToast;
 
 public class MYProfile extends AppCompatActivity implements View.OnClickListener,ImageChangeFragment.OnFragmentInteractionListener,
@@ -85,10 +87,8 @@ public class MYProfile extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onClick(View v) {
         if(v==imgchange){
-            FragmentManager fm = getSupportFragmentManager();
-            ImageChangeFragment dFragment = new ImageChangeFragment();
-            // Show DialogFragment
-            dFragment.show(fm, "Dialog Fragment");
+            Intent intent=new Intent(MYProfile.this,ImagechangeaddActivity.class);
+            startActivity(intent);
         }
         if(v==edit_about){
             CToast.show(getApplicationContext(), "about clicked");
@@ -116,5 +116,10 @@ public class MYProfile extends AppCompatActivity implements View.OnClickListener
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(MYProfile.this, DashboardActivity.class));
     }
 }

@@ -164,4 +164,6 @@
     <string name="error_msg">Error!</string>
     <string name="no_internet">No internet connection, Check your Connection.</string>
     <string name="title_activity_notification">NotificationActivity</string>
+    <string name="title_activity_imagechangeadd">ImagechangeaddActivity</string>
+    <string name="addimage">Add Image</string>
 </resources>

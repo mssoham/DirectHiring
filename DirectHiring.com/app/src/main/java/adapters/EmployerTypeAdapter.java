@@ -51,7 +51,7 @@ public class EmployerTypeAdapter extends BaseAdapter {
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         EmployeeBean employeeBean=employeeBeanArrayList.get(position);
-        type_txt.setText(employeeBean.getEmployee_value());
+        type_txt.setText(employeeBean.getValue());
         return (convertView);
     }
 }

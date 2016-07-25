@@ -27,6 +27,7 @@
             android:text="Test User"
             android:layout_gravity="center_vertical"
             android:textSize="@dimen/sp_20"
+            android:textColor="@color/black"
             android:layout_marginLeft="@dimen/dp_10"/>
     </LinearLayout>
 </LinearLayout>

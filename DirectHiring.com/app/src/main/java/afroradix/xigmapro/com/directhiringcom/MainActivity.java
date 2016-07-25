@@ -109,16 +109,16 @@ public class MainActivity extends Activity implements AsyncResponse {
                     JSONArray experience_rangearr=configobj.getJSONArray("experience_range");
                     JSONArray main_dutyarr=configobj.getJSONArray("main_duty");
                     CountryLoadBean country1=new CountryLoadBean();
-                    country1.setCountry_key("Select Country");
-                    country1.setCountryvalue("Select Country");
+                    country1.setKey("Select Country");
+                    country1.setValue("Select Country");
                     countryLoadBeanArrayList.add(country1);
                     dataModel.countryLoadBeanArrayList=countryLoadBeanArrayList;
                     if(countryarr.length()>0){
                         for(int i=0;i<countryarr.length();i++){
                             CountryLoadBean country=new CountryLoadBean();
                             JSONObject countrynames=countryarr.getJSONObject(i);
-                            country.setCountry_key(countrynames.getString("key"));
-                            country.setCountryvalue(countrynames.getString("value"));
+                            country.setKey(countrynames.getString("key"));
+                            country.setValue(countrynames.getString("value"));
                             countryLoadBeanArrayList.add(country);
                         }
                         dataModel.countryLoadBeanArrayList=countryLoadBeanArrayList;
@@ -126,16 +126,16 @@ public class MainActivity extends Activity implements AsyncResponse {
                         CToast.show(getApplicationContext(),"no Data for country found!");
                     }
                     NationalityBean nationality1=new NationalityBean();
-                    nationality1.setNationality_value("Select Nationality");
-                    nationality1.setNationality_key("Select Nationality");
+                    nationality1.setKey("Select Nationality");
+                    nationality1.setValue("Select Nationality");
                     nationalityBeanArrayList.add(nationality1);
                     dataModel.nationalityBeanArrayList=nationalityBeanArrayList;
                     if(nationalityarr.length()>0){
                         for(int i=0;i<nationalityarr.length();i++){
                             NationalityBean nationality=new NationalityBean();
                             JSONObject nationalitynames=nationalityarr.getJSONObject(i);
-                            nationality.setNationality_key(nationalitynames.getString("key"));
-                            nationality.setNationality_value(nationalitynames.getString("value"));
+                            nationality.setKey(nationalitynames.getString("key"));
+                            nationality.setValue(nationalitynames.getString("value"));
                             nationalityBeanArrayList.add(nationality);
                         }
                         dataModel.nationalityBeanArrayList=nationalityBeanArrayList;
@@ -143,16 +143,16 @@ public class MainActivity extends Activity implements AsyncResponse {
                         CToast.show(getApplicationContext(),"no Data for nationality found!");
                     }
                     AvailabilityBean availability1=new AvailabilityBean();
-                    availability1.setAvailabilty_value("Select Job Availibility");
-                    availability1.setAvailabilty_key("Select Job Availibility");
+                    availability1.setValue("Select Job Availibility");
+                    availability1.setKey("Select Job Availibility");
                     availabilityBeanArrayList.add(availability1);
                     dataModel.availabilityBeanArrayList=availabilityBeanArrayList;
                     if(availabilityarr.length()>0){
                         for(int i=0;i<availabilityarr.length();i++){
                             AvailabilityBean availability=new AvailabilityBean();
                             JSONObject availabiltiy=availabilityarr.getJSONObject(i);
-                            availability.setAvailabilty_key(availabiltiy.getString("key"));
-                            availability.setAvailabilty_value(availabiltiy.getString("value"));
+                            availability.setKey(availabiltiy.getString("key"));
+                            availability.setValue(availabiltiy.getString("value"));
                             availabilityBeanArrayList.add(availability);
                         }
                         dataModel.availabilityBeanArrayList=availabilityBeanArrayList;
@@ -160,16 +160,16 @@ public class MainActivity extends Activity implements AsyncResponse {
                         CToast.show(getApplicationContext(),"no Data for availability found!");
                     }
                     EmployeeBean employee1=new EmployeeBean();
-                    employee1.setEmployee_value("Select Employer Type");
-                    employee1.setEmployee_key("Select Employer Type");
+                    employee1.setKey("Select Employer Type");
+                    employee1.setValue("Select Employer Type");
                     employeeBeanArrayList.add(employee1);
                     dataModel.employeeBeanArrayList=employeeBeanArrayList;
                     if(employeearr.length()>0){
                         for(int i=0;i<employeearr.length();i++){
                             EmployeeBean employee=new EmployeeBean();
                             JSONObject employer=employeearr.getJSONObject(i);
-                            employee.setEmployee_key(employer.getString("key"));
-                            employee.setEmployee_value(employer.getString("value"));
+                            employee.setKey(employer.getString("key"));
+                            employee.setValue(employer.getString("value"));
                             employeeBeanArrayList.add(employee);
                         }
                         dataModel.employeeBeanArrayList=employeeBeanArrayList;
@@ -177,16 +177,16 @@ public class MainActivity extends Activity implements AsyncResponse {
                         CToast.show(getApplicationContext(),"no Data for employee found!");
                     }
                     HouseBean house1=new HouseBean();
-                    house1.setHouse_key("Select Job House");
-                    house1.setHouse_value("Select Job House");
+                    house1.setKey("Select Job House");
+                    house1.setValue("Select Job House");
                     houseBeanArrayList.add(house1);
                     dataModel.houseBeanArrayList=houseBeanArrayList;
                     if(housearr.length()>0){
                         for(int i=0;i<housearr.length();i++){
                             HouseBean house=new HouseBean();
                             JSONObject housenames=housearr.getJSONObject(i);
-                            house.setHouse_key(housenames.getString("key"));
-                            house.setHouse_value(housenames.getString("value"));
+                            house.setKey(housenames.getString("key"));
+                            house.setValue(housenames.getString("value"));
                             houseBeanArrayList.add(house);
                         }
                         dataModel.houseBeanArrayList=houseBeanArrayList;
@@ -194,16 +194,16 @@ public class MainActivity extends Activity implements AsyncResponse {
                         CToast.show(getApplicationContext(),"no Data for house found!");
                     }
                     ExperienceBean exp1=new ExperienceBean();
-                    exp1.setExp_value("Select Experience Range");
-                    exp1.setExp_key("Select Experience Range");
+                    exp1.setValue("Select Experience Range");
+                    exp1.setKey("Select Experience Range");
                     experienceBeanArrayList.add(exp1);
                     dataModel.experienceBeanArrayList=experienceBeanArrayList;
                     if(experience_rangearr.length()>0){
                         for(int i=0;i<experience_rangearr.length();i++){
                             ExperienceBean exp=new ExperienceBean();
                             JSONObject expnames=experience_rangearr.getJSONObject(i);
-                            exp.setExp_key(expnames.getString("key"));
-                            exp.setExp_value(expnames.getString("value"));
+                            exp.setKey(expnames.getString("key"));
+                            exp.setValue(expnames.getString("value"));
                             experienceBeanArrayList.add(exp);
                         }
                         dataModel.experienceBeanArrayList=experienceBeanArrayList;
@@ -211,16 +211,16 @@ public class MainActivity extends Activity implements AsyncResponse {
                         CToast.show(getApplicationContext(),"no Data for experience found!");
                     }
                     DutyBean duty1=new DutyBean();
-                    duty1.setDuty_value("Select Main Duty");
-                    duty1.setDuty_key("Select Main Duty");
+                    duty1.setValue("Select Main Duty");
+                    duty1.setKey("Select Main Duty");
                     dutyBeanArrayList.add(duty1);
                     dataModel.dutyBeanArrayList=dutyBeanArrayList;
                     if(main_dutyarr.length()>0){
                         for(int i=0;i<main_dutyarr.length();i++){
                             DutyBean duty=new DutyBean();
                             JSONObject dutynames=main_dutyarr.getJSONObject(i);
-                            duty.setDuty_key(dutynames.getString("key"));
-                            duty.setDuty_value(dutynames.getString("value"));
+                            duty.setKey(dutynames.getString("key"));
+                            duty.setValue(dutynames.getString("value"));
                             dutyBeanArrayList.add(duty);
                         }
                         dataModel.dutyBeanArrayList=dutyBeanArrayList;

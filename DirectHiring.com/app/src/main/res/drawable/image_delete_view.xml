@@ -5,8 +5,8 @@
             <item>
                 <shape>
                     <gradient
-                        android:startColor="#303F9F"
-                        android:endColor="#303F9F"
+                        android:startColor="#ff0000"
+                        android:endColor="#ff0000"
                         />
 
                     <corners
@@ -21,9 +21,8 @@
             </item>
             <item
                 >
-                <bitmap android:src="@mipmap/ic_add_circle_outline_black_36dp"
-                    android:gravity="center_horizontal"
-                    android:tint="@color/nav_item_color"/>
+                <bitmap android:src="@mipmap/ic_window_close_white_36dp"
+                    android:gravity="center_horizontal" />
             </item>
         </layer-list>
     </item>

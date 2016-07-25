@@ -2,9 +2,11 @@ package afroradix.xigmapro.com.directhiringcom.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,8 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,11 +30,18 @@ import java.util.StringTokenizer;
 import adapters.AvailabilityAdapter;
 import adapters.EmployerTypeAdapter;
 import adapters.HouseAdapter;
+import afroradix.xigmapro.com.directhiringcom.MYProfile;
 import afroradix.xigmapro.com.directhiringcom.R;
+import afroradix.xigmapro.com.directhiringcom.UploadImage;
 import custom_components.RangeSeekBar;
 import shared_pref.SharedStorage;
+import utilities.async_tasks.AsyncResponse;
+import utilities.async_tasks.RemoteAsync;
+import utilities.constants.Constants;
+import utilities.constants.Urls;
 import utilities.data_objects.DirectHiringModel;
 import utilities.data_objects.UserBean;
+import utilities.data_objects.UserCriteriaBean;
 import utilities.others.CToast;
 
 /**
@@ -41,7 +52,7 @@ import utilities.others.CToast;
  * Use the {@link CriteriaFamilyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragment implements PremiumMemberDialogFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragment implements PremiumMemberDialogFragment.OnFragmentInteractionListener, View.OnClickListener, AsyncResponse {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -122,13 +133,12 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
         day_of_range_seekbar=(RangeSeekBar)view.findViewById(R.id.day_of_range_seekbar);
         family_member_seekbar=(RangeSeekBar)view.findViewById(R.id.family_member_seekbar);
         sal_range_seekbar=(RangeSeekBar)view.findViewById(R.id.sal_range_seekbar);
-        /*criteriaselection("Nationality", nationality_check_edit);
-        criteriaselection("Day off Range", day_of_range_check_edit);*/
+        criteriaselection("Job Avaliability", job_availability_check,null,job_availability);
+        criteriaselection("Day off Range", day_of_range_check,day_of_range_seekbar,null);
         criteriaselection("Salary Range", sal_range_check,sal_range_seekbar,null);
         criteriaselection("Employer Type", employer_type_check,null,employer_type);
-        /*criteriaselection("Nationality", nationality_check_edit);
-        criteriaselection("Nationality",nationality_check_edit);
-        criteriaselection("Nationality",nationality_check_edit);*/
+        criteriaselection("House Type", house_type_check,null,house_type);
+        criteriaselection("Family Member",family_member_check,family_member_seekbar,null);
         house_Adapter = new HouseAdapter(getActivity(), DirectHiringModel.getInstance().houseBeanArrayList);
         availability_adapter = new AvailabilityAdapter(getActivity(), DirectHiringModel.getInstance().availabilityBeanArrayList);
         employerTyp_eAdapter= new EmployerTypeAdapter(getActivity(), DirectHiringModel.getInstance().employeeBeanArrayList);
@@ -148,7 +158,6 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
                 }
-                if (user.getStatus().equals("normal")) {
                     if (user_status1.equals("normal")&&check > 2) {
                         CToast.show(getActivity(), "you need to pay to check more criteria!");
                         Log.e("check count---->", String.valueOf(check));
@@ -161,7 +170,6 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
                         PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                         // Show DialogFragment
                         dFragment.show(fm, "Dialog Fragment");
-                    }
                 }
             }
         });
@@ -178,7 +186,7 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
                     Log.e("remove--->", String.valueOf(criteriaObj));
                     check--;
                 }
-                if (user.getStatus().equals("normal")) {
+
                     if (user_status1.equals("normal")&&check > 2) {
                         CToast.show(getActivity(), "you need to pay to check more criteria!");
                         Log.e("check count---->", String.valueOf(check));
@@ -191,7 +199,6 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
                         PremiumMemberDialogFragment dFragment = new PremiumMemberDialogFragment();
                         // Show DialogFragment
                         dFragment.show(fm, "Dialog Fragment");
-                    }
                 }
             }
         });
@@ -375,7 +382,7 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
         employer_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                employer_type1 = dataModel.getInstance().employeeBeanArrayList.get(position).getEmployee_value();
+                employer_type1 = dataModel.getInstance().employeeBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("employee", employer_type1);
                 } catch (JSONException e) {
@@ -391,7 +398,7 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
         job_availability.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                job_availability1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getAvailabilty_value();
+                job_availability1 = dataModel.getInstance().availabilityBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("avaliability", job_availability1);
                 } catch (JSONException e) {
@@ -407,7 +414,7 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
         house_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                house_type1=dataModel.getInstance().houseBeanArrayList.get(position).getHouse_value();
+                house_type1=dataModel.getInstance().houseBeanArrayList.get(position).getKey();
                 try {
                     criteriaObj.put("house", house_type1);
                 } catch (JSONException e) {
@@ -456,7 +463,64 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
 
     @Override
     public void onClick(View v) {
+        if(v==continue_btn_last_family){
+            criteriaFamily();
+        }
+    }
+    private void criteriaFamily(){
+        if (user_status1.equals("normal")){
+            isPaid="yes";
+        }else{
+            isPaid="no";
+        }
+        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("criteria", criteriaObj.toString()));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("type", "helper"));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("last_insert_id", user_id));
+        arrayList.add(new org.apache.http.message.BasicNameValuePair("is_paid", isPaid));
 
+        //Urls.urlkey=url_key;
+        RemoteAsync remoteAsync = new RemoteAsync(Urls.criteria);
+        remoteAsync.type = RemoteAsync.CRITERIA;
+        remoteAsync.delegate=this;
+        remoteAsync.execute(arrayList);
+    }
+
+    @Override
+    public void processFinish(String type, String output) {
+        Log.e("output-->",output);
+        if (type.equals(RemoteAsync.CRITERIA)) {
+            try {
+                JSONObject obj = new JSONObject(output);
+                Log.e("Response-->", obj.toString());
+
+                if (obj.getString("status").equals(Constants.SUCCESS)) {
+                    //startActivity(new Intent(ServiceDetailsActivity.this,OrderSuccessfulActivity.class));
+                    JSONArray criteriaArr = obj.getJSONArray("criterias");
+                    UserBean userBean=new UserBean();
+                    ArrayList<UserCriteriaBean> userCriteriaBeans=new ArrayList<UserCriteriaBean>();
+                    if (criteriaArr.length()>0){
+                        for (int i = 0; i<criteriaArr.length();i++){
+                            UserCriteriaBean userCriteriaBean=new UserCriteriaBean();
+                            JSONObject userC = criteriaArr.getJSONObject(i);
+
+                            userCriteriaBean.setKey(userC.getString("criteria"));
+                            userCriteriaBean.setValue(userC.getString("criteria_details"));
+
+                            userCriteriaBeans.add(userCriteriaBean);
+                        }
+                    }
+
+                    dataModel.userBean.setUserCriteriaBeanArrayList(userCriteriaBeans);
+                    Intent intent=new Intent(getActivity(),MYProfile.class);
+                    startActivity(intent);
+                }else{
+                    CToast.show(getActivity(),"Failed to select criteria!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -492,11 +556,14 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
                     second = Integer.parseInt(tokens.nextToken());
                     Log.e("min--->", String.valueOf(first));
                     Log.e("max--->", String.valueOf(second));
-                    selectValue(rangeSeekBar, first, second);
+                    selectRangeValue(rangeSeekBar, first, second);
                 }
                 if(!(spinner ==null)){
                     Log.e("spinner---->", String.valueOf(spinner));
                     spinner.setVisibility(View.VISIBLE);
+                    criteriaRange=dataModel.userBean.getUserCriteriaBeanArrayList().get(i).getValue();
+                    Log.e("range value--->", criteriaRange);
+                    selectValue(spinner,key,criteriaRange);
                 }
                 Log.e("Check count", String.valueOf(check));
                 Log.e("CheckBox Checked---->", String.valueOf(checkBox));
@@ -504,10 +571,65 @@ public class CriteriaFamilyFragment extends android.support.v4.app.DialogFragmen
         }
 
     }
-    private void selectValue(RangeSeekBar rangeSeekBar, Integer minvalue,Integer maxvalue) {
-        Log.e("range values-->", String.valueOf(minvalue + "," + maxvalue));
-        rangeSeekBar.setSelectedMinValue((double) minvalue);
-        rangeSeekBar.setSelectedMaxValue((double)maxvalue);
+    private void selectValue(final Spinner spinner,String key, String value) {
+        Log.e("spinner selection value",value);
+        Log.e("spinner object", String.valueOf(spinner));
+        Log.e("key value",key);
+        if(key.equals("Job Avaliability")){
+            for (int i = 0; i < dataModel.availabilityBeanArrayList.size(); i++) {
+                if (dataModel.availabilityBeanArrayList.get(i).getKey().equals(value)) {
+                    Toast.makeText(getActivity(), "selected position" + i, Toast.LENGTH_LONG).show();
+                    final int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            spinner.setSelection(finalI);
+                        }
+                    }, 100);
+                    break;
+                }
+            }
+        }else if(key.equals("Employer Type")){
+            for (int i = 0; i < dataModel.employeeBeanArrayList.size(); i++) {
+                /*Log.e("Spinner Key---->",dataModel.employeeBeanArrayList.get(i).getKey());
+                Log.e("value---->",dataModel.employeeBeanArrayList.get(i).getValue());*/
+                if (dataModel.employeeBeanArrayList.get(i).getKey().equals(value)) {
+                    Toast.makeText(getActivity(), "selected position" + i, Toast.LENGTH_LONG).show();
+                    final int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            spinner.setSelection(finalI);
+                        }
+                    }, 100);
+
+                    break;
+                }
+            }
+        }else if(key.equals("House Type")){
+            for (int i = 0; i < dataModel.houseBeanArrayList.size(); i++) {
+                if (dataModel.houseBeanArrayList.get(i).getKey().equals(value)) {
+                    Toast.makeText(getActivity(), "selected position" + i, Toast.LENGTH_LONG).show();
+                    final int finalI = i;
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            spinner.setSelection(finalI);
+                        }
+                    }, 100);
+                    break;
+                }
+            }
+        }
+
+    }
+    private void selectRangeValue(final RangeSeekBar rangeSeekBar, final Integer min, final Integer max){
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                rangeSeekBar.setSelectedMinValue(min);
+                rangeSeekBar.setSelectedMaxValue(max);
+            }
+        }, 100);
+
+
     }
 
 }

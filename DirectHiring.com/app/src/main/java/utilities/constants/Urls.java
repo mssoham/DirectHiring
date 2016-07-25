@@ -8,6 +8,8 @@ public class Urls
     private static final String url="http://xigmapro.website/dev4/directhiring/Services/service.php?action=";
     private static final String url1="http://xigmapro.website/dev4/directhiring/Services/config.php?action=";
     private static final String url2="http://xigmapro.website/dev4/directhiring/Services/chat_service.php?action=";
+    private static final String imageurl="http://xigmapro.website/dev4/directhiring/Services/service.php?action=";
+
 
     public static final String config_spinner = url1+"config";
     public static final String login = url+"login";
@@ -21,6 +23,7 @@ public class Urls
     public static final String get_Chat_Messages = url2+"getChatMessages";
     public static final String send_Messages = url2+"sendMessages";
     public static final String notification = url+"notification";
+    public static final String addUserPhotos = url+"addUserPhotos";
     /* Services for chat end */
 
     public static final String criteria = url+"criteria";
@@ -31,4 +34,6 @@ public class Urls
     public static final String likes_Member_List = url+"likesMemberList";
     public static final String visitors = url+"visitors";
     public static final String friendRequest = url+"friendRequest";
+    public static final String changeProfileImage= imageurl+"changeProfileImage";
+    public static final String changeDescription = url+"changeDescription";
 }

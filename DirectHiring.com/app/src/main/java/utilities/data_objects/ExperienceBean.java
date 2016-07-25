@@ -4,22 +4,23 @@ package utilities.data_objects;
  * Created by xyxz on 6/30/2016.
  */
 public class ExperienceBean {
-    public String getExp_key() {
-        return exp_key;
+    private String key="";
+
+    public String getValue() {
+        return value;
     }
 
-    public void setExp_key(String exp_key) {
-        this.exp_key = exp_key;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public String getExp_value() {
-        return exp_value;
+    public String getKey() {
+        return key;
     }
 
-    public void setExp_value(String exp_value) {
-        this.exp_value = exp_value;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    private String exp_key="";
-    private String exp_value="";
+    private String value="";
 }

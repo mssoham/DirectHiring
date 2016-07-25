@@ -51,7 +51,7 @@ public class HouseAdapter extends BaseAdapter {
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         HouseBean houseBean=houseBeanArrayList.get(position);
-        type_txt.setText(houseBean.getHouse_value());
+        type_txt.setText(houseBean.getValue());
         return (convertView);
     }
 }

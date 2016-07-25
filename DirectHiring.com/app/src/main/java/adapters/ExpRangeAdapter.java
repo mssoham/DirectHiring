@@ -51,7 +51,7 @@ public class ExpRangeAdapter extends BaseAdapter {
         TextView type_txt=(TextView)convertView.findViewById(R.id.type_txt);
 
         ExperienceBean experienceBean=experienceBeanArrayList.get(position);
-        type_txt.setText(experienceBean.getExp_value());
+        type_txt.setText(experienceBean.getValue());
         return (convertView);
     }
 }

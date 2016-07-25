@@ -1,7 +1,8 @@
-package afroradix.xigmapro.com.directhiringcom;
+package adapters;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,79 +13,119 @@ import android.graphics.drawable.AnimationDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputLayout;
+import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.apache.http.NameValuePair;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import custom_components.RoundedImageViewWhiteBorder;
-import shared_pref.SharedStorage;
+import afroradix.xigmapro.com.directhiringcom.R;
 import utilities.ImageFile.CreateImagefile;
-import utilities.async_tasks.AsyncResponse;
-import utilities.async_tasks.RemoteAsync;
-import utilities.constants.Constants;
-import utilities.constants.Urls;
+import utilities.async_tasks.ImageDownloaderTask;
 import utilities.data_objects.DirectHiringModel;
-import utilities.data_objects.UserBean;
+import utilities.data_objects.UserPhotosLoadBean;
 
-public class UploadImage extends AppCompatActivity implements View.OnClickListener, AsyncResponse{
-    private EditText description;
-    private TextInputLayout input_layout_description;
-    private ImageButton upld;
-    private RoundedImageViewWhiteBorder dp_pd;
+/**
+ * Created by xyxz on 7/22/2016.
+ */
+public class CustomEditPagerAdapter /*extends PagerAdapter implements View.OnClickListener*/ {
+   /* private static String mCurrentPhotoPath;
+    private static ImageView imageView_edit,add_image,delete_image;
+    private static Context mContext;
+    UserPhotosLoadBean userPhotosLoadBean=new UserPhotosLoadBean();
+    int count=0;
+    private String img_url="http://xigmapro.website/dev4/directhiring/public/resource/site/images/users/";
+    LayoutInflater mLayoutInflater;
     CreateImagefile createImagefile=new CreateImagefile();
-    ImageView imgSpinner;
-    DirectHiringModel dataModel=DirectHiringModel.getInstance();
-    String mCurrentPhotoPath,description1;
-    Button submit;
     ProgressDialog progressDialog;
     private AnimationDrawable loadingViewAnim;
     private Bitmap bitmap;
-    private TextView skip;
 
     private Uri filePath;
+    DirectHiringModel dataModel=DirectHiringModel.getInstance();
+    ArrayList<UserPhotosLoadBean> userPhotosLoadBeanArrayList=new ArrayList<UserPhotosLoadBean>();
+
+    public CustomEditPagerAdapter(Context context, ArrayList<UserPhotosLoadBean> userPhotosLoadBeanArrayList) {
+        mContext = context;
+        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.userPhotosLoadBeanArrayList=userPhotosLoadBeanArrayList;
+    }
+    @Override
+    public int getCount() {
+        if (userPhotosLoadBeanArrayList.size()<=3){
+            count=userPhotosLoadBeanArrayList.size()+1;
+        }else{
+            count=userPhotosLoadBeanArrayList.size();
+
+        }
+        //Log.e("size---->", String.valueOf(userPhotosLoadBeanArrayList.size()));
+        return count;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_image);
-        getSupportActionBar().setTitle("Image & Description");
-        description=(EditText)findViewById(R.id.description);
-        input_layout_description=(TextInputLayout)findViewById(R.id.input_layout_description);
-        upld=(ImageButton)findViewById(R.id.upld);
-        dp_pd=(RoundedImageViewWhiteBorder)findViewById(R.id.dp_pd);
-        skip=(TextView)findViewById(R.id.skip);
-        submit=(Button)findViewById(R.id.submit);
-        upld.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
+    public boolean isViewFromObject(View view, Object object) {
+        return view == ((RelativeLayout) object);
+    }
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        View itemView = mLayoutInflater.inflate(R.layout.pager_myprfl_item, container, false);
+
+        if(position<userPhotosLoadBeanArrayList.size()){
+            userPhotosLoadBean=userPhotosLoadBeanArrayList.get(position);
+        }
+
+
+        imageView_edit = (ImageView) itemView.findViewById(R.id.imageView_edit);
+        add_image = (ImageView) itemView.findViewById(R.id.add_image);
+        delete_image = (ImageView) itemView.findViewById(R.id.delete_image);
+        if(userPhotosLoadBeanArrayList.size()<3){
+            count=userPhotosLoadBeanArrayList.size();
+            if(position==count){
+                imageView_edit.setVisibility(View.GONE);
+                add_image.setVisibility(View.VISIBLE);
+                delete_image.setVisibility(View.GONE);
             }
-        });
-        submit.setOnClickListener(this);
-        skip.setOnClickListener(this);
+        }
+        add_image.setOnClickListener(this);
+        //imageView.setImageResource(mResources[position]);
+        if (imageView_edit != null) {
+            new ImageDownloaderTask(imageView_edit).execute(img_url+"/"+userPhotosLoadBean.getImage());
+            Log.e("images:", userPhotosLoadBean.getImage());
+        }
+
+        container.addView(itemView);
+
+        return itemView;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView((RelativeLayout) object);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v==add_image){
+            selectImage();
+        }
+        if(v==delete_image){
+
+        }
     }
     private void selectImage() {
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -92,7 +133,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
                 if (options[item].equals("Take Photo")) {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     takePictureIntent.setFlags(Intent.FLAG_FROM_BACKGROUND);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    if (takePictureIntent.resolveActivity(mContext.getPackageManager()) != null) {
                         // Create the File where the photo should go
                         File f = null;
                         try {
@@ -118,9 +159,8 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         });
         builder.show();
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public static void onActivityResult(int requestCode, int resultCode, Intent data) {
+        CustomEditPagerAdapter.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == 1) {
 
@@ -137,17 +177,17 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
                     bmImg = getResizedImage(imageFile);
                     bmImg=rotateBitmap(bmImg, orientation);
                 }
-                 /*end code for image rotation*/
-                dp_pd.setImageBitmap(bmImg);
-                dp_pd.setTag(mCurrentPhotoPath);
-                /*uploadImage();*/
+                 *//*end code for image rotation*//*
+                imageView_edit.setImageBitmap(bmImg);
+                imageView_edit.setTag(mCurrentPhotoPath);
+                *//*uploadImage();*//*
 
 
             } else if (requestCode == 2) {
 
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = this.getContentResolver().query(selectedImage, filePath, null, null, null);
+                Cursor c = mContext.getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
@@ -156,21 +196,21 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
 
 
 
-                dp_pd.setImageBitmap(thumbnail);
-                dp_pd.setTag(picturePath);
+                imageView_edit.setImageBitmap(thumbnail);
+                imageView_edit.setTag(picturePath);
                 // profile_image_upload();
-                /*uploadImage();*/
+                *//*uploadImage();*//*
 
 
             }
         }
     }
 
-    /**
+    *//**
      * ============================code for image rotation=======================
      * @param file
      * @return
-     */
+     *//*
     public static Bitmap getResizedImage(File file) {
         BitmapFactory.Options bounds = new BitmapFactory.Options();
         bounds.inJustDecodeBounds = true;
@@ -234,96 +274,5 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
             e.printStackTrace();
             return null;
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(v==submit){
-            description1=description.getText().toString().trim();
-            requestFocus(input_layout_description);
-            uploadImage();
-        }
-        if(v==skip){
-            startActivity(new Intent(UploadImage.this, DashboardActivity.class));
-        }
-    }
-    private void uploadImage(){
-        start_progress_dialog();
-        ArrayList<NameValuePair> arrayList = new ArrayList<NameValuePair>();
-        String user_id = SharedStorage.getValue(getApplicationContext(), "UserId");
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("id", user_id));
-        arrayList.add(new org.apache.http.message.BasicNameValuePair("description", description1));
-
-
-        if (dp_pd.getTag() != null) {
-            arrayList.add(new org.apache.http.message.BasicNameValuePair("image", (String) dp_pd.getTag().toString()));
-        } else {
-            arrayList.add(new org.apache.http.message.BasicNameValuePair("image", ""));
-        }
-
-
-        RemoteAsync remoteAsync = new RemoteAsync(Urls.self);
-        remoteAsync.type = RemoteAsync.IMAGE_UPLOAD;
-        remoteAsync.delegate = this;
-        remoteAsync.execute(arrayList);
-    }
-
-    @Override
-    public void processFinish(String type, String output) {
-        stop_progress_dialog();
-        Log.e("Response-->", output.toString());
-        if (type.equals(RemoteAsync.IMAGE_UPLOAD)) {
-            try {
-                JSONObject obj = new JSONObject(output);
-                Log.e("Response-->",obj.toString());
-
-                if (obj.getString("status").equals(Constants.SUCCESS)) {
-                    dataModel.userBean.setImage(obj.getString("image"));
-                    dataModel.userBean.setDescription(obj.getString("description"));
-                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(UploadImage.this, DashboardActivity.class));
-                }else{
-                    /*startActivity(new Intent(UploadImage.this, DashboardActivity.class));*/
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    void start_progress_dialog(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please Wait...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
-    void stop_progress_dialog(){
-        progressDialog.dismiss();
-    }
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder alerBuilder = new AlertDialog.Builder(this);
-        alerBuilder.setMessage("You Really want to leave before completing your details!!!!");
-        alerBuilder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent intMain = new Intent(UploadImage.this,ImageSliderScreen.class);
-
-                startActivity(intMain);
-
-            }
-        });
-        alerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }
-        });
-
-        AlertDialog alertDialog = alerBuilder.create();
-        alertDialog.show();
-    }
+    }*/
 }
