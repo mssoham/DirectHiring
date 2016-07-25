@@ -88,6 +88,7 @@ public class ChatUsersActivity extends AppCompatActivity implements AsyncRespons
         if (type.equals(RemoteAsync.GET_CHAT_USERS)) {
             try {
                 JSONObject obj = new JSONObject(output);
+                
                 Log.e("Response-->", obj.toString());
 
                 if (obj.getString("status").equals(Constants.SUCCESS)) {
